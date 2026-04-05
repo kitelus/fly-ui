@@ -446,6 +446,71 @@
   margin-left: 1px;
 }
 
+@keyframes kite-fu-agent-stream-text-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    text-shadow: 0 0 0 transparent;
+  }
+  50% {
+    opacity: 0.82;
+    text-shadow: 0 0 10px color-mix(in srgb, var(--kfa-accent) 26%, transparent);
+  }
+}
+
+@keyframes kite-fu-agent-stream-dots {
+  0% {
+    width: 0ch;
+  }
+  100% {
+    width: 3ch;
+  }
+}
+
+.kite-fu-agent-stream-text-root[data-streaming="true"] {
+  display: inline-flex;
+  align-items: baseline;
+  animation: kite-fu-agent-stream-text-pulse 1.25s ease-in-out infinite;
+}
+
+.kite-fu-agent-stream-text-root[data-streaming="true"]::after {
+  content: "...";
+  display: inline-block;
+  margin-left: 2px;
+  width: 0ch;
+  overflow: hidden;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--kfa-accent) 78%, var(--kfa-text));
+  animation: kite-fu-agent-stream-dots 1.1s steps(4, end) infinite;
+}
+
+@keyframes kite-fu-agent-stream-label-enter {
+  from {
+    opacity: 0;
+    transform: translateY(2px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.kite-fu-agent-stream-text-label {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+  padding: 0.08rem 0.45rem;
+  border-radius: var(--kfa-radius-full);
+  border: 1px solid color-mix(in srgb, var(--kfa-accent) 32%, var(--kfa-border));
+  background: color-mix(in srgb, var(--kfa-accent) 11%, var(--kfa-surface));
+  color: color-mix(in srgb, var(--kfa-accent) 78%, var(--kfa-text));
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  animation: kite-fu-agent-stream-label-enter 180ms ease-out;
+}
+
 .kite-fu-agent-stream-text-root[data-streaming="false"]
   .kite-fu-agent-stream-text-cursor {
   display: none;
@@ -1653,6 +1718,9 @@
 @media (prefers-reduced-motion: reduce) {
   .kite-fu-agent-message-root,
   .kite-fu-agent-typing-indicator-dot,
+  .kite-fu-agent-stream-text-root[data-streaming="true"],
+  .kite-fu-agent-stream-text-root[data-streaming="true"]::after,
+  .kite-fu-agent-stream-text-label,
   .kite-fu-agent-stream-text-cursor,
   .kite-fu-agent-agent-status-indicator,
   .kite-fu-agent-step-list-item[data-status="running"]
