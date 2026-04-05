@@ -1,29 +1,56 @@
-# Fly UI
+# FlyUI
 
-Modern React component library with isolated styles, Storybook docs, and npm publishing workflow.
+Lightweight React component library focused on loading UX with isolated styles and Storybook-driven documentation.
 
-## Tech Stack
+[![npm version](https://img.shields.io/npm/v/@kitelus/fly-ui)](https://www.npmjs.com/package/@kitelus/fly-ui)
+[![npm downloads](https://img.shields.io/npm/dm/@kitelus/fly-ui)](https://www.npmjs.com/package/@kitelus/fly-ui)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-- React + TypeScript
-- Vite (local playground)
-- Storybook 10 (docs and interactive examples)
-- tsup (library build to ESM + CJS + DTS)
+## Links
 
-## Components Included
+- GitHub: https://github.com/kitelus/fly-ui
+- npm: https://www.npmjs.com/package/@kitelus/fly-ui
+- Storybook Docs: https://kitelus.github.io/fly-ui/
+
+## Features
+
+- Isolated component styles via CSS Modules (prefixed classes)
+- Loading-focused UI components for product consistency
+- Global + per-component theming support
+- Storybook docs and usage playground
+- ESM + CJS + TypeScript declarations build output
+
+## Components
 
 - `KiteLogo`
 - `KiteLoader`
 - `KitePageLoader`
-- `Loading` (3-dot indicator)
+- `Loading`
 
-Each component has:
+## Installation
 
-- typed props
-- Storybook controls (params playground)
-- usage source examples in docs
-- CSS Module styling to avoid leakage into host apps
+```bash
+npm install @kitelus/fly-ui
+```
 
-## Local Development
+## Quick Start
+
+```tsx
+import { KiteLogo, KiteLoader, KitePageLoader, Loading } from "@kitelus/fly-ui";
+
+export function Example() {
+  return (
+    <div>
+      <KiteLogo size="md" name="Fly" subBrand="UI" />
+      <KiteLoader showBrand label="Loading section..." />
+      <Loading />
+      <KitePageLoader message="Preparing workspace..." />
+    </div>
+  );
+}
+```
+
+## Development
 
 ```bash
 npm install
@@ -36,7 +63,7 @@ Run Storybook:
 npm run storybook
 ```
 
-Build package:
+Build the package:
 
 ```bash
 npm run build:lib
@@ -48,56 +75,22 @@ Build static Storybook for GitHub Pages:
 npm run build-storybook
 ```
 
-## Install and Use
+## Contributing
 
-```bash
-npm install @kitelus/fly-ui
-```
+Contributions are welcome.
 
-```tsx
-import { KiteLoader, KitePageLoader, KiteLogo, Loading } from "@kitelus/fly-ui";
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes with clear messages
+4. Open a pull request
 
-export function Example() {
-  return (
-    <div>
-      <KiteLogo size="md" />
-      <KiteLoader label="Loading panel..." />
-      <Loading />
-      <KitePageLoader message="Preparing workspace..." />
-    </div>
-  );
-}
-```
+Please include a clear description of the change and update docs/stories when relevant.
 
-## GitHub Pages
+## License
 
-Workflow: `.github/workflows/deploy-storybook-pages.yml`
+This project is licensed under the MIT License. See [LICENSE](./LICENSE) for full details.
 
-- Trigger: push to `main`
-- Output: Storybook static site on GitHub Pages
+## Contact
 
-## NPM Publish
-
-Workflow: `.github/workflows/publish-npm.yml`
-
-Required secret:
-
-- `NPM_TOKEN`
-
-Publish triggers:
-
-- GitHub Release `published`
-- manual workflow dispatch
-
-## Repo Setup
-
-If this folder is used as a standalone repo:
-
-```bash
-git init
-git remote add origin https://github.com/kitelus/fly-ui.git
-git add .
-git commit -m "feat: bootstrap fly-ui component library"
-git branch -M main
-git push -u origin main
-```
+- Maintainer: Binh Tran
+- Email: thanhbinh.bent@gmail.com
