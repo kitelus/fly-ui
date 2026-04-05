@@ -86,6 +86,14 @@ Contributions are welcome.
 
 Please include a clear description of the change and update docs/stories when relevant.
 
+See detailed guidelines in [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+## Community
+
+- Code of Conduct: [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
+- Contributing Guide: [CONTRIBUTING.md](./CONTRIBUTING.md)
+- Security Policy: [SECURITY.md](./SECURITY.md)
+
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](./LICENSE) for full details.
