@@ -30,11 +30,16 @@
     "build": "npm run build:lib",
     "build:lib": "tsup",
     "lint": "eslint .",
+    "lint:staged": "lint-staged",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -o storybook-static",
     "test-storybook": "vitest run",
+    "prepare": "husky",
     "prepublishOnly": "npm run build:lib"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --fix"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -63,6 +68,8 @@
     "eslint-plugin-react-refresh": "^0.5.2",
     "eslint-plugin-storybook": "^10.3.4",
     "globals": "^17.4.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "playwright": "^1.59.1",
     "storybook": "^10.3.4",
     "tsup": "^8.5.1",

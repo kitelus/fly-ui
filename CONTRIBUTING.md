@@ -35,6 +35,19 @@ Build Storybook static output:
 npm run build-storybook
 ```
 
+## Pre-commit Hooks
+
+This repository uses Husky + lint-staged to keep commits clean.
+
+- On `git commit`, a pre-commit hook runs `npm run lint:staged`.
+- Only staged `*.{js,jsx,ts,tsx}` files are linted/fixed.
+
+If needed, run it manually:
+
+```bash
+npm run lint:staged
+```
+
 ## Branch and Commit Guidelines
 
 - Create a feature branch from `main`.
