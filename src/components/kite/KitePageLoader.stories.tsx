@@ -11,19 +11,24 @@ const meta = {
     overlay: false,
     name: "Fly",
     subBrand: "UI",
-    theme: {
-      primary: "#0ea5e9",
-      foreground: "#0f172a",
-      muted: "#64748b",
-      overlayBackground: "rgba(255, 255, 255, 0.82)",
-      overlayBlur: "2px",
-    },
   },
   argTypes: {
     overlay: { control: "boolean" },
     name: { control: "text" },
     subBrand: { control: "text" },
-    theme: { control: "object" },
+    theme: {
+      control: "object",
+      description:
+        "Optional local override. Example: { primary: '#a855f7', overlayBackground: 'rgba(245, 243, 255, 0.86)', overlayBlur: '3px' }",
+      table: {
+        type: {
+          summary: "KiteTheme",
+          detail:
+            "{\n  primary?: string;\n  foreground?: string;\n  muted?: string;\n  overlayBackground?: string;\n  overlayBlur?: string;\n}",
+        },
+        defaultValue: { summary: "undefined" },
+      },
+    },
   },
   parameters: {
     layout: "fullscreen",
@@ -33,7 +38,7 @@ const meta = {
           "KitePageLoader supports both global theme from FlyUIThemeProvider and local theme override via props.",
       },
       source: {
-        code: '<KitePageLoader message="Preparing workspace..." name="Kite" subBrand="Success" theme={{ primary: "#a855f7", overlayBackground: "rgba(245, 243, 255, 0.86)" }} />',
+        code: '<KitePageLoader message="Preparing workspace..." name="Kite" subBrand="Success" />',
       },
     },
   },

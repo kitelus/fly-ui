@@ -11,11 +11,6 @@ const meta = {
     showText: true,
     name: "Fly",
     subBrand: "UI",
-    theme: {
-      primary: "#0ea5e9",
-      foreground: "#0f172a",
-      muted: "#64748b",
-    },
   },
   argTypes: {
     size: {
@@ -25,7 +20,19 @@ const meta = {
     showText: { control: "boolean" },
     name: { control: "text" },
     subBrand: { control: "text" },
-    theme: { control: "object" },
+    theme: {
+      control: "object",
+      description:
+        "Optional local override. Example: { primary: '#0ea5e9', foreground: '#0f172a', muted: '#64748b' }",
+      table: {
+        type: {
+          summary: "KiteTheme",
+          detail:
+            "{\n  primary?: string;\n  foreground?: string;\n  muted?: string;\n}",
+        },
+        defaultValue: { summary: "undefined" },
+      },
+    },
   },
   parameters: {
     docs: {
@@ -34,7 +41,7 @@ const meta = {
           "Use theme prop for per-component customization, or use FlyUIThemeProvider to apply one theme across all FlyUI components.",
       },
       source: {
-        code: '<KiteLogo size="md" showText name="Kite" subBrand="Success" theme={{ primary: "#f97316" }} />',
+        code: '<KiteLogo size="md" showText name="Kite" subBrand="Success" />',
       },
     },
   },

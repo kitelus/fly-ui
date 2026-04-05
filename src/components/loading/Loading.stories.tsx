@@ -6,15 +6,20 @@ const meta = {
   title: "Components/Loading",
   component: Loading,
   tags: ["autodocs"],
-  args: {
-    theme: {
-      primary: "#0ea5e9",
-      foreground: "#0f172a",
-      muted: "#64748b",
-    },
-  },
   argTypes: {
-    theme: { control: "object" },
+    theme: {
+      control: "object",
+      description:
+        "Optional local override. Example: { primary: '#ef4444', foreground: '#7f1d1d', muted: '#b91c1c' }",
+      table: {
+        type: {
+          summary: "KiteTheme",
+          detail:
+            "{\n  primary?: string;\n  foreground?: string;\n  muted?: string;\n}",
+        },
+        defaultValue: { summary: "undefined" },
+      },
+    },
   },
   parameters: {
     docs: {
@@ -23,7 +28,7 @@ const meta = {
           "Three-dot loading indicator extracted from KitePageLoader progress dots. Supports FlyUIThemeProvider (global) and theme prop (local override).",
       },
       source: {
-        code: '<Loading theme={{ primary: "#ef4444" }} />',
+        code: "<Loading />",
       },
     },
   },

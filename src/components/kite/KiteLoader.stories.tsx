@@ -12,11 +12,6 @@ const meta = {
     name: "Fly",
     subBrand: "UI",
     label: "Loading data...",
-    theme: {
-      primary: "#0ea5e9",
-      foreground: "#0f172a",
-      muted: "#64748b",
-    },
   },
   argTypes: {
     size: {
@@ -26,7 +21,19 @@ const meta = {
     showBrand: { control: "boolean" },
     name: { control: "text" },
     subBrand: { control: "text" },
-    theme: { control: "object" },
+    theme: {
+      control: "object",
+      description:
+        "Optional local override. Example: { primary: '#22c55e', foreground: '#064e3b', muted: '#0f766e' }",
+      table: {
+        type: {
+          summary: "KiteTheme",
+          detail:
+            "{\n  primary?: string;\n  foreground?: string;\n  muted?: string;\n}",
+        },
+        defaultValue: { summary: "undefined" },
+      },
+    },
   },
   parameters: {
     docs: {
@@ -35,7 +42,7 @@ const meta = {
           "For system-wide theming, wrap your app with FlyUIThemeProvider. Use the theme prop only when you need local overrides.",
       },
       source: {
-        code: '<KiteLoader size="md" showBrand name="Kite" subBrand="Success" label="Loading data..." theme={{ primary: "#22c55e" }} />',
+        code: '<KiteLoader size="md" showBrand name="Kite" subBrand="Success" label="Loading data..." />',
       },
     },
   },
