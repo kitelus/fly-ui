@@ -1,13 +1,23 @@
+import type { CSSProperties } from "react";
+
 import { cn } from "../../lib/cn";
 
 import styles from "./kite-animations.module.css";
+import {
+  buildKiteThemeStyle,
+  mergeKiteTheme,
+  type KiteTheme,
+  useFlyUITheme,
+} from "./theme";
 
 export interface KitePageLoaderProps {
   message?: string;
   overlay?: boolean;
   name?: string;
   subBrand?: string;
+  theme?: KiteTheme;
   className?: string;
+  style?: CSSProperties;
 }
 
 export function KitePageLoader({
@@ -15,8 +25,14 @@ export function KitePageLoader({
   overlay = false,
   name = "Fly",
   subBrand = "UI",
+  theme,
   className,
+  style,
 }: KitePageLoaderProps) {
+  const globalTheme = useFlyUITheme();
+  const resolvedTheme = mergeKiteTheme(globalTheme, theme);
+  const themeStyle = buildKiteThemeStyle(resolvedTheme);
+
   return (
     <div
       role="status"
@@ -30,6 +46,7 @@ export function KitePageLoader({
           : styles["kite-fu-pageWrapFullscreen"],
         className,
       )}
+      style={{ ...themeStyle, ...style }}
     >
       <svg
         width={56}

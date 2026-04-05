@@ -2,6 +2,8 @@
   --kite-primary: #0ea5e9;
   --kite-foreground: #0f172a;
   --kite-muted: #64748b;
+  --kite-overlay-background: rgba(255, 255, 255, 0.82);
+  --kite-overlay-blur: 2px;
   color: var(--kite-foreground);
   font-family: "Inter Variable", Inter, sans-serif;
   line-height: 1;
@@ -364,8 +366,8 @@
   position: fixed;
   inset: 0;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(2px);
+  background: var(--kite-overlay-background);
+  backdrop-filter: blur(var(--kite-overlay-blur));
 }
 
 .kite-fu-label {

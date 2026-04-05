@@ -1,5 +1,7 @@
 export { KiteLogo } from "./components/kite/KiteLogo";
 export type { KiteLogoProps } from "./components/kite/KiteLogo";
+export type { KiteTheme } from "./components/kite/theme";
+export { FlyUIThemeProvider, useFlyUITheme } from "./components/kite/theme";
 
 export { KiteLoader } from "./components/kite/KiteLoader";
 export type { KiteLoaderProps } from "./components/kite/KiteLoader";

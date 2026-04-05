@@ -1,6 +1,14 @@
+import type { CSSProperties } from "react";
+
 import { cn } from "../../lib/cn";
 
 import styles from "./kite-animations.module.css";
+import {
+  buildKiteThemeStyle,
+  mergeKiteTheme,
+  type KiteTheme,
+  useFlyUITheme,
+} from "./theme";
 
 const SIZES = {
   sm: 32,
@@ -16,7 +24,9 @@ export interface KiteLoaderProps {
   showBrand?: boolean;
   name?: string;
   subBrand?: string;
+  theme?: KiteTheme;
   className?: string;
+  style?: CSSProperties;
 }
 
 export function KiteLoader({
@@ -25,16 +35,22 @@ export function KiteLoader({
   showBrand = false,
   name = "Fly",
   subBrand = "UI",
+  theme,
   className,
+  style,
 }: KiteLoaderProps) {
   const px = SIZES[size];
   const svgH = Math.round(px * 1.2);
+  const globalTheme = useFlyUITheme();
+  const resolvedTheme = mergeKiteTheme(globalTheme, theme);
+  const themeStyle = buildKiteThemeStyle(resolvedTheme);
 
   return (
     <div
       className={cn(styles["kite-fu-host"], className)}
       role="status"
       aria-label={label ?? "Loading"}
+      style={{ ...themeStyle, ...style }}
     >
       <div
         style={{

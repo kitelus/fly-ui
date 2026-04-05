@@ -1,0 +1,73 @@
+Fly UI - LLM Integration Guide
+
+Purpose
+- This file is for LLM agents that need quick, reliable usage guidance for Fly UI.
+- Prefer this file as the first reference before scanning the whole codebase.
+
+Package
+- Name: @kitelus/fly-ui
+- Stack: React + TypeScript
+- Styling: CSS Modules with prefixed classes (kite-fu-*) to reduce style conflicts.
+
+Exports
+- Components:
+  - KiteLogo
+  - KiteLoader
+  - KitePageLoader
+  - Loading
+- Theming:
+  - FlyUIThemeProvider
+  - useFlyUITheme
+  - KiteTheme (type)
+
+Global Theme (recommended)
+- Apply one theme for all Fly UI components in the app tree using FlyUIThemeProvider.
+- Example:
+
+  import { FlyUIThemeProvider, KiteLoader } from "@kitelus/fly-ui";
+
+  export function App() {
+    return (
+      <FlyUIThemeProvider
+        theme={{
+          primary: "#16a34a",
+          foreground: "#0f172a",
+          muted: "#64748b",
+          overlayBackground: "rgba(240, 253, 244, 0.86)",
+          overlayBlur: "3px",
+        }}
+      >
+        <KiteLoader showBrand name="Kite" subBrand="Success" label="Loading..." />
+      </FlyUIThemeProvider>
+    );
+  }
+
+Per-component Theme Override
+- Each component also accepts theme prop.
+- Local theme keys override global provider keys for that component only.
+
+KiteTheme Tokens
+- primary: main accent color (kite and dots)
+- foreground: text color token for generic foreground usage
+- muted: cloud/string muted color token
+- overlayBackground: page loader overlay background
+- overlayBlur: page loader overlay blur
+
+Important Behavior
+- In KiteLoader and KitePageLoader:
+  - brand text and message are forced to black by design (not theme-driven).
+- Theme still applies to icon, clouds, dots, and overlay visuals.
+
+Storybook Docs
+- Main guide:
+  - Guides/Theming
+- Component stories:
+  - Kite Components/KiteLogo
+  - Kite Components/KiteLoader
+  - Kite Components/KitePageLoader
+  - Components/Loading
+
+Safe Usage Notes
+- No global CSS import is required from consumers.
+- Avoid overriding internal generated CSS module class names.
+- Use props and theme tokens instead of CSS overrides whenever possible.

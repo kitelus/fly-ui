@@ -1,6 +1,14 @@
+import type { CSSProperties } from "react";
+
 import { cn } from "../../lib/cn";
 
 import styles from "./kite-animations.module.css";
+import {
+  buildKiteThemeStyle,
+  mergeKiteTheme,
+  type KiteTheme,
+  useFlyUITheme,
+} from "./theme";
 
 const SIZE = {
   xs: { icon: 16, text: 12, gap: 6, strongWeight: 600 },
@@ -17,8 +25,10 @@ export interface KiteLogoProps {
   showText?: boolean;
   name?: string;
   subBrand?: string;
+  theme?: KiteTheme;
   className?: string;
   textClassName?: string;
+  style?: CSSProperties;
 }
 
 function KiteIcon({ size }: { size: number }) {
@@ -46,10 +56,15 @@ export function KiteLogo({
   showText = true,
   name = "Fly",
   subBrand = "UI",
+  theme,
   className,
   textClassName,
+  style,
 }: KiteLogoProps) {
   const cfg = SIZE[size];
+  const globalTheme = useFlyUITheme();
+  const resolvedTheme = mergeKiteTheme(globalTheme, theme);
+  const themeStyle = buildKiteThemeStyle(resolvedTheme);
 
   return (
     <div
@@ -58,7 +73,7 @@ export function KiteLogo({
         styles["kite-fu-logoWrap"],
         className,
       )}
-      style={{ gap: cfg.gap }}
+      style={{ ...themeStyle, ...style, gap: cfg.gap }}
     >
       <KiteIcon size={cfg.icon} />
       {showText ? (
