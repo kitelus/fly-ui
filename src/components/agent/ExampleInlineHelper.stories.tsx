@@ -26,7 +26,7 @@ export const Default = {
         }}
       >
         <AgentAvatar fallback="AI" status="running" />
-        Ask Assistant
+        Google Workspace Copilot
       </button>
 
       <div
@@ -51,20 +51,21 @@ export const Default = {
               id: "inline-helper-1",
               role: "assistant",
               status: "done",
-              content: "How can I help with this page?",
+              content:
+                "Need help summarizing this doc and drafting an executive email?",
             },
             {
               id: "inline-helper-2",
               role: "assistant",
               status: "streaming",
-              content: <Loading label="Assistant is thinking" />,
+              content: <Loading label="Building concise executive brief" />,
             },
           ]}
         />
 
         <MessageInput
           onSend={(value) => console.log(value)}
-          placeholder="Ask about this screen"
+          placeholder="Ask about this document"
           showCounter={false}
           showSubmit
         />

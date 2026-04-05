@@ -21,7 +21,7 @@ export const Default = {
           alignItems: "center",
         }}
       >
-        <strong>Execution Trace</strong>
+        <strong>Walmart Supply Chain Planner Trace</strong>
         <AgentStatus status="running" />
       </div>
 
@@ -29,20 +29,20 @@ export const Default = {
         steps={[
           {
             id: "trace-step-1",
-            label: "Collect requirements",
-            meta: "Finished in 0.8s",
+            label: "Ingest store demand spikes",
+            meta: "Finished in 0.9s",
             status: "done",
           },
           {
             id: "trace-step-2",
-            label: "Run documentation search",
+            label: "Optimize lane allocation",
             meta: "In progress",
             status: "running",
           },
           {
             id: "trace-step-3",
-            label: "Draft final response",
-            meta: "Waiting for tool result",
+            label: "Propose reroute plan",
+            meta: "Waiting for solver output",
             status: "pending",
           },
         ]}
@@ -53,15 +53,19 @@ export const Default = {
           defaultOpen
           duration={1600}
           summary="Thought for 1.6s"
-          content="Prioritizing high-signal references from architecture and release docs."
+          content="Balancing shelf-availability targets against fuel cost and carrier SLA constraints."
         />
         <ToolCall
-          toolName="search_docs"
+          toolName="route_optimizer"
           status="running"
           defaultOpen
-          headerLabel="search_docs"
+          headerLabel="route_optimizer"
           statusLabel="running"
-          argsValue={{ query: "release summary", maxResults: 5 }}
+          argsValue={{
+            region: "US-South",
+            horizonHours: 24,
+            objective: "minimize_stockout",
+          }}
         />
       </div>
     </div>
@@ -79,50 +83,53 @@ export const ResearchAndTraceApp = {
       }}
     >
       <div style={{ display: "grid", gap: 10 }}>
-        <h4 style={{ margin: 0 }}>Sources</h4>
+        <h4 style={{ margin: 0 }}>Source Signals</h4>
         <SourceList>
           <SourceList.Item>
             <SourceCard
-              title="Architecture Guide"
-              url="https://example.com/arch"
-              excerpt="Domain boundaries and event patterns"
+              title="Shell Refinery Throughput Feed"
+              url="https://example.com/refinery-feed"
+              excerpt="Current unit utilization and outage windows"
             />
           </SourceList.Item>
           <SourceList.Item>
             <SourceCard
-              title="Deployment Runbook"
-              url="https://example.com/runbook"
-              excerpt="Staging and production rollout steps"
+              title="Pipeline Telemetry Summary"
+              url="https://example.com/pipeline-telemetry"
+              excerpt="Pressure anomalies and expected transfer delays"
             />
           </SourceList.Item>
         </SourceList>
       </div>
 
       <div style={{ display: "grid", gap: 10 }}>
-        <h4 style={{ margin: 0 }}>Trace Timeline</h4>
+        <h4 style={{ margin: 0 }}>Shell Energy Operations Trace</h4>
         <StepList
           steps={[
             {
               id: "research-step-1",
-              label: "Collect references",
-              meta: "2 sources found",
+              label: "Validate telemetry freshness",
+              meta: "2 streams verified",
               status: "done",
             },
             {
               id: "research-step-2",
-              label: "Draft answer",
+              label: "Compute contingency dispatch",
               meta: "In progress",
               status: "running",
             },
           ]}
         />
         <ToolCall
-          toolName="search_docs"
+          toolName="dispatch_simulator"
           status="success"
           defaultOpen
-          headerLabel="search_docs"
+          headerLabel="dispatch_simulator"
           statusLabel="success"
-          resultValue={{ hits: 2 }}
+          resultValue={{
+            scenarios: 3,
+            recommended: "shift-load-to-houston-terminal",
+          }}
         />
       </div>
     </div>

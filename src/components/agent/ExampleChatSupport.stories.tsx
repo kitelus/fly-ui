@@ -21,7 +21,7 @@ export const Default = {
           alignItems: "center",
         }}
       >
-        <strong>Support Assistant</strong>
+        <strong>Amazon Retail Support Copilot</strong>
         <AgentStatus status="running" />
       </div>
 
@@ -32,19 +32,21 @@ export const Default = {
               id: "chat-1",
               role: "assistant",
               status: "done",
-              content: "Hello, how can I help with your release today?",
+              content:
+                "Hi, I can help with your delayed shipment and refund options.",
             },
             {
               id: "chat-2",
               role: "user",
               status: "done",
-              content: "I need a short release summary from sprint tasks.",
+              content: "Order 991-44321 is late by 4 days. What can I do?",
             },
             {
               id: "chat-3",
               role: "assistant",
               status: "streaming",
-              content: "Generating summary from completed tickets...",
+              content:
+                "Checking carrier status, SLA policy, and available compensation...",
             },
           ]}
         />
@@ -52,9 +54,9 @@ export const Default = {
 
       <SuggestedAction
         actions={[
-          { value: "Write release notes" },
-          { value: "List key blockers" },
-          { value: "Draft stakeholder update" },
+          { value: "Issue instant refund" },
+          { value: "Reship with priority" },
+          { value: "Escalate to logistics" },
         ]}
       />
 
@@ -73,8 +75,9 @@ export const SupportAssistantApp = {
   render: () => (
     <div style={{ padding: 16, display: "grid", gap: 12 }}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <strong>Microsoft IT Helpdesk Agent</strong>
         <AgentStatus status="running" />
-        <TokenUsage used={5200} max={10000} label="Context" />
+        <TokenUsage used={6800} max={12000} label="Context" />
       </div>
 
       <div style={{ height: 420 }}>
@@ -85,19 +88,21 @@ export const SupportAssistantApp = {
               id: "support-1",
               role: "assistant",
               status: "done",
-              content: "Hello, what do you need help with?",
+              content:
+                "I can diagnose Teams, Outlook, and Intune issues for your device.",
             },
             {
               id: "support-2",
               role: "user",
               status: "done",
-              content: "Generate release notes for sprint 18.",
+              content: "My Teams calls keep dropping after 10 minutes.",
             },
             {
               id: "support-3",
               role: "assistant",
               status: "streaming",
-              content: "Grouping tickets by feature area and impact.",
+              content:
+                "Correlating endpoint telemetry with recent policy rollout and network logs.",
             },
           ]}
         />

@@ -9,7 +9,8 @@ const meta = {
 
 export default meta;
 
-const sql = "CREATE INDEX idx_jobs_tenant_status ON jobs(tenant_id, status);";
+const sql =
+  "CREATE INDEX idx_txn_region_risk ON transactions(region_code, risk_score DESC);";
 
 export const Default = {
   render: () => (
@@ -18,7 +19,7 @@ export const Default = {
         type="code"
         valueForCopy={sql}
         defaultOpen
-        title="V12__add_index.sql"
+        title="V22__risk_index.sql"
         language="sql"
         content={sql}
       />
@@ -29,7 +30,7 @@ export const Default = {
       </FeedbackBar>
 
       <ErrorMessage
-        error="Migration test failed on tenant scope."
+        error="Risk backfill check failed for one region shard."
         onRetry={() => console.log("retry")}
       />
     </div>
@@ -38,22 +39,22 @@ export const Default = {
 
 export const ArtifactDeliveryApp = {
   render: () => {
-    const migrationSql =
-      "CREATE INDEX idx_jobs_tenant_status ON jobs(tenant_id, status);";
+    const clinicalSummary =
+      "Clinical summary draft: Cohort B shows improved endpoint response with no severe safety signal; pending final adjudication.";
 
     return (
       <div style={{ padding: 16, display: "grid", gap: 12 }}>
         <Artifact
-          type="code"
-          valueForCopy={migrationSql}
+          type="text"
+          valueForCopy={clinicalSummary}
           defaultOpen
-          title="V12__add_index.sql"
-          language="sql"
-          content={migrationSql}
+          title="Pfizer_Phase3_Clinical_Summary.txt"
+          language="markdown"
+          content={clinicalSummary}
         />
 
         <ErrorMessage
-          error="Execution on staging failed. Please retry."
+          error="Compliance check blocked publish: missing protocol deviation appendix."
           onRetry={() => console.log("retry")}
         />
       </div>

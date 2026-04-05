@@ -13,39 +13,46 @@ export default meta;
 export const Default = {
   render: () => (
     <div style={{ padding: 16, height: 680 }}>
-      <ConversationLayout>
-        <ConversationLayout.Sidebar>
-          <div style={{ padding: 12, fontWeight: 600 }}>Conversations</div>
-          <div
-            style={{ padding: 12, borderTop: "1px solid var(--kfa-border)" }}
-          >
-            Release Planning
-          </div>
-          <div
-            style={{ padding: 12, borderTop: "1px solid var(--kfa-border)" }}
-          >
-            Hiring Pipeline
-          </div>
-        </ConversationLayout.Sidebar>
-
-        <ConversationLayout.Main>
-          <ConversationLayout.Header>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <strong>Release Planning</strong>
-              <ContextPanel>
-                <ContextPanel.Trigger>Context</ContextPanel.Trigger>
-                <ContextPanel.Content>
-                  <ContextPanel.Section>
-                    <ContextPanel.Item>Tenant: demo-tenant</ContextPanel.Item>
-                    <ContextPanel.Item>
-                      Workspace: Platform Team
-                    </ContextPanel.Item>
-                  </ContextPanel.Section>
-                </ContextPanel.Content>
-              </ContextPanel>
+      <ConversationLayout
+        sidebar={
+          <>
+            <div style={{ padding: 12, fontWeight: 600 }}>
+              JPMorgan Ops Channels
             </div>
-          </ConversationLayout.Header>
-
+            <div
+              style={{ padding: 12, borderTop: "1px solid var(--kfa-border)" }}
+            >
+              Fraud Triage - Cards
+            </div>
+            <div
+              style={{ padding: 12, borderTop: "1px solid var(--kfa-border)" }}
+            >
+              AML Alerts - Wire
+            </div>
+            <div
+              style={{ padding: 12, borderTop: "1px solid var(--kfa-border)" }}
+            >
+              KYC Exceptions
+            </div>
+          </>
+        }
+        header={
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <strong>Fraud Triage - Cards</strong>
+            <ContextPanel
+              triggerLabel="Context"
+              content={
+                <>
+                  <ContextPanel.Section>
+                    <ContextPanel.Item>Region: North America</ContextPanel.Item>
+                    <ContextPanel.Item>Priority: P1</ContextPanel.Item>
+                  </ContextPanel.Section>
+                </>
+              }
+            />
+          </div>
+        }
+        main={
           <div style={{ flex: 1, minHeight: 0, padding: 12 }}>
             <Thread
               messages={[
@@ -53,28 +60,29 @@ export const Default = {
                   id: "inbox-1",
                   role: "assistant",
                   status: "done",
-                  content: "Workspace loaded. Ready to assist.",
+                  content:
+                    "Loaded 4 correlated chargeback spikes in the last 30 minutes.",
                 },
                 {
                   id: "inbox-2",
                   role: "user",
                   status: "done",
-                  content: "Summarize latest deployment notes.",
+                  content:
+                    "Freeze high-risk BIN range and draft regulator-ready incident summary.",
                 },
               ]}
             />
           </div>
-
-          <ConversationLayout.Footer>
-            <MessageInput
-              onSend={(value) => console.log(value)}
-              placeholder="Reply in this conversation"
-              showCounter
-              showSubmit
-            />
-          </ConversationLayout.Footer>
-        </ConversationLayout.Main>
-      </ConversationLayout>
+        }
+        footer={
+          <MessageInput
+            onSend={(value) => console.log(value)}
+            placeholder="Reply in this conversation"
+            showCounter
+            showSubmit
+          />
+        }
+      />
     </div>
   ),
 };
