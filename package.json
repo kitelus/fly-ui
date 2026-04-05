@@ -4,6 +4,13 @@
   "version": "0.1.1",
   "description": "Fly UI - isolated React component library with modern Storybook docs",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kitelus/fly-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kitelus/fly-ui/issues"
+  },
   "type": "module",
   "homepage": "https://kitelus.github.io/fly-ui/",
   "main": "./dist/index.cjs",
