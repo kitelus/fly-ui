@@ -29,6 +29,13 @@ jobs:
       - name: Build package
         run: npm run build:lib
 
+      - name: Guard publish branch
+        if: github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/main'
+        run: |
+          echo "Publish workflow_dispatch must run from main branch."
+          echo "Current ref: $GITHUB_REF"
+          exit 1
+
       - name: Debug OIDC claims
         run: |
           RAW="$(curl -sS -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=npm:registry.npmjs.org")"
