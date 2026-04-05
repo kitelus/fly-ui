@@ -1,7 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { AgentStatus } from "./AgentStatus";
-import { Message } from "./Message";
+﻿import { AgentStatus } from "./AgentStatus";
 import { MessageInput } from "./MessageInput";
 import { SuggestedAction } from "./SuggestedAction";
 import { Thread } from "./Thread";
@@ -10,12 +7,11 @@ import { TokenUsage } from "./TokenUsage";
 const meta = {
   title: "Agent Components/Example/Chat Support",
   tags: ["autodocs"],
-} satisfies Meta;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Default = {
   render: () => (
     <div style={{ padding: 16, display: "grid", gap: 12 }}>
       <div
@@ -30,118 +26,89 @@ export const Default: Story = {
       </div>
 
       <div style={{ height: 420 }}>
-        <Thread.Root>
-          <Thread.List>
-            <li>
-              <Message.Root role="assistant" status="done">
-                <Message.Avatar fallback="AI" />
-                <Message.Content>
-                  <Message.Text>
-                    Hello, how can I help with your release today?
-                  </Message.Text>
-                </Message.Content>
-              </Message.Root>
-            </li>
-            <li>
-              <Message.Root role="user" status="done">
-                <Message.Avatar fallback="U" />
-                <Message.Content>
-                  <Message.Text>
-                    I need a short release summary from sprint tasks.
-                  </Message.Text>
-                </Message.Content>
-              </Message.Root>
-            </li>
-            <li>
-              <Message.Root role="assistant" status="streaming">
-                <Message.Avatar fallback="AI" />
-                <Message.Content>
-                  <Message.Text>
-                    Generating summary from completed tickets...
-                  </Message.Text>
-                </Message.Content>
-              </Message.Root>
-            </li>
-          </Thread.List>
-          <Thread.ScrollAnchor />
-        </Thread.Root>
+        <Thread
+          messages={[
+            {
+              id: "chat-1",
+              role: "assistant",
+              status: "done",
+              content: "Hello, how can I help with your release today?",
+            },
+            {
+              id: "chat-2",
+              role: "user",
+              status: "done",
+              content: "I need a short release summary from sprint tasks.",
+            },
+            {
+              id: "chat-3",
+              role: "assistant",
+              status: "streaming",
+              content: "Generating summary from completed tickets...",
+            },
+          ]}
+        />
       </div>
 
-      <SuggestedAction.Root>
-        <SuggestedAction.Item value="Write release notes" />
-        <SuggestedAction.Item value="List key blockers" />
-        <SuggestedAction.Item value="Draft stakeholder update" />
-      </SuggestedAction.Root>
+      <SuggestedAction
+        actions={[
+          { value: "Write release notes" },
+          { value: "List key blockers" },
+          { value: "Draft stakeholder update" },
+        ]}
+      />
 
-      <MessageInput.Root onSend={(value) => console.log("send", value)}>
-        <MessageInput.Field placeholder="Send follow-up" />
-        <MessageInput.Toolbar>
-          <MessageInput.AttachTrigger />
-          <MessageInput.Counter />
-          <MessageInput.Submit />
-        </MessageInput.Toolbar>
-      </MessageInput.Root>
+      <MessageInput
+        onSend={(value) => console.log("send", value)}
+        placeholder="Send follow-up"
+        allowAttachments
+        showCounter
+        showSubmit
+      />
     </div>
   ),
 };
 
-export const SupportAssistantApp: Story = {
+export const SupportAssistantApp = {
   render: () => (
     <div style={{ padding: 16, display: "grid", gap: 12 }}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <AgentStatus status="running" />
-        <TokenUsage.Root used={5200} max={10000}>
-          <TokenUsage.Label>Context</TokenUsage.Label>
-          <TokenUsage.Bar />
-          <TokenUsage.Count />
-        </TokenUsage.Root>
+        <TokenUsage used={5200} max={10000} label="Context" />
       </div>
 
       <div style={{ height: 420 }}>
-        <Thread.Root autoScroll>
-          <Thread.List>
-            <li>
-              <Message.Root role="assistant" status="done">
-                <Message.Avatar fallback="AI" />
-                <Message.Content>
-                  <Message.Text>
-                    Hello, what do you need help with?
-                  </Message.Text>
-                </Message.Content>
-              </Message.Root>
-            </li>
-            <li>
-              <Message.Root role="user" status="done">
-                <Message.Avatar fallback="U" />
-                <Message.Content>
-                  <Message.Text>
-                    Generate release notes for sprint 18.
-                  </Message.Text>
-                </Message.Content>
-              </Message.Root>
-            </li>
-            <li>
-              <Message.Root role="assistant" status="streaming">
-                <Message.Avatar fallback="AI" />
-                <Message.Content>
-                  <Message.Text>
-                    Grouping tickets by feature area and impact.
-                  </Message.Text>
-                </Message.Content>
-              </Message.Root>
-            </li>
-          </Thread.List>
-          <Thread.ScrollAnchor />
-        </Thread.Root>
+        <Thread
+          autoScroll
+          messages={[
+            {
+              id: "support-1",
+              role: "assistant",
+              status: "done",
+              content: "Hello, what do you need help with?",
+            },
+            {
+              id: "support-2",
+              role: "user",
+              status: "done",
+              content: "Generate release notes for sprint 18.",
+            },
+            {
+              id: "support-3",
+              role: "assistant",
+              status: "streaming",
+              content: "Grouping tickets by feature area and impact.",
+            },
+          ]}
+        />
       </div>
 
-      <MessageInput.Root onSend={(value) => console.log("send", value)}>
-        <MessageInput.Field placeholder="Ask follow-up" />
-        <MessageInput.Toolbar>
-          <MessageInput.Counter />
-          <MessageInput.Submit />
-        </MessageInput.Toolbar>
-      </MessageInput.Root>
+      <MessageInput
+        onSend={(value) => console.log("send", value)}
+        placeholder="Ask follow-up"
+        showCounter
+        showSubmit
+      />
     </div>
   ),
 };

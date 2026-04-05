@@ -49,6 +49,10 @@ export interface MessageInputRootProps extends HTMLAttributes<HTMLDivElement> {
   maxLength?: number;
   submitOnEnter?: boolean;
   submitOnShiftEnter?: boolean;
+  placeholder?: string;
+  allowAttachments?: boolean;
+  showCounter?: boolean;
+  showSubmit?: boolean;
 }
 
 const MessageInputRoot = forwardRef<HTMLDivElement, MessageInputRootProps>(
@@ -64,6 +68,10 @@ const MessageInputRoot = forwardRef<HTMLDivElement, MessageInputRootProps>(
       maxLength,
       submitOnEnter = true,
       submitOnShiftEnter = false,
+      placeholder = "Message...",
+      allowAttachments = false,
+      showCounter = true,
+      showSubmit = true,
       children,
       ...props
     },
@@ -114,7 +122,18 @@ const MessageInputRoot = forwardRef<HTMLDivElement, MessageInputRootProps>(
           data-loading={isLoading ? "true" : "false"}
           {...props}
         >
-          {children}
+          {children === undefined || children === null ? (
+            <>
+              <MessageInputField placeholder={placeholder} />
+              <MessageInputToolbar>
+                {allowAttachments ? <MessageInputAttachTrigger /> : null}
+                {showCounter ? <MessageInputCounter /> : null}
+                {showSubmit ? <MessageInputSubmit /> : null}
+              </MessageInputToolbar>
+            </>
+          ) : (
+            children
+          )}
         </div>
       </MessageInputContext.Provider>
     );

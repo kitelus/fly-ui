@@ -1,30 +1,20 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { AgentAvatar } from "./AgentAvatar";
+﻿import { AgentAvatar } from "./AgentAvatar";
 
 const meta = {
   title: "Agent Components/Base/AgentAvatar",
-  component: AgentAvatar.Root,
+  component: AgentAvatar,
   tags: ["autodocs"],
-} satisfies Meta<typeof AgentAvatar.Root>;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Default = {
   render: () => (
     <div style={{ padding: 16, display: "flex", gap: 12 }}>
-      <AgentAvatar.Root>
-        <AgentAvatar.Fallback>AI</AgentAvatar.Fallback>
-      </AgentAvatar.Root>
-      <AgentAvatar.Root>
-        <AgentAvatar.Fallback>PL</AgentAvatar.Fallback>
-        <AgentAvatar.StatusDot status="running" />
-      </AgentAvatar.Root>
-      <AgentAvatar.Root>
-        <AgentAvatar.Fallback>RV</AgentAvatar.Fallback>
-        <AgentAvatar.StatusDot status="done" />
-      </AgentAvatar.Root>
+      <AgentAvatar fallback="AI" />
+      <AgentAvatar fallback="PL" status="running" />
+      <AgentAvatar fallback="RV" status="done" />
     </div>
   ),
 };
+

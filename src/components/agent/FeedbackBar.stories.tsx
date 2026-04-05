@@ -1,33 +1,31 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { FeedbackBar } from "./FeedbackBar";
+﻿import { FeedbackBar } from "./FeedbackBar";
 
 const meta = {
   title: "Agent Components/Base/FeedbackBar",
-  component: FeedbackBar.Root,
+  component: FeedbackBar,
   tags: ["autodocs"],
-} satisfies Meta<typeof FeedbackBar.Root>;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Default = {
   render: () => (
     <div style={{ padding: 16 }}>
-      <FeedbackBar.Root />
+      <FeedbackBar />
     </div>
   ),
 };
 
-export const WithComment: Story = {
+export const WithComment = {
   render: () => (
     <div style={{ padding: 16, display: "grid", gap: 8 }}>
-      <FeedbackBar.Root>
+      <FeedbackBar>
         <FeedbackBar.ThumbUp>Good</FeedbackBar.ThumbUp>
         <FeedbackBar.ThumbDown>Bad</FeedbackBar.ThumbDown>
-      </FeedbackBar.Root>
+      </FeedbackBar>
       <FeedbackBar.Comment placeholder="Share your feedback" />
       <FeedbackBar.Submitted>Feedback captured</FeedbackBar.Submitted>
     </div>
   ),
 };
+

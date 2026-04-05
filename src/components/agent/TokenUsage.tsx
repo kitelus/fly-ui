@@ -2,6 +2,7 @@ import {
   createContext,
   forwardRef,
   useContext,
+  type ReactNode,
   type HTMLAttributes,
 } from "react";
 
@@ -20,10 +21,28 @@ export interface TokenUsageRootProps extends HTMLAttributes<HTMLDivElement> {
   used: number;
   max: number;
   warnAt?: number;
+  label?: ReactNode;
+  showBar?: boolean;
+  showCount?: boolean;
+  countFormat?: (used: number, max: number) => string;
 }
 
 const TokenUsageRoot = forwardRef<HTMLDivElement, TokenUsageRootProps>(
-  ({ className, used, max, warnAt = 0.8, ...props }, ref) => {
+  (
+    {
+      className,
+      used,
+      max,
+      warnAt = 0.8,
+      label,
+      showBar = true,
+      showCount = true,
+      countFormat,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
     const safeMax = Math.max(1, max);
     const ratio = clamp(used / safeMax, 0, 1);
     const state =
@@ -36,7 +55,17 @@ const TokenUsageRoot = forwardRef<HTMLDivElement, TokenUsageRootProps>(
           className={cls("kite-fu-agent-token-usage-root", className)}
           data-state={state}
           {...props}
-        />
+        >
+          {children ?? (
+            <>
+              {label !== undefined ? (
+                <TokenUsageLabel>{label}</TokenUsageLabel>
+              ) : null}
+              {showBar ? <TokenUsageBar /> : null}
+              {showCount ? <TokenUsageCount format={countFormat} /> : null}
+            </>
+          )}
+        </div>
       </TokenUsageContext.Provider>
     );
   },

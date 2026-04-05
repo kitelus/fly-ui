@@ -1,17 +1,14 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { FileAttachment } from "./FileAttachment";
+﻿import { FileAttachment } from "./FileAttachment";
 
 const meta = {
   title: "Agent Components/Base/FileAttachment",
-  component: FileAttachment.Root,
+  component: FileAttachment,
   tags: ["autodocs"],
-} satisfies Meta<typeof FileAttachment.Root>;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Default = {
   render: () => (
     <div style={{ padding: 16, display: "grid", gap: 8 }}>
       <FileAttachment
@@ -26,3 +23,4 @@ export const Default: Story = {
     </div>
   ),
 };
+

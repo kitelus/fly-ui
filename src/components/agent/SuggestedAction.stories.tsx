@@ -1,22 +1,22 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { SuggestedAction } from "./SuggestedAction";
+﻿import { SuggestedAction } from "./SuggestedAction";
 
 const meta = {
   title: "Agent Components/Base/SuggestedAction",
-  component: SuggestedAction.Root,
+  component: SuggestedAction,
   tags: ["autodocs"],
-} satisfies Meta<typeof SuggestedAction.Root>;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Default = {
   render: () => (
-    <SuggestedAction.Root style={{ padding: 16 }}>
-      <SuggestedAction.Item value="Write release notes" />
-      <SuggestedAction.Item value="Create changelog" />
-      <SuggestedAction.Item value="Generate checklist" />
-    </SuggestedAction.Root>
+    <SuggestedAction
+      style={{ padding: 16 }}
+      actions={[
+        { value: "Write release notes" },
+        { value: "Create changelog" },
+        { value: "Generate checklist" },
+      ]}
+    />
   ),
 };

@@ -13,15 +13,41 @@ import "./styles/kite-fu-agent-ui.css";
 export type MessageRole = "user" | "assistant" | "system" | "tool";
 export type MessageStatus = "streaming" | "done" | "error";
 
-export interface MessageRootProps extends HTMLAttributes<HTMLDivElement> {
+export interface MessageRootProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "content"
+> {
   asChild?: boolean;
   role: MessageRole;
   status?: MessageStatus;
+  content?: ReactNode;
+  avatarSrc?: string;
+  avatarFallback?: ReactNode;
+  avatarAlt?: string;
+  timestamp?: Date | number | string;
+  showTimestamp?: boolean;
+  header?: ReactNode;
+  actions?: ReactNode;
 }
 
 const MessageRoot = forwardRef<HTMLDivElement, MessageRootProps>(
   (
-    { asChild, className, role, status = "done", children, ...props },
+    {
+      asChild,
+      className,
+      role,
+      status = "done",
+      content,
+      avatarSrc,
+      avatarFallback,
+      avatarAlt,
+      timestamp,
+      showTimestamp,
+      header,
+      actions,
+      children,
+      ...props
+    },
     forwardedRef,
   ) => {
     if (asChild) {
@@ -35,6 +61,39 @@ const MessageRoot = forwardRef<HTMLDivElement, MessageRootProps>(
         >
           {children as never}
         </Slot>
+      );
+    }
+
+    if (children === undefined || children === null) {
+      const shouldShowAvatar = role !== "system";
+      const shouldShowTimestamp = showTimestamp ?? timestamp !== undefined;
+
+      return (
+        <div
+          ref={forwardedRef}
+          className={cls("kite-fu-agent-message-root", className)}
+          data-role={role}
+          data-status={status}
+          {...props}
+        >
+          {shouldShowAvatar ? (
+            <MessageAvatar
+              src={avatarSrc}
+              fallback={avatarFallback ?? (role === "user" ? "U" : "AI")}
+              alt={avatarAlt}
+            />
+          ) : null}
+          <MessageContent>
+            {header ? <MessageHeader>{header}</MessageHeader> : null}
+            {content !== undefined ? (
+              <MessageText>{content}</MessageText>
+            ) : null}
+            {shouldShowTimestamp ? (
+              <MessageTimestamp value={timestamp} />
+            ) : null}
+            {actions ? <MessageActions>{actions}</MessageActions> : null}
+          </MessageContent>
+        </div>
       );
     }
 

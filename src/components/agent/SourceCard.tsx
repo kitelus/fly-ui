@@ -14,6 +14,14 @@ export interface SourceCardProps extends HTMLAttributes<HTMLDivElement> {
   icon?: string;
 }
 
+export interface SourceItem {
+  id: string;
+  title?: string;
+  url?: string;
+  excerpt?: string;
+  icon?: string;
+}
+
 export const SourceCard = forwardRef<HTMLDivElement, SourceCardProps>(
   ({ className, title, url, excerpt, icon, children, ...props }, ref) => (
     <div
@@ -54,15 +62,30 @@ export const SourceCard = forwardRef<HTMLDivElement, SourceCardProps>(
 
 SourceCard.displayName = "SourceCard";
 
-export type SourceListProps = HTMLAttributes<HTMLDivElement>;
+export interface SourceListProps extends HTMLAttributes<HTMLDivElement> {
+  items?: SourceItem[];
+}
 
 const SourceListRoot = forwardRef<HTMLDivElement, SourceListProps>(
-  ({ className, ...props }, ref) => (
+  ({ className, items, children, ...props }, ref) => (
     <div
       ref={ref}
       className={cls("kite-fu-agent-source-list-root", className)}
       {...props}
-    />
+    >
+      {(children === undefined || children === null) && items
+        ? items.map((item) => (
+            <SourceListItem key={item.id}>
+              <SourceCard
+                title={item.title}
+                url={item.url}
+                excerpt={item.excerpt}
+                icon={item.icon}
+              />
+            </SourceListItem>
+          ))
+        : children}
+    </div>
   ),
 );
 

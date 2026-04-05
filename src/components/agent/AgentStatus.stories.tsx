@@ -1,17 +1,14 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { AgentStatus } from "./AgentStatus";
+﻿import { AgentStatus } from "./AgentStatus";
 
 const meta = {
   title: "Agent Components/Base/AgentStatus",
-  component: AgentStatus.Root,
+  component: AgentStatus,
   tags: ["autodocs"],
-} satisfies Meta<typeof AgentStatus.Root>;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Default = {
   render: () => (
     <div style={{ padding: 16 }}>
       <AgentStatus status="running" />
@@ -19,7 +16,7 @@ export const Default: Story = {
   ),
 };
 
-export const AllStates: Story = {
+export const AllStates = {
   render: () => (
     <div style={{ padding: 16, display: "grid", gap: 8 }}>
       <AgentStatus status="idle" />
@@ -31,3 +28,4 @@ export const AllStates: Story = {
     </div>
   ),
 };
+

@@ -11,6 +11,13 @@ import "./styles/kite-fu-agent-ui.css";
 
 export type StepStatus = "pending" | "running" | "done" | "error" | "skipped";
 
+export interface StepListStep {
+  id: string;
+  label: string;
+  meta?: string;
+  status?: StepStatus;
+}
+
 type Orientation = "vertical" | "horizontal";
 
 const StepListContext = createContext<{ orientation: Orientation }>({
@@ -19,19 +26,42 @@ const StepListContext = createContext<{ orientation: Orientation }>({
 
 export interface StepListRootProps extends OlHTMLAttributes<HTMLOListElement> {
   orientation?: Orientation;
+  steps?: StepListStep[];
 }
 
 const StepListRoot = forwardRef<HTMLOListElement, StepListRootProps>(
-  ({ className, orientation = "vertical", ...props }, ref) => (
-    <StepListContext.Provider value={{ orientation }}>
-      <ol
-        ref={ref}
-        className={cls("kite-fu-agent-step-list-root", className)}
-        data-orientation={orientation}
-        {...props}
-      />
-    </StepListContext.Provider>
-  ),
+  ({ className, orientation = "vertical", steps, children, ...props }, ref) => {
+    const resolvedChildren =
+      (children === undefined || children === null) && steps
+        ? steps.map((step, index) => (
+            <StepListItem
+              key={step.id}
+              status={step.status ?? "pending"}
+              isLast={index === steps.length - 1}
+            >
+              <StepListIcon>{index + 1}</StepListIcon>
+              <div>
+                <StepListLabel>{step.label}</StepListLabel>
+                {step.meta ? <StepListMeta>{step.meta}</StepListMeta> : null}
+              </div>
+              {index !== steps.length - 1 ? <StepListConnector /> : null}
+            </StepListItem>
+          ))
+        : children;
+
+    return (
+      <StepListContext.Provider value={{ orientation }}>
+        <ol
+          ref={ref}
+          className={cls("kite-fu-agent-step-list-root", className)}
+          data-orientation={orientation}
+          {...props}
+        >
+          {resolvedChildren}
+        </ol>
+      </StepListContext.Provider>
+    );
+  },
 );
 
 StepListRoot.displayName = "StepList.Root";

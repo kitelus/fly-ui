@@ -1,17 +1,14 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { ErrorMessage } from "./ErrorMessage";
+﻿import { ErrorMessage } from "./ErrorMessage";
 
 const meta = {
   title: "Agent Components/Base/ErrorMessage",
-  component: ErrorMessage.Root,
+  component: ErrorMessage,
   tags: ["autodocs"],
-} satisfies Meta<typeof ErrorMessage.Root>;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Default = {
   render: () => (
     <div style={{ padding: 16 }}>
       <ErrorMessage
@@ -21,3 +18,4 @@ export const Default: Story = {
     </div>
   ),
 };
+

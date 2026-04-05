@@ -44,12 +44,20 @@ function toText(value: unknown): string {
   }
 }
 
-export interface ArtifactRootProps extends HTMLAttributes<HTMLDivElement> {
+export interface ArtifactRootProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "title" | "content"
+> {
   type?: ArtifactType;
   defaultOpen?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   valueForCopy?: string;
+  title?: ReactNode;
+  language?: ReactNode;
+  content?: ReactNode;
+  showCopy?: boolean;
+  copyLabel?: ReactNode;
 }
 
 const ArtifactRoot = forwardRef<HTMLDivElement, ArtifactRootProps>(
@@ -61,6 +69,11 @@ const ArtifactRoot = forwardRef<HTMLDivElement, ArtifactRootProps>(
       open,
       onOpenChange,
       valueForCopy = "",
+      title,
+      language,
+      content,
+      showCopy = true,
+      copyLabel,
       children,
       ...props
     },
@@ -95,7 +108,30 @@ const ArtifactRoot = forwardRef<HTMLDivElement, ArtifactRootProps>(
           data-state={resolvedOpen ? "open" : "closed"}
           {...props}
         >
-          {children}
+          {children === undefined || children === null ? (
+            <>
+              <ArtifactHeader>
+                {title !== undefined ? (
+                  <ArtifactTitle>{title}</ArtifactTitle>
+                ) : null}
+                {language !== undefined ? (
+                  <ArtifactLanguage>{language}</ArtifactLanguage>
+                ) : null}
+                {showCopy ? (
+                  <ArtifactActions>
+                    <ArtifactCopyTrigger>
+                      {copyLabel ?? "Copy"}
+                    </ArtifactCopyTrigger>
+                  </ArtifactActions>
+                ) : null}
+              </ArtifactHeader>
+              {content !== undefined ? (
+                <ArtifactContent>{content}</ArtifactContent>
+              ) : null}
+            </>
+          ) : (
+            children
+          )}
         </div>
       </ArtifactContext.Provider>
     );

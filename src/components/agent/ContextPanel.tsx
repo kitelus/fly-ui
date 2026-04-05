@@ -6,6 +6,7 @@ import {
   useState,
   type ButtonHTMLAttributes,
   type HTMLAttributes,
+  type ReactNode,
 } from "react";
 
 import { cls } from "./primitives/cls";
@@ -31,15 +32,29 @@ function useContextPanel() {
   return value;
 }
 
-export interface ContextPanelRootProps extends HTMLAttributes<HTMLDivElement> {
+export interface ContextPanelRootProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "content"
+> {
   defaultOpen?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  triggerLabel?: ReactNode;
+  content?: ReactNode;
 }
 
 const ContextPanelRoot = forwardRef<HTMLDivElement, ContextPanelRootProps>(
   (
-    { className, defaultOpen = false, open, onOpenChange, children, ...props },
+    {
+      className,
+      defaultOpen = false,
+      open,
+      onOpenChange,
+      triggerLabel,
+      content,
+      children,
+      ...props
+    },
     ref,
   ) => {
     const [internalOpen, setInternalOpen] = useState(defaultOpen);
@@ -64,7 +79,18 @@ const ContextPanelRoot = forwardRef<HTMLDivElement, ContextPanelRootProps>(
           data-state={resolvedOpen ? "open" : "closed"}
           {...props}
         >
-          {children}
+          {children === undefined || children === null ? (
+            <>
+              <ContextPanelTrigger>
+                {triggerLabel ?? "Context"}
+              </ContextPanelTrigger>
+              {content !== undefined ? (
+                <ContextPanelContent>{content}</ContextPanelContent>
+              ) : null}
+            </>
+          ) : (
+            children
+          )}
         </div>
       </ContextPanelContext.Provider>
     );

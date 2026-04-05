@@ -4,6 +4,7 @@ import {
   useContext,
   useMemo,
   type HTMLAttributes,
+  type ReactNode,
 } from "react";
 
 import { cls } from "./primitives/cls";
@@ -23,6 +24,10 @@ export interface ConversationLayoutRootProps extends HTMLAttributes<HTMLDivEleme
   sidebarOpen?: boolean;
   defaultSidebarOpen?: boolean;
   onSidebarChange?: (open: boolean) => void;
+  sidebar?: ReactNode;
+  header?: ReactNode;
+  main?: ReactNode;
+  footer?: ReactNode;
 }
 
 const ConversationLayoutRoot = forwardRef<
@@ -30,7 +35,17 @@ const ConversationLayoutRoot = forwardRef<
   ConversationLayoutRootProps
 >(
   (
-    { className, sidebarOpen, defaultSidebarOpen = true, children, ...props },
+    {
+      className,
+      sidebarOpen,
+      defaultSidebarOpen = true,
+      sidebar,
+      header,
+      main,
+      footer,
+      children,
+      ...props
+    },
     ref,
   ) => {
     const isControlled = sidebarOpen !== undefined;
@@ -46,7 +61,24 @@ const ConversationLayoutRoot = forwardRef<
           data-sidebar={open ? "open" : "closed"}
           {...props}
         >
-          {children}
+          {children === undefined || children === null ? (
+            <>
+              {sidebar !== undefined ? (
+                <ConversationLayoutSidebar>{sidebar}</ConversationLayoutSidebar>
+              ) : null}
+              <ConversationLayoutMain>
+                {header !== undefined ? (
+                  <ConversationLayoutHeader>{header}</ConversationLayoutHeader>
+                ) : null}
+                {main}
+                {footer !== undefined ? (
+                  <ConversationLayoutFooter>{footer}</ConversationLayoutFooter>
+                ) : null}
+              </ConversationLayoutMain>
+            </>
+          ) : (
+            children
+          )}
         </div>
       </ConversationLayoutContext.Provider>
     );

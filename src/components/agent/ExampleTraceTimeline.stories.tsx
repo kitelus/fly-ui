@@ -1,6 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { AgentStatus } from "./AgentStatus";
+﻿import { AgentStatus } from "./AgentStatus";
 import { Reasoning } from "./Reasoning";
 import { SourceCard, SourceList } from "./SourceCard";
 import { StepList } from "./StepList";
@@ -9,12 +7,11 @@ import { ToolCall } from "./ToolCall";
 const meta = {
   title: "Agent Components/Example/Trace Timeline",
   tags: ["autodocs"],
-} satisfies Meta;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Default = {
   render: () => (
     <div style={{ padding: 16, display: "grid", gap: 12 }}>
       <div
@@ -28,55 +25,50 @@ export const Default: Story = {
         <AgentStatus status="running" />
       </div>
 
-      <StepList.Root>
-        <StepList.Item status="done" isLast={false}>
-          <StepList.Icon>1</StepList.Icon>
-          <div>
-            <StepList.Label>Collect requirements</StepList.Label>
-            <StepList.Meta>Finished in 0.8s</StepList.Meta>
-          </div>
-          <StepList.Connector />
-        </StepList.Item>
+      <StepList
+        steps={[
+          {
+            id: "trace-step-1",
+            label: "Collect requirements",
+            meta: "Finished in 0.8s",
+            status: "done",
+          },
+          {
+            id: "trace-step-2",
+            label: "Run documentation search",
+            meta: "In progress",
+            status: "running",
+          },
+          {
+            id: "trace-step-3",
+            label: "Draft final response",
+            meta: "Waiting for tool result",
+            status: "pending",
+          },
+        ]}
+      />
 
-        <StepList.Item status="running" isLast={false}>
-          <StepList.Icon>2</StepList.Icon>
-          <div style={{ display: "grid", gap: 8 }}>
-            <StepList.Label>Run documentation search</StepList.Label>
-            <Reasoning.Root defaultOpen>
-              <Reasoning.Trigger>
-                <Reasoning.Summary duration={1600} />
-              </Reasoning.Trigger>
-              <Reasoning.Content>
-                Prioritizing high-signal references from architecture and
-                release docs.
-              </Reasoning.Content>
-            </Reasoning.Root>
-            <ToolCall.Root toolName="search_docs" status="running" defaultOpen>
-              <ToolCall.Header>
-                <ToolCall.Name>search_docs</ToolCall.Name>
-                <ToolCall.Status>running</ToolCall.Status>
-              </ToolCall.Header>
-              <ToolCall.Args
-                value={{ query: "release summary", maxResults: 5 }}
-              />
-            </ToolCall.Root>
-          </div>
-          <StepList.Connector />
-        </StepList.Item>
-
-        <StepList.Item status="pending" isLast>
-          <StepList.Icon>3</StepList.Icon>
-          <div>
-            <StepList.Label>Draft final response</StepList.Label>
-            <StepList.Meta>Waiting for tool result</StepList.Meta>
-          </div>
-        </StepList.Item>
-      </StepList.Root>
+      <div style={{ display: "grid", gap: 8 }}>
+        <Reasoning
+          defaultOpen
+          duration={1600}
+          summary="Thought for 1.6s"
+          content="Prioritizing high-signal references from architecture and release docs."
+        />
+        <ToolCall
+          toolName="search_docs"
+          status="running"
+          defaultOpen
+          headerLabel="search_docs"
+          statusLabel="running"
+          argsValue={{ query: "release summary", maxResults: 5 }}
+        />
+      </div>
     </div>
   ),
 };
 
-export const ResearchAndTraceApp: Story = {
+export const ResearchAndTraceApp = {
   render: () => (
     <div
       style={{
@@ -88,7 +80,7 @@ export const ResearchAndTraceApp: Story = {
     >
       <div style={{ display: "grid", gap: 10 }}>
         <h4 style={{ margin: 0 }}>Sources</h4>
-        <SourceList.Root>
+        <SourceList>
           <SourceList.Item>
             <SourceCard
               title="Architecture Guide"
@@ -103,39 +95,35 @@ export const ResearchAndTraceApp: Story = {
               excerpt="Staging and production rollout steps"
             />
           </SourceList.Item>
-        </SourceList.Root>
+        </SourceList>
       </div>
 
       <div style={{ display: "grid", gap: 10 }}>
         <h4 style={{ margin: 0 }}>Trace Timeline</h4>
-        <StepList.Root>
-          <StepList.Item status="done" isLast={false}>
-            <StepList.Icon>1</StepList.Icon>
-            <div>
-              <StepList.Label>Collect references</StepList.Label>
-              <StepList.Meta>2 sources found</StepList.Meta>
-              <ToolCall.Root
-                toolName="search_docs"
-                status="success"
-                defaultOpen
-              >
-                <ToolCall.Header>
-                  <ToolCall.Name>search_docs</ToolCall.Name>
-                  <ToolCall.Status>success</ToolCall.Status>
-                </ToolCall.Header>
-                <ToolCall.Result value={{ hits: 2 }} />
-              </ToolCall.Root>
-            </div>
-            <StepList.Connector />
-          </StepList.Item>
-          <StepList.Item status="running" isLast>
-            <StepList.Icon>2</StepList.Icon>
-            <div>
-              <StepList.Label>Draft answer</StepList.Label>
-              <StepList.Meta>In progress</StepList.Meta>
-            </div>
-          </StepList.Item>
-        </StepList.Root>
+        <StepList
+          steps={[
+            {
+              id: "research-step-1",
+              label: "Collect references",
+              meta: "2 sources found",
+              status: "done",
+            },
+            {
+              id: "research-step-2",
+              label: "Draft answer",
+              meta: "In progress",
+              status: "running",
+            },
+          ]}
+        />
+        <ToolCall
+          toolName="search_docs"
+          status="success"
+          defaultOpen
+          headerLabel="search_docs"
+          statusLabel="success"
+          resultValue={{ hits: 2 }}
+        />
       </div>
     </div>
   ),

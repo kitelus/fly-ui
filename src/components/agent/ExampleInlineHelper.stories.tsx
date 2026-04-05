@@ -1,20 +1,16 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { AgentAvatar } from "./AgentAvatar";
-import { Message } from "./Message";
+﻿import { AgentAvatar } from "./AgentAvatar";
 import { MessageInput } from "./MessageInput";
 import { Thread } from "./Thread";
-import { TypingIndicator } from "./TypingIndicator";
+import { Loading } from "../loading/Loading";
 
 const meta = {
   title: "Agent Components/Example/Inline Helper",
   tags: ["autodocs"],
-} satisfies Meta;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Default = {
   render: () => (
     <div style={{ minHeight: 680, padding: 16, position: "relative" }}>
       <button
@@ -29,10 +25,7 @@ export const Default: Story = {
           background: "var(--kfa-surface)",
         }}
       >
-        <AgentAvatar.Root>
-          <AgentAvatar.Fallback>AI</AgentAvatar.Fallback>
-          <AgentAvatar.StatusDot status="running" />
-        </AgentAvatar.Root>
+        <AgentAvatar fallback="AI" status="running" />
         Ask Assistant
       </button>
 
@@ -52,34 +45,29 @@ export const Default: Story = {
           gap: 10,
         }}
       >
-        <Thread.Root>
-          <Thread.List>
-            <li>
-              <Message.Root role="assistant" status="done">
-                <Message.Avatar fallback="AI" />
-                <Message.Content>
-                  <Message.Text>How can I help with this page?</Message.Text>
-                </Message.Content>
-              </Message.Root>
-            </li>
-            <li>
-              <Message.Root role="assistant" status="streaming">
-                <Message.Avatar fallback="AI" />
-                <Message.Content>
-                  <TypingIndicator />
-                </Message.Content>
-              </Message.Root>
-            </li>
-          </Thread.List>
-          <Thread.ScrollAnchor />
-        </Thread.Root>
+        <Thread
+          messages={[
+            {
+              id: "inline-helper-1",
+              role: "assistant",
+              status: "done",
+              content: "How can I help with this page?",
+            },
+            {
+              id: "inline-helper-2",
+              role: "assistant",
+              status: "streaming",
+              content: <Loading label="Assistant is thinking" />,
+            },
+          ]}
+        />
 
-        <MessageInput.Root onSend={(value) => console.log(value)}>
-          <MessageInput.Field placeholder="Ask about this screen" />
-          <MessageInput.Toolbar>
-            <MessageInput.Submit />
-          </MessageInput.Toolbar>
-        </MessageInput.Root>
+        <MessageInput
+          onSend={(value) => console.log(value)}
+          placeholder="Ask about this screen"
+          showCounter={false}
+          showSubmit
+        />
       </div>
     </div>
   ),

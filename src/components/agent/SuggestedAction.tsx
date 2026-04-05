@@ -9,21 +9,53 @@ import "./styles/kite-fu-agent-ui.css";
 
 type Orientation = "horizontal" | "vertical";
 
+export interface SuggestedActionEntry {
+  value: string;
+  label?: string;
+  icon?: string;
+}
+
 export interface SuggestedActionRootProps extends HTMLAttributes<HTMLDivElement> {
   orientation?: Orientation;
+  actions?: SuggestedActionEntry[];
+  onAction?: (value: string) => void;
 }
 
 const SuggestedActionRoot = forwardRef<
   HTMLDivElement,
   SuggestedActionRootProps
->(({ className, orientation = "horizontal", ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cls("kite-fu-agent-suggested-action-root", className)}
-    data-orientation={orientation}
-    {...props}
-  />
-));
+>(
+  (
+    {
+      className,
+      orientation = "horizontal",
+      actions,
+      onAction,
+      children,
+      ...props
+    },
+    ref,
+  ) => (
+    <div
+      ref={ref}
+      className={cls("kite-fu-agent-suggested-action-root", className)}
+      data-orientation={orientation}
+      {...props}
+    >
+      {(children === undefined || children === null) && actions
+        ? actions.map((action) => (
+            <SuggestedActionItem
+              key={action.value}
+              value={action.value}
+              label={action.label}
+              icon={action.icon}
+              onAction={onAction}
+            />
+          ))
+        : children}
+    </div>
+  ),
+);
 
 SuggestedActionRoot.displayName = "SuggestedAction.Root";
 

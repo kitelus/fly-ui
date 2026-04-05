@@ -1,61 +1,59 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { Message } from "./Message";
+﻿import { Message } from "./Message";
 
 const meta = {
   title: "Agent Components/Base/Message",
-  component: Message.Root,
+  component: Message,
   tags: ["autodocs"],
-} satisfies Meta<typeof Message.Root>;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Default = {
   render: () => (
     <div style={{ display: "grid", gap: 10, padding: 16 }}>
-      <Message.Root role="assistant" status="done">
-        <Message.Avatar fallback="AI" />
-        <Message.Content>
-          <Message.Text>
-            This is an assistant message with default style.
-          </Message.Text>
-          <Message.Timestamp value={new Date()} />
-        </Message.Content>
-      </Message.Root>
-      <Message.Root role="user" status="done">
-        <Message.Avatar fallback="U" />
-        <Message.Content>
-          <Message.Text>User message with compact spacing.</Message.Text>
-          <Message.Timestamp value={new Date()} />
-        </Message.Content>
-      </Message.Root>
-      <Message.Root role="system" status="done">
-        <Message.Content>
-          <Message.Text>System notice for timeline context.</Message.Text>
-        </Message.Content>
-      </Message.Root>
+      <Message
+        role="assistant"
+        status="done"
+        avatarFallback="AI"
+        content="This is an assistant message with default style."
+        timestamp={new Date()}
+        showTimestamp
+      />
+      <Message
+        role="user"
+        status="done"
+        avatarFallback="U"
+        content="User message with compact spacing."
+        timestamp={new Date()}
+        showTimestamp
+      />
+      <Message
+        role="system"
+        status="done"
+        content="System notice for timeline context."
+      />
     </div>
   ),
 };
 
-export const WithActions: Story = {
+export const WithActions = {
   render: () => (
     <div style={{ padding: 16 }}>
-      <Message.Root role="assistant" status="done">
-        <Message.Avatar fallback="AI" />
-        <Message.Content>
-          <Message.Header>
-            <Message.Status>complete</Message.Status>
-            <Message.Timestamp value={new Date()} />
-          </Message.Header>
-          <Message.Text>Message with custom action controls.</Message.Text>
-          <Message.Actions showOnHover={false}>
+      <Message
+        role="assistant"
+        status="done"
+        avatarFallback="AI"
+        header="complete"
+        content="Message with custom action controls."
+        timestamp={new Date()}
+        showTimestamp
+        actions={
+          <>
             <button type="button">Copy</button>
             <button type="button">Retry</button>
-          </Message.Actions>
-        </Message.Content>
-      </Message.Root>
+          </>
+        }
+      />
     </div>
   ),
 };

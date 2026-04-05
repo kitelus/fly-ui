@@ -1,17 +1,14 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { SourceCard, SourceList } from "./SourceCard";
+﻿import { SourceCard, SourceList } from "./SourceCard";
 
 const meta = {
   title: "Agent Components/Base/SourceCard",
   component: SourceCard,
   tags: ["autodocs"],
-} satisfies Meta<typeof SourceCard>;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Default = {
   render: () => (
     <div style={{ padding: 16 }}>
       <SourceCard
@@ -23,9 +20,9 @@ export const Default: Story = {
   ),
 };
 
-export const List: Story = {
+export const List = {
   render: () => (
-    <SourceList.Root style={{ padding: 16 }}>
+    <SourceList style={{ padding: 16 }}>
       <SourceList.Item>
         <SourceCard title="API Handbook" url="https://example.com/api" />
       </SourceList.Item>
@@ -35,6 +32,7 @@ export const List: Story = {
           url="https://example.com/ops"
         />
       </SourceList.Item>
-    </SourceList.Root>
+    </SourceList>
   ),
 };
+

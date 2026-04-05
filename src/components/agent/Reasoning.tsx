@@ -33,6 +33,9 @@ export interface ReasoningRootProps extends HTMLAttributes<HTMLDivElement> {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   isStreaming?: boolean;
+  summary?: string;
+  duration?: number;
+  content?: string;
 }
 
 const ReasoningRoot = forwardRef<HTMLDivElement, ReasoningRootProps>(
@@ -43,6 +46,9 @@ const ReasoningRoot = forwardRef<HTMLDivElement, ReasoningRootProps>(
       open,
       onOpenChange,
       isStreaming = false,
+      summary,
+      duration,
+      content,
       children,
       ...props
     },
@@ -78,7 +84,18 @@ const ReasoningRoot = forwardRef<HTMLDivElement, ReasoningRootProps>(
           data-streaming={isStreaming ? "true" : "false"}
           {...props}
         >
-          {children}
+          {(children === undefined || children === null) && content ? (
+            <>
+              <ReasoningTrigger>
+                <ReasoningSummary duration={duration}>
+                  {summary}
+                </ReasoningSummary>
+              </ReasoningTrigger>
+              <ReasoningContent>{content}</ReasoningContent>
+            </>
+          ) : (
+            children
+          )}
         </div>
       </ReasoningContext.Provider>
     );

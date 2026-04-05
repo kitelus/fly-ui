@@ -8,9 +8,18 @@ import {
   type UIEvent,
 } from "react";
 
+import { Message, type MessageRole, type MessageStatus } from "./Message";
 import { Slot } from "./primitives/Slot";
 import { cls } from "./primitives/cls";
 import "./styles/kite-fu-agent-ui.css";
+
+export interface ThreadMessageItem {
+  id: string;
+  role: MessageRole;
+  content: ReactNode;
+  status?: MessageStatus;
+  timestamp?: Date | number | string;
+}
 
 function composeRefs<T>(...refs: Array<Ref<T> | undefined>) {
   return (node: T) => {
@@ -32,6 +41,8 @@ export interface ThreadRootProps extends HTMLAttributes<HTMLDivElement> {
   autoScroll?: boolean;
   scrollBehavior?: "smooth" | "instant";
   onScrolledToTop?: () => void;
+  messages?: ThreadMessageItem[];
+  emptyText?: ReactNode;
 }
 
 const ThreadRoot = forwardRef<HTMLDivElement, ThreadRootProps>(
@@ -42,6 +53,8 @@ const ThreadRoot = forwardRef<HTMLDivElement, ThreadRootProps>(
       autoScroll = true,
       scrollBehavior = "smooth",
       onScrolledToTop,
+      messages,
+      emptyText,
       children,
       onScroll,
       ...props
@@ -78,6 +91,36 @@ const ThreadRoot = forwardRef<HTMLDivElement, ThreadRootProps>(
         >
           {children as never}
         </Slot>
+      );
+    }
+
+    if ((children === undefined || children === null) && messages) {
+      return (
+        <div
+          ref={composeRefs(localRef, forwardedRef)}
+          className={cls("kite-fu-agent-thread-root", className)}
+          onScroll={handleScroll}
+          {...props}
+        >
+          {messages.length > 0 ? (
+            <ThreadList>
+              {messages.map((message) => (
+                <li key={message.id}>
+                  <Message
+                    role={message.role}
+                    status={message.status ?? "done"}
+                    content={message.content}
+                    timestamp={message.timestamp}
+                    showTimestamp={message.timestamp !== undefined}
+                  />
+                </li>
+              ))}
+            </ThreadList>
+          ) : (
+            <ThreadEmpty>{emptyText ?? "No messages yet."}</ThreadEmpty>
+          )}
+          <ThreadScrollAnchor />
+        </div>
       );
     }
 

@@ -4,6 +4,7 @@ import {
   type HTMLAttributes,
   type ImgHTMLAttributes,
   type ReactElement,
+  type ReactNode,
 } from "react";
 
 import type { AgentStatusValue } from "./types";
@@ -13,10 +14,30 @@ import "./styles/kite-fu-agent-ui.css";
 
 export interface AgentAvatarRootProps extends HTMLAttributes<HTMLDivElement> {
   asChild?: boolean;
+  src?: string;
+  alt?: string;
+  fallback?: ReactNode;
+  status?: AgentStatusValue;
+  showStatusDot?: boolean;
+  imageProps?: Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "alt">;
 }
 
 const AgentAvatarRoot = forwardRef<HTMLDivElement, AgentAvatarRootProps>(
-  ({ className, asChild, children, ...props }, ref) => {
+  (
+    {
+      className,
+      asChild,
+      src,
+      alt = "avatar",
+      fallback,
+      status,
+      showStatusDot,
+      imageProps,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
     if (asChild) {
       if (!isValidElement(children)) {
         return null;
@@ -33,13 +54,34 @@ const AgentAvatarRoot = forwardRef<HTMLDivElement, AgentAvatarRootProps>(
       );
     }
 
+    if (children !== undefined && children !== null) {
+      return (
+        <div
+          ref={ref}
+          className={cls("kite-fu-agent-agent-avatar-root", className)}
+          {...props}
+        >
+          {children}
+        </div>
+      );
+    }
+
+    const shouldShowStatusDot = showStatusDot ?? status !== undefined;
+
     return (
       <div
         ref={ref}
         className={cls("kite-fu-agent-agent-avatar-root", className)}
         {...props}
       >
-        {children}
+        {src ? (
+          <AgentAvatarImage src={src} alt={alt} {...imageProps} />
+        ) : (
+          <AgentAvatarFallback>{fallback ?? "AI"}</AgentAvatarFallback>
+        )}
+        {shouldShowStatusDot ? (
+          <AgentAvatarStatusDot status={status ?? "idle"} />
+        ) : null}
       </div>
     );
   },

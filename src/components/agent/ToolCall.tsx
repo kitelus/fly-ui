@@ -3,6 +3,7 @@ import {
   forwardRef,
   useContext,
   useState,
+  type ReactNode,
   type HTMLAttributes,
 } from "react";
 
@@ -32,6 +33,13 @@ export interface ToolCallRootProps extends HTMLAttributes<HTMLDivElement> {
   defaultOpen?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  headerLabel?: ReactNode;
+  statusLabel?: ReactNode;
+  argsValue?: Record<string, unknown>;
+  resultValue?: unknown;
+  resultIsError?: boolean;
+  showArgs?: boolean;
+  showResult?: boolean;
 }
 
 const ToolCallRoot = forwardRef<HTMLDivElement, ToolCallRootProps>(
@@ -44,6 +52,13 @@ const ToolCallRoot = forwardRef<HTMLDivElement, ToolCallRootProps>(
       defaultOpen = false,
       open,
       onOpenChange,
+      headerLabel,
+      statusLabel,
+      argsValue,
+      resultValue,
+      resultIsError = false,
+      showArgs = true,
+      showResult = true,
       children,
       ...props
     },
@@ -73,7 +88,22 @@ const ToolCallRoot = forwardRef<HTMLDivElement, ToolCallRootProps>(
           data-call-id={callId}
           {...props}
         >
-          {children}
+          {children ?? (
+            <>
+              <ToolCallHeader>
+                <ToolCallName>{headerLabel ?? toolName}</ToolCallName>
+                <ToolCallStatusBadge>
+                  {statusLabel ?? status}
+                </ToolCallStatusBadge>
+              </ToolCallHeader>
+              {showArgs && argsValue ? (
+                <ToolCallArgs value={argsValue} />
+              ) : null}
+              {showResult && resultValue !== undefined ? (
+                <ToolCallResult value={resultValue} isError={resultIsError} />
+              ) : null}
+            </>
+          )}
         </div>
       </ToolCallContext.Provider>
     );

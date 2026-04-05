@@ -1,37 +1,32 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { Artifact } from "./Artifact";
+﻿import { Artifact } from "./Artifact";
 import { ErrorMessage } from "./ErrorMessage";
 import { FeedbackBar } from "./FeedbackBar";
 
 const meta = {
   title: "Agent Components/Example/Artifact Review",
   tags: ["autodocs"],
-} satisfies Meta;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
 const sql = "CREATE INDEX idx_jobs_tenant_status ON jobs(tenant_id, status);";
 
-export const Default: Story = {
+export const Default = {
   render: () => (
     <div style={{ padding: 16, display: "grid", gap: 12 }}>
-      <Artifact.Root type="code" valueForCopy={sql} defaultOpen>
-        <Artifact.Header>
-          <Artifact.Title>V12__add_index.sql</Artifact.Title>
-          <Artifact.Language>sql</Artifact.Language>
-          <Artifact.Actions>
-            <Artifact.CopyTrigger />
-          </Artifact.Actions>
-        </Artifact.Header>
-        <Artifact.Content value={sql} />
-      </Artifact.Root>
+      <Artifact
+        type="code"
+        valueForCopy={sql}
+        defaultOpen
+        title="V12__add_index.sql"
+        language="sql"
+        content={sql}
+      />
 
-      <FeedbackBar.Root>
+      <FeedbackBar>
         <FeedbackBar.ThumbUp>Accept</FeedbackBar.ThumbUp>
         <FeedbackBar.ThumbDown>Request changes</FeedbackBar.ThumbDown>
-      </FeedbackBar.Root>
+      </FeedbackBar>
 
       <ErrorMessage
         error="Migration test failed on tenant scope."
@@ -41,23 +36,21 @@ export const Default: Story = {
   ),
 };
 
-export const ArtifactDeliveryApp: Story = {
+export const ArtifactDeliveryApp = {
   render: () => {
     const migrationSql =
       "CREATE INDEX idx_jobs_tenant_status ON jobs(tenant_id, status);";
 
     return (
       <div style={{ padding: 16, display: "grid", gap: 12 }}>
-        <Artifact.Root type="code" valueForCopy={migrationSql} defaultOpen>
-          <Artifact.Header>
-            <Artifact.Title>V12__add_index.sql</Artifact.Title>
-            <Artifact.Language>sql</Artifact.Language>
-            <Artifact.Actions>
-              <Artifact.CopyTrigger />
-            </Artifact.Actions>
-          </Artifact.Header>
-          <Artifact.Content value={migrationSql} />
-        </Artifact.Root>
+        <Artifact
+          type="code"
+          valueForCopy={migrationSql}
+          defaultOpen
+          title="V12__add_index.sql"
+          language="sql"
+          content={migrationSql}
+        />
 
         <ErrorMessage
           error="Execution on staging failed. Please retry."

@@ -1,17 +1,14 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { StreamText } from "./StreamText";
+﻿import { StreamText } from "./StreamText";
 
 const meta = {
   title: "Agent Components/Base/StreamText",
-  component: StreamText.Root,
+  component: StreamText,
   tags: ["autodocs"],
-} satisfies Meta<typeof StreamText.Root>;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Default = {
   render: () => (
     <div style={{ padding: 16, display: "grid", gap: 10 }}>
       <StreamText value="Streaming response in progress" isStreaming />
@@ -20,12 +17,13 @@ export const Default: Story = {
   ),
 };
 
-export const WithCursor: Story = {
+export const WithCursor = {
   render: () => (
     <div style={{ padding: 16 }}>
-      <StreamText.Root value="Token by token" isStreaming>
+      <StreamText value="Token by token" isStreaming>
         <StreamText.Cursor />
-      </StreamText.Root>
+      </StreamText>
     </div>
   ),
 };
+
