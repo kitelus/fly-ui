@@ -11,6 +11,7 @@ const meta = {
     showText: true,
     name: "Fly",
     subBrand: "UI",
+    iconTextGap: 7,
   },
   argTypes: {
     size: {
@@ -20,6 +21,11 @@ const meta = {
     showText: { control: "boolean" },
     name: { control: "text" },
     subBrand: { control: "text" },
+    iconTextGap: {
+      control: { type: "number", min: 0, max: 24, step: 1 },
+      description:
+        "Optional gap (px) between icon and text. If omitted, size-based default is used.",
+    },
     theme: {
       control: "object",
       description:
@@ -41,7 +47,7 @@ const meta = {
           "Use theme prop for per-component customization, or use FlyUIThemeProvider to apply one theme across all FlyUI components.",
       },
       source: {
-        code: '<KiteLogo size="md" showText name="Kite" subBrand="Success" />',
+        code: '<KiteLogo size="md" showText name="Kite" subBrand="Success" iconTextGap={7} />',
       },
     },
   },
