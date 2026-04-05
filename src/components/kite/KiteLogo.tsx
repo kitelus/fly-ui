@@ -11,11 +11,11 @@ import {
 } from "./theme";
 
 const SIZE = {
-  xs: { icon: 16, text: 12, gap: 6, strongWeight: 600 },
-  sm: { icon: 20, text: 14, gap: 8, strongWeight: 600 },
-  md: { icon: 24, text: 16, gap: 10, strongWeight: 600 },
-  lg: { icon: 28, text: 18, gap: 10, strongWeight: 700 },
-  xl: { icon: 40, text: 24, gap: 12, strongWeight: 700 },
+  xs: { icon: 16, text: 12, gap: 4, strongWeight: 600 },
+  sm: { icon: 20, text: 14, gap: 6, strongWeight: 600 },
+  md: { icon: 24, text: 16, gap: 7, strongWeight: 600 },
+  lg: { icon: 28, text: 18, gap: 8, strongWeight: 700 },
+  xl: { icon: 40, text: 24, gap: 9, strongWeight: 700 },
 } as const;
 
 type SizeKey = keyof typeof SIZE;
@@ -25,6 +25,7 @@ export interface KiteLogoProps {
   showText?: boolean;
   name?: string;
   subBrand?: string;
+  iconTextGap?: number;
   theme?: KiteTheme;
   className?: string;
   textClassName?: string;
@@ -56,6 +57,7 @@ export function KiteLogo({
   showText = true,
   name = "Fly",
   subBrand = "UI",
+  iconTextGap,
   theme,
   className,
   textClassName,
@@ -73,7 +75,7 @@ export function KiteLogo({
         styles["kite-fu-logoWrap"],
         className,
       )}
-      style={{ ...themeStyle, ...style, gap: cfg.gap }}
+      style={{ ...themeStyle, ...style, gap: iconTextGap ?? cfg.gap }}
     >
       <KiteIcon size={cfg.icon} />
       {showText ? (
