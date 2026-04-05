@@ -1,0 +1,41 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Guides/Overview" />
+
+## Overview
+
+FlyUI is a lightweight React component library focused on loading UX with isolated styles.
+
+## Core concept
+
+- Keep loading components visually consistent across product surfaces.
+- Avoid host-app style conflicts via prefixed CSS module classes.
+- Support both global theming and per-component overrides.
+
+## LLM support
+
+- FlyUI includes an `https://kitelus.github.io/fly-ui/llm.txt` file at project root.
+- Agents can read `https://kitelus.github.io/fly-ui/llm.txt` for quick integration context and recommended usage.
+
+## Package name
+
+- `@kitelus/fly-ui`
+
+## Quick import
+
+Use this snippet to import and render core components:
+
+```tsx
+import { KiteLogo, KiteLoader, KitePageLoader, Loading } from "@kitelus/fly-ui";
+
+export function Example() {
+  return (
+    <div>
+      <KiteLogo size="md" name="Fly" subBrand="UI" />
+      <KiteLoader showBrand label="Loading section..." />
+      <Loading />
+      <KitePageLoader message="Preparing workspace..." />
+    </div>
+  );
+}
+```

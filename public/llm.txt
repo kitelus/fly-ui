@@ -1,8 +1,5 @@
 Fly UI - LLM Integration Guide
 
-Note
-- This source guide is duplicated at public/llm.txt so it is accessible on GitHub Pages at /fly-ui/llm.txt.
-
 Purpose
 - This file is for LLM agents that need quick, reliable usage guidance for Fly UI.
 - Prefer this file as the first reference before scanning the whole codebase.
@@ -62,7 +59,8 @@ Important Behavior
 - Theme still applies to icon, clouds, dots, and overlay visuals.
 
 Storybook Docs
-- Main guide:
+- Main guides:
+  - Guides/Overview
   - Guides/Theming
 - Component stories:
   - Kite Components/KiteLogo

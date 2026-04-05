@@ -3,6 +3,12 @@ import { themes } from "storybook/theming";
 
 const preview: Preview = {
   parameters: {
+    options: {
+      storySort: {
+        order: ["Guides", "Kite Components", "Components"],
+        method: "alphabetical",
+      },
+    },
     docs: {
       theme: themes.normal,
     },

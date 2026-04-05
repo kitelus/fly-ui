@@ -6,7 +6,7 @@ addons.setConfig({
     base: "light",
     brandTitle: "FlyUI",
     brandUrl: "https://github.com/kitelus/fly-ui",
-    brandImage: "/kite-logo.svg",
+    brandImage: "./kite-logo.svg",
     fontBase: "ui-sans-serif, Inter, Segoe UI, sans-serif",
     fontCode: "JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace",
     appBg: "#f6f7fb",
