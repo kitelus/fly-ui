@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+branch_name="$(git rev-parse --abbrev-ref HEAD)"
+
+if [ "$branch_name" = "main" ]; then
+echo "Direct commits to main are blocked. Please create a feature branch and open a PR."
+exit 1
+fi
+
+npm run lint:staged
