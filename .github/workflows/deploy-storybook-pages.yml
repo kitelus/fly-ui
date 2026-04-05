@@ -36,10 +36,31 @@ jobs:
       - name: Build Storybook
         run: npm run build-storybook
 
+      - name: Verify Pages is enabled
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            try {
+              await github.rest.repos.getPages({ owner, repo });
+              core.info(`GitHub Pages is enabled for ${owner}/${repo}.`);
+            } catch (error) {
+              const status = error.status ?? "unknown";
+              const msg = [
+                `GitHub Pages is not accessible for ${owner}/${repo} (status: ${status}).`,
+                "Enable Pages once in repository settings:",
+                "1) Settings > Pages",
+                "2) Build and deployment > Source: GitHub Actions",
+                "3) Re-run this workflow",
+                "Note: auto-enablement requires admin permission and can fail for integration tokens."
+              ].join("\n");
+              core.setFailed(msg);
+            }
+
       - name: Setup Pages
         uses: actions/configure-pages@v6
-        with:
-          enablement: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
