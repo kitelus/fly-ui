@@ -23,5 +23,12 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    files: ["src/components/agent/**/*.{ts,tsx}"],
+    rules: {
+      // Agent components use compound exports (component + types) by design.
+      "react-refresh/only-export-components": "off",
+    },
+  },
   ...storybook.configs["flat/recommended"],
 ]);

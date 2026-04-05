@@ -42,6 +42,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -o storybook-static",
     "test-storybook": "vitest run",
+    "test:unit": "vitest run -c vitest.unit.config.ts",
     "prepare": "husky",
     "prepublishOnly": "npm run build:lib"
   },

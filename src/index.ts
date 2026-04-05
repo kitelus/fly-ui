@@ -11,3 +11,5 @@ export type { KitePageLoaderProps } from "./components/kite/KitePageLoader";
 
 export { Loading } from "./components/loading/Loading";
 export type { LoadingProps } from "./components/loading/Loading";
+
+export * from "./components/agent";
