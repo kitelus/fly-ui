@@ -380,13 +380,14 @@ export const MessageInputShowcase: Story = {
 
 export const ConversationListShowcase: Story = {
   render: () => (
-    <div style={{ maxWidth: 320 }}>
+    <div style={{ maxWidth: 300, border: "1px solid #e2e8f0", borderRadius: 8, overflow: "hidden" }}>
       <ConversationList
         items={[
-          { id: "1", title: "Data analysis report", preview: "Found 3 anomalies in the dataset", timestamp: "10:42 AM", pinned: true },
-          { id: "2", title: "Document summarisation", preview: "The executive summary covers Q3 results", timestamp: "Yesterday" },
-          { id: "3", title: "Code review session", preview: "Authentication logic looks solid", timestamp: "Mon" },
-          { id: "4", title: "Customer support triage", preview: "Issue escalated to engineering", timestamp: "Sun" },
+          { id: "1", title: "Data analysis report", preview: "Found 3 anomalies in the dataset", timestamp: "10:42 AM", pinned: true, avatarText: "DA", unread: 2 },
+          { id: "2", title: "Document summarisation", preview: "The executive summary covers Q3 results", timestamp: "Yesterday", pinned: true, avatarText: "DS" },
+          { id: "3", title: "Code review session", preview: "Authentication logic looks solid", timestamp: "Mon", avatarText: "CR" },
+          { id: "4", title: "Customer support triage", preview: "Issue escalated to engineering", timestamp: "Sun", avatarText: "CS", unread: 5 },
+          { id: "5", title: "Market research brief", preview: "Competitor analysis for Q4", timestamp: "Fri", avatarText: "MR" },
         ]}
         activeId="1"
         onSelect={() => {}}
@@ -398,11 +399,14 @@ export const ConversationListShowcase: Story = {
     docs: {
       description: {
         story:
-          "`ConversationList` — sidebar list of past conversations. Supports search, active highlight, pinned indicator, and previews. Pass `activeId` to highlight the current conversation.",
+          "`ConversationList` — sidebar list with avatar initials, pinned groups, unread badges, and search. Pass `activeId` to highlight the active conversation. Supports `avatarText`, `avatarColor`, `unread`, and `pinned` per item.",
       },
       source: {
         code: `<ConversationList
-  items={conversations}
+  items={[
+    { id: "1", title: "Data analysis", preview: "Found 3 anomalies", timestamp: "10:42 AM", pinned: true, avatarText: "DA", unread: 2 },
+    { id: "2", title: "Code review", preview: "Auth logic looks solid", timestamp: "Mon", avatarText: "CR" },
+  ]}
   activeId={currentId}
   onSelect={(id) => setCurrentId(id)}
   showSearch

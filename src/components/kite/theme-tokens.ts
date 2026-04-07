@@ -85,33 +85,33 @@ export interface KiteTheme extends KiteBaseTokens, KiteOverlayTokens {}
  * `.kite-flyui-host` and are the single source of truth for defaults.
  */
 export const lightTheme: Required<KiteTheme> = {
-  // Primary
-  primary: "#0ea5e9",
-  primaryHover: "#38bdf8",
-  primaryActive: "#0284c7",
-  primarySubtle: "#e0f2fe",
-  // Text
-  foreground: "#0f172a",
-  muted: "#64748b",
-  disabled: "#cbd5e1",
+  // Primary — violet/indigo
+  primary: "#6366f1",
+  primaryHover: "#4f46e5",
+  primaryActive: "#4338ca",
+  primarySubtle: "#eef2ff",
+  // Text — zinc
+  foreground: "#18181b",
+  muted: "#71717a",
+  disabled: "#d4d4d8",
   // Background
   background: "#ffffff",
-  surface: "#f8fafc",
+  surface: "#fafafa",
   // Border
-  border: "#e2e8f0",
+  border: "#e4e4e7",
   radius: "8px",
   // Semantic
-  success: "#22c55e",
-  warning: "#f59e0b",
-  danger: "#ef4444",
+  success: "#16a34a",
+  warning: "#d97706",
+  danger: "#dc2626",
   // Typography
   fontFamily: '"Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif',
   // Elevation
-  shadowSm: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
-  shadowMd: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+  shadowSm: "0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06)",
+  shadowMd: "0 4px 8px -2px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.06)",
   // Overlay
-  overlayBackground: "rgba(255, 255, 255, 0.82)",
-  overlayBlur: "2px",
+  overlayBackground: "rgba(255, 255, 255, 0.85)",
+  overlayBlur: "4px",
 };
 
 /**
@@ -120,20 +120,20 @@ export const lightTheme: Required<KiteTheme> = {
  * their own colour-scheme toggle to apply dark tokens explicitly.
  */
 export const darkTheme: Required<KiteTheme> = {
-  // Primary
-  primary: "#38bdf8",
-  primaryHover: "#7dd3fc",
-  primaryActive: "#0ea5e9",
-  primarySubtle: "#0c4a6e",
-  // Text
-  foreground: "#f1f5f9",
-  muted: "#94a3b8",
-  disabled: "#475569",
-  // Background
-  background: "#0f172a",
-  surface: "#1e293b",
+  // Primary — lighter indigo for dark bg contrast
+  primary: "#818cf8",
+  primaryHover: "#a5b4fc",
+  primaryActive: "#6366f1",
+  primarySubtle: "#1e1b4b",
+  // Text — zinc
+  foreground: "#fafafa",
+  muted: "#a1a1aa",
+  disabled: "#52525b",
+  // Background — near-black zinc
+  background: "#09090b",
+  surface: "#18181b",
   // Border
-  border: "#334155",
+  border: "#27272a",
   radius: "8px",
   // Semantic
   success: "#4ade80",
@@ -142,11 +142,11 @@ export const darkTheme: Required<KiteTheme> = {
   // Typography
   fontFamily: '"Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif',
   // Elevation
-  shadowSm: "0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4)",
-  shadowMd: "0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4)",
+  shadowSm: "0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4)",
+  shadowMd: "0 4px 8px -2px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4)",
   // Overlay
-  overlayBackground: "rgba(15, 23, 42, 0.88)",
-  overlayBlur: "4px",
+  overlayBackground: "rgba(9, 9, 11, 0.90)",
+  overlayBlur: "6px",
 };
 
 // ─── createTheme utility ──────────────────────────────────────────────────────

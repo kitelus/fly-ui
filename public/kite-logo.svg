@@ -1,6 +1,6 @@
 <svg width="152" height="28" viewBox="0 0 152 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M14 0 L0 10 L14 28 Z" fill="#0EA5E9"/>
-  <path d="M14 0 L28 10 L14 28 Z" fill="#0EA5E9" opacity="0.48"/>
+  <path d="M14 0 L0 10 L14 28 Z" fill="#6366f1"/>
+  <path d="M14 0 L28 10 L14 28 Z" fill="#6366f1" opacity="0.48"/>
   <text x="36" y="20" font-family="Segoe UI, Inter, sans-serif" font-size="18" fill="#0F172A">
     <tspan font-weight="700">Fly</tspan><tspan font-weight="300">UI</tspan>
   </text>

@@ -15,8 +15,8 @@ addons.setConfig({
     appBorderRadius: 14,
     barBg: "#ffffff",
     barTextColor: "#1f2937",
-    barSelectedColor: "#0ea5e9",
-    colorPrimary: "#0ea5e9",
-    colorSecondary: "#2563eb",
+    barSelectedColor: "#6366f1",
+    colorPrimary: "#6366f1",
+    colorSecondary: "#4f46e5",
   }),
 });
