@@ -79,17 +79,17 @@ export const KiteLogo = forwardRef<HTMLDivElement, KiteLogoProps>(
     return (
       <div
         ref={ref}
-        role="img"
-        aria-label={ariaLabel ?? (showText ? undefined : name)}
         className={cn("kite-flyui-host", "kite-flyui-logoWrap", className)}
         style={
           {
+            gap: iconTextGap ?? cfg.gap,
             ...themeStyle,
             ...style,
-            gap: iconTextGap ?? cfg.gap,
           } as CSSProperties
         }
         {...rest}
+        role={!showText ? (rest.role ?? "img") : rest.role}
+        aria-label={ariaLabel ?? (!showText ? name : undefined)}
       >
         <KiteIcon size={cfg.icon} />
         {showText ? (

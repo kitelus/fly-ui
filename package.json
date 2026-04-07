@@ -1,7 +1,7 @@
 {
   "name": "@kitelus/fly-ui",
   "private": false,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Fly UI - isolated React component library with modern Storybook docs",
   "license": "MIT",
   "repository": {

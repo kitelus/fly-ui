@@ -332,17 +332,6 @@
 
 /* ─── Dot / loading dots ──────────────────────────────────────────────────── */
 
-.kite-flyui-dot {
-  animation: kite-flyui-dot 1.2s ease-in-out infinite;
-}
-
-.kite-flyui-dot1 {
-  animation-delay: 0.15s;
-}
-.kite-flyui-dot2 {
-  animation-delay: 0.3s;
-}
-
 @keyframes kite-flyui-dot {
   0%,
   60%,
@@ -425,7 +414,6 @@
 /* ─── Page / fullscreen wrapper ───────────────────────────────────────────── */
 
 .kite-flyui-pageWrap {
-  font-family: var(--kite-font-family);
   display: flex;
   flex-direction: column;
   align-items: center;

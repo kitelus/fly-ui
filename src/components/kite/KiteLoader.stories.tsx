@@ -48,7 +48,7 @@ const meta = {
       table: {
         type: {
           summary: "KiteTheme",
-          detail: "{\n  primary?: string;\n  foreground?: string;\n  muted?: string;\n}",
+          detail: "{\n  primary?: string;\n  primaryHover?: string;\n  primaryActive?: string;\n  primarySubtle?: string;\n  foreground?: string;\n  muted?: string;\n  disabled?: string;\n  background?: string;\n  surface?: string;\n  border?: string;\n  radius?: string;\n  success?: string;\n  warning?: string;\n  danger?: string;\n  fontFamily?: string;\n  shadowSm?: string;\n  shadowMd?: string;\n  overlayBackground?: string;\n  overlayBlur?: string;\n}",
         },
         defaultValue: { summary: "undefined" },
       },
