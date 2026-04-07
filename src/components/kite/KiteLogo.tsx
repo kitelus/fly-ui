@@ -1,8 +1,8 @@
-import type { CSSProperties } from "react";
+import { forwardRef, type CSSProperties, type ComponentPropsWithoutRef } from "react";
 
 import { cn } from "../../lib/cn";
 
-import styles from "./kite-animations.module.css";
+import "./kite-animations.css";
 import {
   buildKiteThemeStyle,
   mergeKiteTheme,
@@ -10,26 +10,27 @@ import {
   useFlyUITheme,
 } from "./theme";
 
-const SIZE = {
+export type KiteLogoSize = "xs" | "sm" | "md" | "lg" | "xl";
+
+const SIZE: Record<KiteLogoSize, { icon: number; text: number; gap: number; strongWeight: number }> = {
   xs: { icon: 16, text: 12, gap: 4, strongWeight: 600 },
   sm: { icon: 20, text: 14, gap: 6, strongWeight: 600 },
   md: { icon: 24, text: 16, gap: 7, strongWeight: 600 },
   lg: { icon: 28, text: 18, gap: 8, strongWeight: 700 },
   xl: { icon: 40, text: 24, gap: 9, strongWeight: 700 },
-} as const;
+};
 
-type SizeKey = keyof typeof SIZE;
-
-export interface KiteLogoProps {
-  size?: SizeKey;
+export interface KiteLogoProps
+  extends Omit<ComponentPropsWithoutRef<"div">, "children"> {
+  size?: KiteLogoSize;
   showText?: boolean;
   name?: string;
   subBrand?: string;
   iconTextGap?: number;
+  /** Accessible label for the logo. Defaults to `name` when `showText` is false. */
+  "aria-label"?: string;
   theme?: KiteTheme;
-  className?: string;
   textClassName?: string;
-  style?: CSSProperties;
 }
 
 function KiteIcon({ size }: { size: number }) {
@@ -41,6 +42,7 @@ function KiteIcon({ size }: { size: number }) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
+      focusable="false"
     >
       <path d="M12 0 L0 9 L12 24 Z" fill="var(--kite-primary, #0ea5e9)" />
       <path
@@ -52,51 +54,62 @@ function KiteIcon({ size }: { size: number }) {
   );
 }
 
-export function KiteLogo({
-  size = "md",
-  showText = true,
-  name = "Fly",
-  subBrand = "UI",
-  iconTextGap,
-  theme,
-  className,
-  textClassName,
-  style,
-}: KiteLogoProps) {
-  const cfg = SIZE[size];
-  const globalTheme = useFlyUITheme();
-  const resolvedTheme = mergeKiteTheme(globalTheme, theme);
-  const themeStyle = buildKiteThemeStyle(resolvedTheme);
+export const KiteLogo = forwardRef<HTMLDivElement, KiteLogoProps>(
+  function KiteLogo(
+    {
+      size = "md",
+      showText = true,
+      name = "Fly",
+      subBrand = "UI",
+      iconTextGap,
+      theme,
+      className,
+      textClassName,
+      style,
+      "aria-label": ariaLabel,
+      ...rest
+    },
+    ref,
+  ) {
+    const cfg = SIZE[size];
+    const globalTheme = useFlyUITheme();
+    const resolvedTheme = mergeKiteTheme(globalTheme, theme);
+    const themeStyle = buildKiteThemeStyle(resolvedTheme);
 
-  return (
-    <div
-      className={cn(
-        styles["kite-fu-host"],
-        styles["kite-fu-logoWrap"],
-        className,
-      )}
-      style={{ ...themeStyle, ...style, gap: iconTextGap ?? cfg.gap }}
-    >
-      <KiteIcon size={cfg.icon} />
-      {showText ? (
-        <span
-          className={cn(styles["kite-fu-logoText"], textClassName)}
-          style={{
-            fontSize: `${cfg.text}px`,
-            fontFamily: '"Inter Variable", sans-serif',
-            letterSpacing: "-0.03em",
-            lineHeight: 1,
-          }}
-        >
+    return (
+      <div
+        ref={ref}
+        className={cn("kite-flyui-host", "kite-flyui-logoWrap", className)}
+        style={
+          {
+            gap: iconTextGap ?? cfg.gap,
+            ...themeStyle,
+            ...style,
+          } as CSSProperties
+        }
+        {...rest}
+        role={!showText ? (rest.role ?? "img") : rest.role}
+        aria-label={ariaLabel ?? (!showText ? name : undefined)}
+      >
+        <KiteIcon size={cfg.icon} />
+        {showText ? (
           <span
-            className={styles["kite-fu-logoTextStrong"]}
-            style={{ fontWeight: cfg.strongWeight }}
+            className={cn("kite-flyui-logoText", textClassName)}
+            style={{
+              fontSize: `${cfg.text}px`,
+              lineHeight: 1,
+            }}
           >
-            {name}
+            <span
+              className="kite-flyui-logoTextStrong"
+              style={{ fontWeight: cfg.strongWeight }}
+            >
+              {name}
+            </span>
+            <span className="kite-flyui-logoTextLight">{subBrand}</span>
           </span>
-          <span className={styles["kite-fu-logoTextLight"]}>{subBrand}</span>
-        </span>
-      ) : null}
-    </div>
-  );
-}
+        ) : null}
+      </div>
+    );
+  },
+);

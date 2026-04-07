@@ -9,4 +9,5 @@ export default defineConfig({
   external: ["react", "react-dom"],
   target: "es2022",
   tsconfig: "tsconfig.app.json",
+  injectStyle: true,
 });

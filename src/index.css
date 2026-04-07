@@ -1,3 +1,5 @@
+/* Dev/showcase app styles — NOT shipped in the library dist */
+
 * {
   box-sizing: border-box;
 }
@@ -13,4 +15,12 @@ body,
     Segoe UI,
     sans-serif;
   background: #f6f7fb;
+}
+
+@media (prefers-color-scheme: dark) {
+  html,
+  body,
+  #root {
+    background: #0f172a;
+  }
 }
