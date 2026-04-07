@@ -5,7 +5,22 @@ const preview: Preview = {
   parameters: {
     options: {
       storySort: {
-        order: ["Guides", "Kite Components", "Components"],
+        order: [
+          "Guides",
+          "Kite Components",
+          "Components",
+          [
+            "Loading",
+            "Chat",
+            "Agent",
+            "Observability",
+            "Workflow",
+            "Task Management",
+            "Content",
+            "Data",
+            "Approval",
+          ],
+        ],
         method: "alphabetical",
       },
     },
