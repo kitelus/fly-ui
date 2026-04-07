@@ -27,6 +27,8 @@ export interface KiteLogoProps
   name?: string;
   subBrand?: string;
   iconTextGap?: number;
+  /** Accessible label for the logo. Defaults to `name` when `showText` is false. */
+  "aria-label"?: string;
   theme?: KiteTheme;
   textClassName?: string;
 }
@@ -64,6 +66,7 @@ export const KiteLogo = forwardRef<HTMLDivElement, KiteLogoProps>(
       className,
       textClassName,
       style,
+      "aria-label": ariaLabel,
       ...rest
     },
     ref,
@@ -76,6 +79,8 @@ export const KiteLogo = forwardRef<HTMLDivElement, KiteLogoProps>(
     return (
       <div
         ref={ref}
+        role="img"
+        aria-label={ariaLabel ?? (showText ? undefined : name)}
         className={cn("kite-flyui-host", "kite-flyui-logoWrap", className)}
         style={
           {

@@ -42,7 +42,7 @@ export const KitePageLoader = forwardRef<HTMLDivElement, KitePageLoaderProps>(
         ref={ref}
         role="status"
         aria-live="polite"
-        aria-busy="true"
+        aria-busy={true}
         aria-label={message ?? "Loading"}
         className={cn(
           "kite-flyui-host",

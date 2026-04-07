@@ -29,7 +29,7 @@ export const Loading = forwardRef<HTMLDivElement, LoadingProps>(
         role="status"
         aria-label={label ?? "Loading"}
         aria-live="polite"
-        aria-busy="true"
+        aria-busy={true}
         style={{ ...themeStyle, ...style } as CSSProperties}
         {...rest}
       >

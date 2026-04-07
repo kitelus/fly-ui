@@ -56,7 +56,7 @@ export const KiteLoader = forwardRef<HTMLDivElement, KiteLoaderProps>(
         role="status"
         aria-label={label ?? "Loading"}
         aria-live="polite"
-        aria-busy="true"
+        aria-busy={true}
         style={{ ...themeStyle, ...style } as CSSProperties}
         {...rest}
       >
@@ -117,10 +117,10 @@ export const KiteLoader = forwardRef<HTMLDivElement, KiteLoaderProps>(
             <span
               className={cn("kite-flyui-logoText", "kite-flyui-loadingTextPulse")}
               style={{
-              marginTop: -2,
-              fontSize: 20,
-              lineHeight: 1,
-            }}
+                marginTop: -2,
+                fontSize: 20,
+                lineHeight: 1,
+              }}
             >
               <span className="kite-flyui-logoTextStrong">{name}</span>
               <span className="kite-flyui-logoTextLight">{subBrand}</span>
