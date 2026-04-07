@@ -230,8 +230,8 @@
 
 .kite-flyui-float {
   animation:
-    kite-flyui-float 1.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite,
-    kite-flyui-breath 1.6s ease-in-out infinite;
+    kite-flyui-float 4.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite,
+    kite-flyui-breath 3.8s ease-in-out infinite;
   transform-box: fill-box;
   transform-origin: center;
 }
@@ -264,7 +264,7 @@
 }
 
 .kite-flyui-shadowBreathe {
-  animation: kite-flyui-shadow-breathe 1.9s ease-in-out infinite;
+  animation: kite-flyui-shadow-breathe 4.8s ease-in-out infinite;
   opacity: 0.48;
 }
 
@@ -287,7 +287,7 @@
 }
 
 .kite-flyui-stringSway {
-  animation: kite-flyui-string-sway 1.9s ease-in-out infinite;
+  animation: kite-flyui-string-sway 4.8s ease-in-out infinite;
   transform-box: fill-box;
   transform-origin: top center;
   opacity: 0.35;
