@@ -1,11 +1,11 @@
-import { forwardRef, useState, type CSSProperties, type ComponentPropsWithoutRef } from "react";
+import { forwardRef, useState, type CSSProperties, type ComponentPropsWithoutRef, type ReactNode } from "react";
 import { buildKiteThemeStyle, mergeKiteTheme, type KiteTheme } from "../../kite/theme";
 import { useFlyUITheme } from "../../kite/theme";
 import "../agent.css";
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
-export interface ApiRequestInspectorProps extends ComponentPropsWithoutRef<"div"> {
+export interface ApiRequestInspectorProps extends Omit<ComponentPropsWithoutRef<"div">, "onCopy"> {
   method: HttpMethod;
   endpoint: string;
   statusCode?: number;
@@ -14,10 +14,30 @@ export interface ApiRequestInspectorProps extends ComponentPropsWithoutRef<"div"
   requestBody?: unknown;
   responseHeaders?: Record<string, string>;
   responseBody?: unknown;
+  /** Override tab labels. */
+  tabLabels?: { request?: string; response?: string; headers?: string };
+  /** Extra tabs to display alongside the built-in three. */
+  extraTabs?: Array<{ id: string; label: string; content: ReactNode }>;
+  /** The initially active tab. @default "request" */
+  defaultTab?: string;
+  /** Called when a section is copied. */
+  onCopy?: (section: "request" | "response" | "headers" | string, content: string) => void;
+  /** Label for the copy button. @default "Copy" */
+  copyLabel?: ReactNode;
+  /** Label shown briefly after copying. @default "Copied!" — set null to disable feedback */
+  copyFeedbackLabel?: ReactNode | null;
+  /** Duration in ms for the copy feedback. @default 1500 */
+  copyFeedbackDuration?: number;
+  /** Called when the retry button is clicked. When provided, a Retry button appears. */
+  onRetry?: () => void;
+  /** Label for the retry button. @default "Retry" */
+  retryLabel?: ReactNode;
+  /** Slot rendered in the header line alongside method/endpoint/status. */
+  headerSlot?: ReactNode;
   theme?: KiteTheme;
 }
 
-type Tab = "request" | "response" | "headers";
+type BuiltInTab = "request" | "response" | "headers";
 
 export const ApiRequestInspector = forwardRef<HTMLDivElement, ApiRequestInspectorProps>(
   function ApiRequestInspector(
@@ -30,6 +50,16 @@ export const ApiRequestInspector = forwardRef<HTMLDivElement, ApiRequestInspecto
       requestBody,
       responseHeaders,
       responseBody,
+      tabLabels,
+      extraTabs,
+      defaultTab = "request",
+      onCopy,
+      copyLabel = "Copy",
+      copyFeedbackLabel = "Copied!",
+      copyFeedbackDuration = 1500,
+      onRetry,
+      retryLabel = "Retry",
+      headerSlot,
       theme,
       style,
       ...rest
@@ -38,7 +68,8 @@ export const ApiRequestInspector = forwardRef<HTMLDivElement, ApiRequestInspecto
   ) {
     const contextTheme = useFlyUITheme();
     const themeStyle = buildKiteThemeStyle(mergeKiteTheme(contextTheme, theme));
-    const [tab, setTab] = useState<Tab>("request");
+    const [tab, setTab] = useState<string>(defaultTab);
+    const [copied, setCopied] = useState(false);
 
     const statusClass =
       statusCode && statusCode >= 500
@@ -49,6 +80,40 @@ export const ApiRequestInspector = forwardRef<HTMLDivElement, ApiRequestInspecto
 
     const serialize = (v: unknown) =>
       typeof v === "string" ? v : JSON.stringify(v, null, 2);
+
+    const labels: Record<BuiltInTab, string> = {
+      request:  tabLabels?.request  ?? "Request",
+      response: tabLabels?.response ?? "Response",
+      headers:  tabLabels?.headers  ?? "Headers",
+    };
+
+    const builtInTabs: BuiltInTab[] = ["request", "response", "headers"];
+
+    const getBuiltInContent = (t: BuiltInTab): string => {
+      if (t === "request")  return requestBody  !== undefined ? serialize(requestBody)  : "";
+      if (t === "response") return responseBody !== undefined ? serialize(responseBody) : "";
+      const parts: string[] = [];
+      if (requestHeaders  && Object.keys(requestHeaders).length  > 0) parts.push(`// Request Headers\n${serialize(requestHeaders)}`);
+      if (responseHeaders && Object.keys(responseHeaders).length > 0) parts.push(`// Response Headers\n${serialize(responseHeaders)}`);
+      return parts.join("\n\n");
+    };
+
+    const handleCopy = () => {
+      let content = "";
+      if (builtInTabs.includes(tab as BuiltInTab)) {
+        content = getBuiltInContent(tab as BuiltInTab);
+      } else {
+        const extraTab = extraTabs?.find((t) => t.id === tab);
+        if (extraTab && typeof extraTab.content === "string") {
+          content = extraTab.content;
+        }
+      }
+      onCopy?.(tab, content);
+      if (copyFeedbackLabel !== null) {
+        setCopied(true);
+        setTimeout(() => setCopied(false), copyFeedbackDuration);
+      }
+    };
 
     return (
       <div
@@ -66,9 +131,30 @@ export const ApiRequestInspector = forwardRef<HTMLDivElement, ApiRequestInspecto
           {latencyMs !== undefined && (
             <span className="kite-flyui-apiInspector__latency">{latencyMs}ms</span>
           )}
+          {headerSlot}
+          {onRetry && (
+            <button
+              type="button"
+              className="kite-flyui-agentBtn"
+              onClick={onRetry}
+              aria-label="Retry request"
+            >
+              {retryLabel}
+            </button>
+          )}
+          {onCopy && (
+            <button
+              type="button"
+              className="kite-flyui-agentBtn"
+              onClick={handleCopy}
+              aria-label={`Copy ${tab}`}
+            >
+              {copied && copyFeedbackLabel !== null ? copyFeedbackLabel : copyLabel}
+            </button>
+          )}
         </div>
         <div className="kite-flyui-apiInspector__tabs" role="tablist">
-          {(["request", "response", "headers"] as Tab[]).map((t) => (
+          {builtInTabs.map((t) => (
             <button
               key={t}
               role="tab"
@@ -77,7 +163,19 @@ export const ApiRequestInspector = forwardRef<HTMLDivElement, ApiRequestInspecto
               onClick={() => setTab(t)}
               type="button"
             >
-              {t.charAt(0).toUpperCase() + t.slice(1)}
+              {labels[t]}
+            </button>
+          ))}
+          {extraTabs?.map((t) => (
+            <button
+              key={t.id}
+              role="tab"
+              aria-selected={tab === t.id}
+              className={`kite-flyui-apiInspector__tab${tab === t.id ? " kite-flyui-apiInspector__tab--active" : ""}`}
+              onClick={() => setTab(t.id)}
+              type="button"
+            >
+              {t.label}
             </button>
           ))}
         </div>
@@ -97,21 +195,24 @@ export const ApiRequestInspector = forwardRef<HTMLDivElement, ApiRequestInspecto
               {requestHeaders && Object.keys(requestHeaders).length > 0 && (
                 <>
                   <p className="kite-flyui-toolCall__sectionLabel">Request Headers</p>
-                  <pre className="kite-flyui-toolCall__code">
-                    {serialize(requestHeaders)}
-                  </pre>
+                  <pre className="kite-flyui-toolCall__code">{serialize(requestHeaders)}</pre>
                 </>
               )}
               {responseHeaders && Object.keys(responseHeaders).length > 0 && (
                 <>
                   <p className="kite-flyui-toolCall__sectionLabel kite-flyui-toolCall__sectionLabel--mt">Response Headers</p>
-                  <pre className="kite-flyui-toolCall__code">
-                    {serialize(responseHeaders)}
-                  </pre>
+                  <pre className="kite-flyui-toolCall__code">{serialize(responseHeaders)}</pre>
                 </>
+              )}
+              {(!requestHeaders || Object.keys(requestHeaders).length === 0) &&
+               (!responseHeaders || Object.keys(responseHeaders).length === 0) && (
+                <p className="kite-flyui-toolCall__code">(no headers)</p>
               )}
             </div>
           )}
+          {extraTabs?.map((t) => tab === t.id && (
+            <div key={t.id}>{t.content}</div>
+          ))}
         </div>
       </div>
     );

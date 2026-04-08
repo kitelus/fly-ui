@@ -39,6 +39,8 @@ export interface AgentEdge {
   animated?: boolean;
   /** Override edge stroke colour */
   color?: string;
+  /** Any extra data to associate with the edge. */
+  data?: unknown;
 }
 
 export interface MultiAgentDiagramProps extends ComponentPropsWithoutRef<"div"> {
@@ -46,6 +48,8 @@ export interface MultiAgentDiagramProps extends ComponentPropsWithoutRef<"div"> 
   edges?: AgentEdge[];
   selectedId?: string;
   onSelectNode?: (id: string | null) => void;
+  /** Called when a node is double-clicked. */
+  onNodeDoubleClick?: (id: string) => void;
   /** Selected edge key = `${from}->${to}` */
   selectedEdgeId?: string;
   onSelectEdge?: (id: string | null) => void;
@@ -53,6 +57,16 @@ export interface MultiAgentDiagramProps extends ComponentPropsWithoutRef<"div"> 
   renderNode?: (node: AgentNode, selected: boolean) => ReactNode;
   /** Canvas min-height in px */
   canvasHeight?: number;
+  /** Title shown above the diagram. */
+  title?: string;
+  /** Accessible label for the canvas. @default "Agent diagram" */
+  canvasAriaLabel?: string;
+  /** Text shown when there are no nodes. @default "" */
+  emptyText?: string;
+  /** Render a custom empty state. */
+  renderEmpty?: () => ReactNode;
+  /** Slot rendered below the canvas. */
+  footerSlot?: ReactNode;
   theme?: KiteTheme;
 }
 
@@ -112,7 +126,8 @@ function autoLayout(nodes: AgentNode[], edges: AgentEdge[]): Map<string, { x: nu
   }
 
   const pos = new Map<string, { x: number; y: number }>();
-  const maxCols = Math.max(...[...byLevel.values()].map((a) => a.length));
+  const colCounts = [...byLevel.values()].map((a) => a.length);
+  const maxCols = colCounts.length > 0 ? Math.max(...colCounts) : 1;
 
   for (const [lv, ids] of byLevel) {
     const rowWidth = ids.length * NODE_W + (ids.length - 1) * H_GAP;
@@ -143,10 +158,16 @@ export const MultiAgentDiagram = forwardRef<HTMLDivElement, MultiAgentDiagramPro
       edges = [],
       selectedId,
       onSelectNode,
+      onNodeDoubleClick,
       selectedEdgeId,
       onSelectEdge,
       renderNode,
       canvasHeight,
+      title,
+      canvasAriaLabel = "Agent diagram",
+      emptyText,
+      renderEmpty,
+      footerSlot,
       theme,
       style,
       ...rest
@@ -173,7 +194,8 @@ export const MultiAgentDiagram = forwardRef<HTMLDivElement, MultiAgentDiagramPro
       if (missing) {
         setPositions(autoLayout(nodes, edges));
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    // positions intentionally excluded: we only want to fill gaps on nodes/edges change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [nodes, edges]);
 
     // ── SVG connector recalc ──
@@ -271,6 +293,14 @@ export const MultiAgentDiagram = forwardRef<HTMLDivElement, MultiAgentDiagramPro
         style={{ ...themeStyle, ...style } as CSSProperties}
         {...rest}
       >
+        {title && <p className="kite-flyui-multiAgent__title">{title}</p>}
+        {nodes.length === 0 ? (
+          renderEmpty
+            ? renderEmpty()
+            : emptyText
+              ? <div className="kite-flyui-agentMemory__empty">{emptyText}</div>
+              : null
+        ) : (
         <div
           ref={canvasRef}
           className="kite-flyui-multiAgent__canvas"
@@ -280,7 +310,7 @@ export const MultiAgentDiagram = forwardRef<HTMLDivElement, MultiAgentDiagramPro
           onPointerLeave={onCanvasPointerUp}
           onClick={onCanvasClick}
           role="group"
-          aria-label="Agent diagram"
+          aria-label={canvasAriaLabel}
         >
           {/* ── SVG connector layer ── */}
           <svg
@@ -378,6 +408,10 @@ export const MultiAgentDiagram = forwardRef<HTMLDivElement, MultiAgentDiagramPro
                   e.stopPropagation();
                   onSelectNode?.(isSelected ? null : node.id);
                 }}
+                onDoubleClick={(e) => {
+                  e.stopPropagation();
+                  onNodeDoubleClick?.(node.id);
+                }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
@@ -422,6 +456,8 @@ export const MultiAgentDiagram = forwardRef<HTMLDivElement, MultiAgentDiagramPro
             );
           })}
         </div>
+        )}
+        {footerSlot}
       </div>
     );
   },

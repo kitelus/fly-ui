@@ -1,9 +1,9 @@
-import { forwardRef, useState, type CSSProperties, type ComponentPropsWithoutRef } from "react";
+import { forwardRef, useState, type CSSProperties, type ComponentPropsWithoutRef, type ReactNode } from "react";
 import { buildKiteThemeStyle, mergeKiteTheme, type KiteTheme } from "../../kite/theme";
 import { useFlyUITheme } from "../../kite/theme";
 import "../agent.css";
 
-export type AuditAction = "created" | "approved" | "rejected" | "modified" | "commented";
+export type AuditAction = "created" | "approved" | "rejected" | "modified" | "commented" | string;
 
 export interface AuditLogEntry {
   id: string;
@@ -20,11 +20,39 @@ export interface AuditLogProps extends ComponentPropsWithoutRef<"div"> {
   searchValue?: string;
   onSearchChange?: (value: string) => void;
   onExport?: () => void;
+  onClear?: () => void;
+  /** Filter by a specific action. Controlled — pair with onActionFilterChange. */
+  actionFilter?: string;
+  onActionFilterChange?: (action: string | undefined) => void;
+  /** Placeholder for the search input. @default "Search audit log…" */
+  searchPlaceholder?: string;
+  /** Custom render for a single entry row. */
+  renderEntry?: (
+    entry: AuditLogEntry,
+    isExpanded: boolean,
+    toggle: (id: string) => void,
+  ) => ReactNode;
   theme?: KiteTheme;
 }
 
 export const AuditLog = forwardRef<HTMLDivElement, AuditLogProps>(
-  function AuditLog({ entries, searchValue = "", onSearchChange, onExport, theme, style, ...rest }, ref) {
+  function AuditLog(
+    {
+      entries,
+      searchValue = "",
+      onSearchChange,
+      onExport,
+      onClear,
+      actionFilter,
+      onActionFilterChange,
+      searchPlaceholder = "Search audit log…",
+      renderEntry,
+      theme,
+      style,
+      ...rest
+    },
+    ref,
+  ) {
     const contextTheme = useFlyUITheme();
     const themeStyle = buildKiteThemeStyle(mergeKiteTheme(contextTheme, theme));
     const [expanded, setExpanded] = useState<Set<string>>(new Set());
@@ -37,14 +65,19 @@ export const AuditLog = forwardRef<HTMLDivElement, AuditLogProps>(
         return next;
       });
 
-    const filtered = searchValue
-      ? entries.filter(
-          (e) =>
-            e.actor.toLowerCase().includes(searchValue.toLowerCase()) ||
-            e.details?.toLowerCase().includes(searchValue.toLowerCase()) ||
-            e.action.toLowerCase().includes(searchValue.toLowerCase()),
-        )
-      : entries;
+    // Unique actions for filter chips
+    const uniqueActions = Array.from(new Set(entries.map((e) => e.action)));
+
+    const filtered = entries.filter((e) => {
+      const matchesSearch =
+        !searchValue ||
+        e.actor.toLowerCase().includes(searchValue.toLowerCase()) ||
+        e.details?.toLowerCase().includes(searchValue.toLowerCase()) ||
+        e.action.toLowerCase().includes(searchValue.toLowerCase()) ||
+        e.ipAddress?.toLowerCase().includes(searchValue.toLowerCase());
+      const matchesAction = !actionFilter || e.action === actionFilter;
+      return matchesSearch && matchesAction;
+    });
 
     return (
       <div
@@ -57,7 +90,7 @@ export const AuditLog = forwardRef<HTMLDivElement, AuditLogProps>(
           <input
             type="search"
             className="kite-flyui-auditLog__search"
-            placeholder="Search audit log…"
+            placeholder={searchPlaceholder}
             value={searchValue}
             onChange={(e) => onSearchChange?.(e.target.value)}
             aria-label="Search audit log"
@@ -65,47 +98,95 @@ export const AuditLog = forwardRef<HTMLDivElement, AuditLogProps>(
           {onExport && (
             <button className="kite-flyui-agentBtn" onClick={onExport} type="button">Export</button>
           )}
+          {onClear && (
+            <button
+              className="kite-flyui-agentBtn kite-flyui-agentBtn--danger"
+              onClick={onClear}
+              type="button"
+            >
+              Clear
+            </button>
+          )}
           <span className="kite-flyui-auditLog__count">
             {filtered.length} {filtered.length === 1 ? "entry" : "entries"}
           </span>
         </div>
-        <div className="kite-flyui-auditLog__list" role="log" aria-label="Audit log">
-          {filtered.map((entry) => (
-            <div
-              key={entry.id}
-              className="kite-flyui-auditLog__item"
-              onClick={() => entry.metadata && toggle(entry.id)}
-              role={entry.metadata ? "button" : undefined}
-              tabIndex={entry.metadata ? 0 : undefined}
-              onKeyDown={(e) => {
-                if (entry.metadata && (e.key === "Enter" || e.key === " ")) {
-                  e.preventDefault();
-                  toggle(entry.id);
-                }
-              }}
+
+        {onActionFilterChange && uniqueActions.length > 0 && (
+          <div className="kite-flyui-auditLog__filters">
+            <button
+              className={`kite-flyui-auditLog__filterBtn${!actionFilter ? " kite-flyui-auditLog__filterBtn--active" : ""}`}
+              type="button"
+              onClick={() => onActionFilterChange(undefined)}
             >
-              {entry.timestamp && (
-                <span className="kite-flyui-auditLog__time">{entry.timestamp}</span>
-              )}
-              <span className="kite-flyui-auditLog__actor">{entry.actor}</span>
-              <span className={`kite-flyui-auditLog__action kite-flyui-auditLog__action--${entry.action}`}>
-                {entry.action}
-              </span>
-              <div className="kite-flyui-auditLog__details">
-                {entry.details}
-                {entry.metadata && expanded.has(entry.id) && (
-                  <div className="kite-flyui-auditLog__metaExpanded">
-                    {Object.entries(entry.metadata).map(([k, v]) => (
-                      <div key={k} className="kite-flyui-errorLog__detailRow">
-                        <span className="kite-flyui-errorLog__detailLabel">{k}</span>
-                        <span className="kite-flyui-errorLog__detailVal">{v}</span>
-                      </div>
-                    ))}
-                  </div>
+              All
+            </button>
+            {uniqueActions.map((action) => (
+              <button
+                key={action}
+                className={`kite-flyui-auditLog__filterBtn kite-flyui-auditLog__filterBtn--${action}${actionFilter === action ? " kite-flyui-auditLog__filterBtn--active" : ""}`}
+                type="button"
+                onClick={() => onActionFilterChange(actionFilter === action ? undefined : action)}
+              >
+                {action}
+              </button>
+            ))}
+          </div>
+        )}
+
+        <div className="kite-flyui-auditLog__list" role="log" aria-label="Audit log">
+          {filtered.map((entry) => {
+            const isExpanded = expanded.has(entry.id);
+            const hasDetail = !!(entry.metadata || entry.ipAddress);
+
+            if (renderEntry) {
+              return <div key={entry.id}>{renderEntry(entry, isExpanded, toggle)}</div>;
+            }
+
+            return (
+              <div
+                key={entry.id}
+                className="kite-flyui-auditLog__item"
+                onClick={() => hasDetail && toggle(entry.id)}
+                role={hasDetail ? "button" : undefined}
+                tabIndex={hasDetail ? 0 : undefined}
+                aria-expanded={hasDetail ? isExpanded : undefined}
+                onKeyDown={(e) => {
+                  if (hasDetail && (e.key === "Enter" || e.key === " ")) {
+                    e.preventDefault();
+                    toggle(entry.id);
+                  }
+                }}
+              >
+                {entry.timestamp && (
+                  <span className="kite-flyui-auditLog__time">{entry.timestamp}</span>
                 )}
+                <span className="kite-flyui-auditLog__actor">{entry.actor}</span>
+                <span className={`kite-flyui-auditLog__action kite-flyui-auditLog__action--${entry.action}`}>
+                  {entry.action}
+                </span>
+                <div className="kite-flyui-auditLog__details">
+                  {entry.details}
+                  {hasDetail && isExpanded && (
+                    <div className="kite-flyui-auditLog__metaExpanded">
+                      {entry.ipAddress && (
+                        <div className="kite-flyui-errorLog__detailRow">
+                          <span className="kite-flyui-errorLog__detailLabel">IP Address</span>
+                          <span className="kite-flyui-errorLog__detailVal">{entry.ipAddress}</span>
+                        </div>
+                      )}
+                      {entry.metadata && Object.entries(entry.metadata).map(([k, v]) => (
+                        <div key={k} className="kite-flyui-errorLog__detailRow">
+                          <span className="kite-flyui-errorLog__detailLabel">{k}</span>
+                          <span className="kite-flyui-errorLog__detailVal">{v}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     );

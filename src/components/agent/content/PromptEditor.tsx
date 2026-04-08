@@ -1,4 +1,4 @@
-import { forwardRef, type CSSProperties, type ComponentPropsWithoutRef, type ChangeEvent } from "react";
+import { forwardRef, type CSSProperties, type ComponentPropsWithoutRef, type ChangeEvent, type ReactNode } from "react";
 import { buildKiteThemeStyle, mergeKiteTheme, type KiteTheme } from "../../kite/theme";
 import { useFlyUITheme } from "../../kite/theme";
 import "../agent.css";
@@ -18,6 +18,26 @@ export interface PromptEditorProps extends Omit<ComponentPropsWithoutRef<"div">,
   label?: string;
   readOnly?: boolean;
   onVariableInsert?: (name: string) => void;
+  /** Called when the user saves/submits (Ctrl+Enter or a save button). */
+  onSave?: (value: string) => void;
+  /** Called when the format button is clicked (e.g. to run prettier). */
+  onFormat?: (value: string) => void;
+  /** Label for the save button. Only rendered when onSave is provided. */
+  saveLabel?: ReactNode;
+  /** Label for the format button. Only rendered when onFormat is provided. @default "Format" */
+  formatLabel?: ReactNode;
+  /** Custom render for the toolbar right side. */
+  toolbarSlot?: ReactNode;
+  /** Slot rendered below the textarea and variables. */
+  footerSlot?: ReactNode;
+  /** Rows for the textarea. @default 6 */
+  rows?: number;
+  /** CSS min-height for the textarea (overrides rows-based sizing if set). */
+  minHeight?: string | number;
+  /** CSS max-height for the textarea. */
+  maxHeight?: string | number;
+  /** Whether to show a line counter alongside the textarea. @default false */
+  showLineNumbers?: boolean;
   theme?: KiteTheme;
 }
 
@@ -33,6 +53,16 @@ export const PromptEditor = forwardRef<HTMLDivElement, PromptEditorProps>(
       label,
       readOnly = false,
       onVariableInsert,
+      onSave,
+      onFormat,
+      saveLabel = "Save",
+      formatLabel = "Format",
+      toolbarSlot,
+      footerSlot,
+      rows = 6,
+      minHeight,
+      maxHeight,
+      showLineNumbers = false,
       theme,
       style,
       ...rest
@@ -42,10 +72,21 @@ export const PromptEditor = forwardRef<HTMLDivElement, PromptEditorProps>(
     const contextTheme = useFlyUITheme();
     const themeStyle = buildKiteThemeStyle(mergeKiteTheme(contextTheme, theme));
 
-    const tokenClass =
-      maxTokens && estimatedTokens !== undefined && estimatedTokens > maxTokens
-        ? "kite-flyui-promptEditor__tokenCount--warn"
-        : "";
+    const isOver = maxTokens != null && estimatedTokens != null && estimatedTokens > maxTokens;
+    const tokenClass = isOver ? "kite-flyui-promptEditor__tokenCount--warn" : "";
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (onSave && (e.ctrlKey || e.metaKey) && e.key === "Enter") {
+        e.preventDefault();
+        onSave(value);
+      }
+    };
+
+    const textareaStyle: React.CSSProperties = {};
+    if (minHeight !== undefined) textareaStyle.minHeight = typeof minHeight === "number" ? `${minHeight}px` : minHeight;
+    if (maxHeight !== undefined) textareaStyle.maxHeight = typeof maxHeight === "number" ? `${maxHeight}px` : maxHeight;
+
+    const lines = value.split("\n");
 
     return (
       <div
@@ -55,22 +96,61 @@ export const PromptEditor = forwardRef<HTMLDivElement, PromptEditorProps>(
         {...rest}
       >
         <div className="kite-flyui-promptEditor__toolbar">
-          {label && <p className="kite-flyui-promptEditor__title">{label}</p>}
-          {estimatedTokens !== undefined && (
-            <span className={`kite-flyui-promptEditor__tokenCount ${tokenClass}`}>
-              ~{estimatedTokens.toLocaleString()} tokens{maxTokens ? ` / ${maxTokens.toLocaleString()}` : ""}
-            </span>
-          )}
+          <div className="kite-flyui-promptEditor__toolbarLeft">
+            {label && <p className="kite-flyui-promptEditor__title">{label}</p>}
+            {estimatedTokens !== undefined && (
+              <span className={`kite-flyui-promptEditor__tokenCount ${tokenClass}`}>
+                ~{estimatedTokens.toLocaleString()} tokens{maxTokens ? ` / ${maxTokens.toLocaleString()}` : ""}
+              </span>
+            )}
+          </div>
+          <div className="kite-flyui-promptEditor__toolbarRight">
+            {toolbarSlot}
+            {onFormat && (
+              <button
+                type="button"
+                className="kite-flyui-agentBtn"
+                onClick={() => onFormat(value)}
+                disabled={readOnly}
+              >
+                {formatLabel}
+              </button>
+            )}
+            {onSave && (
+              <button
+                type="button"
+                className="kite-flyui-agentBtn kite-flyui-agentBtn--primary"
+                onClick={() => onSave(value)}
+                disabled={readOnly}
+                title="Save (Ctrl+Enter)"
+              >
+                {saveLabel}
+              </button>
+            )}
+          </div>
         </div>
-        <textarea
-          className="kite-flyui-promptEditor__textarea"
-          value={value}
-          onChange={(e: ChangeEvent<HTMLTextAreaElement>) => onChange?.(e.target.value)}
-          placeholder={placeholder}
-          readOnly={readOnly}
-          aria-label={label ?? "Prompt editor"}
-          aria-multiline="true"
-        />
+        <div className="kite-flyui-promptEditor__editorWrap" style={{ display: "flex" }}>
+          {showLineNumbers && (
+            <div className="kite-flyui-promptEditor__lineNumbers" aria-hidden="true">
+              {lines.map((_, i) => (
+                <div key={i} className="kite-flyui-promptEditor__lineNum">{i + 1}</div>
+              ))}
+            </div>
+          )}
+          <textarea
+            className="kite-flyui-promptEditor__textarea"
+            style={Object.keys(textareaStyle).length ? textareaStyle : undefined}
+            value={value}
+            rows={rows}
+            onChange={(e: ChangeEvent<HTMLTextAreaElement>) => onChange?.(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder={placeholder}
+            readOnly={readOnly}
+            aria-label={label ?? "Prompt editor"}
+            aria-multiline="true"
+            aria-invalid={isOver || undefined}
+          />
+        </div>
         {variables && variables.length > 0 && (
           <div className="kite-flyui-promptEditor__variables" aria-label="Available variables">
             {variables.map((v) => (
@@ -80,12 +160,14 @@ export const PromptEditor = forwardRef<HTMLDivElement, PromptEditorProps>(
                 onClick={() => onVariableInsert?.(v.name)}
                 title={v.description}
                 type="button"
+                disabled={readOnly}
               >
                 {`{{${v.name}}}`}
               </button>
             ))}
           </div>
         )}
+        {footerSlot}
       </div>
     );
   },

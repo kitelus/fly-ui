@@ -1,4 +1,4 @@
-import { forwardRef, useState, type CSSProperties, type ComponentPropsWithoutRef } from "react";
+import { forwardRef, useState, useEffect, type CSSProperties, type ComponentPropsWithoutRef, type ReactNode } from "react";
 import { buildKiteThemeStyle, mergeKiteTheme, type KiteTheme } from "../../kite/theme";
 import { useFlyUITheme } from "../../kite/theme";
 import "../agent.css";
@@ -11,7 +11,7 @@ export interface DiffLine {
   lineNumber?: number;
 }
 
-export interface DiffViewerProps extends ComponentPropsWithoutRef<"div"> {
+export interface DiffViewerProps extends Omit<ComponentPropsWithoutRef<"div">, "onCopy" | "title"> {
   before?: string;
   after?: string;
   lines?: DiffLine[];
@@ -19,6 +19,22 @@ export interface DiffViewerProps extends ComponentPropsWithoutRef<"div"> {
   afterLabel?: string;
   mode?: DiffMode;
   onModeChange?: (mode: DiffMode) => void;
+  /** Override the title shown in the toolbar. @default "Diff" */
+  title?: ReactNode;
+  /** Whether to show line numbers. @default true when lineNumber is present on lines */
+  showLineNumbers?: boolean;
+  /** Called when the copy button is clicked. */
+  onCopy?: (content: string) => void;
+  /** Label for the copy button. @default "Copy" */
+  copyLabel?: ReactNode;
+  /** Label shown briefly after copying. @default "Copied!" — set null to disable feedback */
+  copyFeedbackLabel?: ReactNode | null;
+  /** Duration in ms for the copy feedback. @default 1500 */
+  copyFeedbackDuration?: number;
+  /** Slot rendered in the toolbar alongside mode buttons. */
+  toolbarSlot?: ReactNode;
+  /** Override mode button labels. */
+  modeLabels?: { unified?: string; split?: string };
   theme?: KiteTheme;
 }
 
@@ -50,6 +66,14 @@ export const DiffViewer = forwardRef<HTMLDivElement, DiffViewerProps>(
       afterLabel = "After",
       mode = "unified",
       onModeChange,
+      title = "Diff",
+      showLineNumbers,
+      onCopy,
+      copyLabel = "Copy",
+      copyFeedbackLabel = "Copied!",
+      copyFeedbackDuration = 1500,
+      toolbarSlot,
+      modeLabels,
       theme,
       style,
       ...rest
@@ -59,6 +83,9 @@ export const DiffViewer = forwardRef<HTMLDivElement, DiffViewerProps>(
     const contextTheme = useFlyUITheme();
     const themeStyle = buildKiteThemeStyle(mergeKiteTheme(contextTheme, theme));
     const [activeMode, setActiveMode] = useState<DiffMode>(mode);
+    const [copied, setCopied] = useState(false);
+
+    useEffect(() => { setActiveMode(mode); }, [mode]);
 
     const diffLines =
       lines ?? (before !== undefined && after !== undefined ? parseSimpleDiff(before, after) : []);
@@ -68,13 +95,28 @@ export const DiffViewer = forwardRef<HTMLDivElement, DiffViewerProps>(
       onModeChange?.(m);
     };
 
+    const handleCopy = () => {
+      const content = diffLines.map((l) => l.content).join("\n");
+      onCopy?.(content);
+      if (copyFeedbackLabel !== null) {
+        setCopied(true);
+        setTimeout(() => setCopied(false), copyFeedbackDuration);
+      }
+    };
+
+    const shouldShowLineNums = showLineNumbers ?? diffLines.some((l) => l.lineNumber !== undefined);
+
+    const modeLabelMap = { unified: "Unified", split: "Split", ...modeLabels };
+
     const renderLines = (filter?: "removed" | "added") =>
       diffLines
         .filter((l) => !filter || l.type === filter || l.type === "unchanged")
         .map((line, i) => (
           <div key={i} className={`kite-flyui-diffViewer__line kite-flyui-diffViewer__line--${line.type}`}>
-            {line.lineNumber !== undefined && (
-              <span className="kite-flyui-diffViewer__lineNum">{line.lineNumber}</span>
+            {shouldShowLineNums && (
+              <span className="kite-flyui-diffViewer__lineNum">
+                {line.lineNumber !== undefined ? line.lineNumber : ""}
+              </span>
             )}
             <span className="kite-flyui-diffViewer__lineContent">{line.content}</span>
           </div>
@@ -88,19 +130,32 @@ export const DiffViewer = forwardRef<HTMLDivElement, DiffViewerProps>(
         {...rest}
       >
         <div className="kite-flyui-diffViewer__toolbar">
-          <span className="kite-flyui-diffViewer__title">Diff</span>
-          <div className="kite-flyui-diffViewer__modes" role="group" aria-label="Diff view mode">
-            {(["unified", "split"] as DiffMode[]).map((m) => (
+          <span className="kite-flyui-diffViewer__title">{title}</span>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            {toolbarSlot}
+            {onCopy && (
               <button
-                key={m}
-                className={`kite-flyui-diffViewer__modeBtn${activeMode === m ? " kite-flyui-diffViewer__modeBtn--active" : ""}`}
-                onClick={() => handleMode(m)}
                 type="button"
-                aria-pressed={activeMode === m}
+                className="kite-flyui-agentBtn"
+                onClick={handleCopy}
+                aria-label="Copy diff"
               >
-                {m.charAt(0).toUpperCase() + m.slice(1)}
+                {copied && copyFeedbackLabel !== null ? copyFeedbackLabel : copyLabel}
               </button>
-            ))}
+            )}
+            <div className="kite-flyui-diffViewer__modes" role="group" aria-label="Diff view mode">
+              {(["unified", "split"] as DiffMode[]).map((m) => (
+                <button
+                  key={m}
+                  className={`kite-flyui-diffViewer__modeBtn${activeMode === m ? " kite-flyui-diffViewer__modeBtn--active" : ""}`}
+                  onClick={() => handleMode(m)}
+                  type="button"
+                  aria-pressed={activeMode === m}
+                >
+                  {modeLabelMap[m]}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
         <div className="kite-flyui-diffViewer__container">

@@ -18,6 +18,8 @@ export interface MessageInputAction {
   icon?: ReactNode;
   label: string;
   onClick: () => void;
+  /** Disable just this action item. */
+  disabled?: boolean;
 }
 
 export interface MessageInputProps extends Omit<ComponentPropsWithoutRef<"div">, "onChange"> {
@@ -33,13 +35,31 @@ export interface MessageInputProps extends Omit<ComponentPropsWithoutRef<"div">,
    * - Pass a ReactNode → fully custom send button content
    */
   sendLabel?: ReactNode;
+  /** Aria-label for the send button. @default "Send message" */
+  sendAriaLabel?: string;
   /** Show attach button (paperclip). Calls onAttach when clicked. */
   showAttach?: boolean;
+  /** Aria-label for the attach button. @default "Attach file" */
+  attachAriaLabel?: string;
   onAttach?: () => void;
   /** Extra action items shown in a "⋯" dropdown menu */
   actions?: MessageInputAction[];
+  /** Aria-label for the more-actions dropdown trigger. @default "More actions" */
+  actionsAriaLabel?: string;
   onChange?: (value: string) => void;
   onSend?: (value: string) => void;
+  /** Whether pressing Enter sends (default true). When false, only the button sends. */
+  sendOnEnter?: boolean;
+  /** Auto-focus the textarea on mount. */
+  autoFocus?: boolean;
+  /** Maximum height (px) for the auto-growing textarea. @default 200 */
+  maxRows?: number;
+  /** Slot rendered inside the toolbar left side (alongside attach/actions). */
+  toolbarLeftSlot?: ReactNode;
+  /** Slot rendered inside the toolbar right side (alongside send). */
+  toolbarRightSlot?: ReactNode;
+  /** Render a fully custom send button. Receives canSend boolean. */
+  renderSendButton?: (canSend: boolean, onClick: () => void) => ReactNode;
   theme?: KiteTheme;
 }
 
@@ -83,11 +103,20 @@ export const MessageInput = forwardRef<HTMLDivElement, MessageInputProps>(
       maxLength,
       hint,
       sendLabel,
+      sendAriaLabel = "Send message",
       showAttach = false,
+      attachAriaLabel = "Attach file",
       onAttach,
       actions,
+      actionsAriaLabel = "More actions",
       onChange,
       onSend,
+      sendOnEnter = true,
+      autoFocus = false,
+      maxRows = 200,
+      toolbarLeftSlot,
+      toolbarRightSlot,
+      renderSendButton,
       theme,
       style,
       ...rest
@@ -100,13 +129,18 @@ export const MessageInput = forwardRef<HTMLDivElement, MessageInputProps>(
     const dropdownRef = useRef<HTMLDivElement>(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
+    // Auto-focus
+    useEffect(() => {
+      if (autoFocus) textareaRef.current?.focus();
+    }, [autoFocus]);
+
     // Auto-grow textarea
     useEffect(() => {
       const el = textareaRef.current;
       if (!el) return;
       el.style.height = "auto";
-      el.style.height = `${Math.min(el.scrollHeight, 200)}px`;
-    }, [value]);
+      el.style.height = `${Math.min(el.scrollHeight, maxRows)}px`;
+    }, [value, maxRows]);
 
     // Close dropdown on outside click
     useEffect(() => {
@@ -123,7 +157,7 @@ export const MessageInput = forwardRef<HTMLDivElement, MessageInputProps>(
     };
 
     const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-      if (e.key === "Enter" && !e.shiftKey) {
+      if (sendOnEnter && e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
         if (value.trim() && !disabled) onSend?.(value);
       }
@@ -138,10 +172,17 @@ export const MessageInput = forwardRef<HTMLDivElement, MessageInputProps>(
     const isWarn = !!maxLength && !isOver && value.length > maxLength * 0.9;
     const hasTextLabel = sendLabel !== undefined;
 
-    // Only render the toolbar row if there's something to show in it
-    const hasToolbar = showAttach || (actions && actions.length > 0) || !!maxLength || !!hint;
+    const hasToolbar =
+      showAttach ||
+      (actions && actions.length > 0) ||
+      !!maxLength ||
+      !!hint ||
+      !!toolbarLeftSlot ||
+      !!toolbarRightSlot;
 
-    const sendBtn = (
+    const sendBtnNode = renderSendButton ? (
+      renderSendButton(canSend, handleSend)
+    ) : (
       <button
         type="button"
         className={[
@@ -151,7 +192,7 @@ export const MessageInput = forwardRef<HTMLDivElement, MessageInputProps>(
         ].filter(Boolean).join(" ")}
         onClick={handleSend}
         disabled={!canSend}
-        aria-label="Send message"
+        aria-label={sendAriaLabel}
       >
         {sendLabel ?? <IconSend />}
       </button>
@@ -179,10 +220,11 @@ export const MessageInput = forwardRef<HTMLDivElement, MessageInputProps>(
               onKeyDown={handleKeyDown}
               aria-label={placeholder}
               aria-multiline="true"
+              aria-invalid={isOver || undefined}
             />
             {/* When no toolbar, send button sits inline to the right of textarea */}
             {!hasToolbar && (
-              <div className="kite-flyui-messageInput__inlineSend">{sendBtn}</div>
+              <div className="kite-flyui-messageInput__inlineSend">{sendBtnNode}</div>
             )}
           </div>
 
@@ -196,8 +238,8 @@ export const MessageInput = forwardRef<HTMLDivElement, MessageInputProps>(
                     className="kite-flyui-messageInput__iconBtn"
                     onClick={onAttach}
                     disabled={disabled}
-                    aria-label="Attach file"
-                    title="Attach file"
+                    aria-label={attachAriaLabel}
+                    title={attachAriaLabel}
                   >
                     <IconPaperclip />
                   </button>
@@ -209,10 +251,10 @@ export const MessageInput = forwardRef<HTMLDivElement, MessageInputProps>(
                       className={`kite-flyui-messageInput__iconBtn${dropdownOpen ? " kite-flyui-messageInput__iconBtn--active" : ""}`}
                       onClick={() => setDropdownOpen((o) => !o)}
                       disabled={disabled}
-                      aria-label="More actions"
+                      aria-label={actionsAriaLabel}
                       aria-expanded={dropdownOpen}
                       aria-haspopup="menu"
-                      title="More actions"
+                      title={actionsAriaLabel}
                     >
                       <IconEllipsis />
                     </button>
@@ -224,6 +266,7 @@ export const MessageInput = forwardRef<HTMLDivElement, MessageInputProps>(
                             type="button"
                             className="kite-flyui-messageInput__dropdownItem"
                             role="menuitem"
+                            disabled={action.disabled}
                             onClick={() => { action.onClick(); setDropdownOpen(false); }}
                           >
                             {action.icon != null && (
@@ -241,15 +284,20 @@ export const MessageInput = forwardRef<HTMLDivElement, MessageInputProps>(
                     "kite-flyui-messageInput__charCount",
                     isOver ? "kite-flyui-messageInput__charCount--over" : "",
                     isWarn ? "kite-flyui-messageInput__charCount--warn" : "",
-                  ].filter(Boolean).join(" ")}>
+                  ].filter(Boolean).join(" ")}
+                    aria-live="polite"
+                    aria-label={`${value.length} of ${maxLength} characters`}
+                  >
                     {value.length}/{maxLength}
                   </span>
                 )}
+                {toolbarLeftSlot}
               </div>
 
               <div className="kite-flyui-messageInput__toolbarRight">
                 {hint && <span className="kite-flyui-messageInput__hint">{hint}</span>}
-                {sendBtn}
+                {toolbarRightSlot}
+                {sendBtnNode}
               </div>
             </div>
           )}

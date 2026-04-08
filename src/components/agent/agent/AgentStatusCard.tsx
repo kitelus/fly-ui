@@ -21,10 +21,20 @@ export interface AgentStatusCardProps extends ComponentPropsWithoutRef<"div"> {
   description?: string;
   inputTokens?: number;
   outputTokens?: number;
+  /** Show/hide the token usage display. @default true */
+  showTokens?: boolean;
   errorMessage?: string;
   onStop?: () => void;
   onRetry?: () => void;
   onReset?: () => void;
+  /** Label overrides for action buttons. */
+  actionLabels?: {
+    stop?: ReactNode;
+    retry?: ReactNode;
+    reset?: ReactNode;
+  };
+  /** Extra action buttons rendered alongside the built-in ones. */
+  extraActions?: Array<{ label: ReactNode; onClick: () => void; variant?: "primary" | "danger" | "default"; ariaLabel?: string }>;
   /**
    * Accent colour for the card — overrides the automatic status colour.
    * Accepts any CSS colour string: `"#f97316"`, `"oklch(70% 0.2 30)"`, etc.
@@ -38,8 +48,14 @@ export interface AgentStatusCardProps extends ComponentPropsWithoutRef<"div"> {
    * - `"outline"` — no background, coloured border
    */
   variant?: AgentStatusCardVariant;
+  /** Custom icon/badge shown next to the agent name. */
+  icon?: ReactNode;
+  /** Custom aria-label override for the card. */
+  cardAriaLabel?: string;
   /** Render anything below the header — progress bars, step timelines, custom metrics, etc. */
   children?: ReactNode;
+  /** Slot rendered between description/tokens and error message. */
+  metaSlot?: ReactNode;
   theme?: KiteTheme;
 }
 
@@ -72,13 +88,19 @@ export const AgentStatusCard = forwardRef<HTMLDivElement, AgentStatusCardProps>(
       description,
       inputTokens,
       outputTokens,
+      showTokens = true,
       errorMessage,
       onStop,
       onRetry,
       onReset,
+      actionLabels,
+      extraActions,
       color,
       variant = "tinted",
+      icon,
+      cardAriaLabel,
       children,
+      metaSlot,
       theme,
       style,
       ...rest
@@ -88,14 +110,15 @@ export const AgentStatusCard = forwardRef<HTMLDivElement, AgentStatusCardProps>(
     const contextTheme = useFlyUITheme();
     const themeStyle = buildKiteThemeStyle(mergeKiteTheme(contextTheme, theme));
 
-    const hasTokens  = inputTokens !== undefined || outputTokens !== undefined;
-    const hasActions = (onStop && status === "running") || (onRetry && status === "error") || !!onReset;
+    const hasTokens  = showTokens && (inputTokens !== undefined || outputTokens !== undefined);
+    const hasActions =
+      (onStop && status === "running") ||
+      (onRetry && status === "error") ||
+      !!onReset ||
+      (extraActions && extraActions.length > 0);
 
-    // Resolve the accent: explicit `color` prop wins, otherwise fall back to the
-    // status-mapped CSS variable (so no hardcoded hex values here — respects theme).
     const accent = color ?? STATUS_COLOR_VAR[status];
 
-    // Build inline style overrides for each variant so pure CSS can stay simple.
     const variantStyle: CSSProperties =
       variant === "flat"
         ? {
@@ -118,12 +141,13 @@ export const AgentStatusCard = forwardRef<HTMLDivElement, AgentStatusCardProps>(
         ref={ref}
         className="kite-flyui-host kite-flyui-agentStatusCard"
         style={{ ...themeStyle, ...variantStyle, ...style } as CSSProperties}
-        aria-label={`Agent ${name}, status: ${status}`}
+        aria-label={cardAriaLabel ?? `Agent ${name}, status: ${status}`}
         {...rest}
       >
         {/* ── Header ── */}
         <div className="kite-flyui-agentStatusCard__header">
           <div className="kite-flyui-agentStatusCard__titleGroup">
+            {icon && <span className="kite-flyui-agentStatusCard__icon" aria-hidden="true">{icon}</span>}
             <span className="kite-flyui-agentStatusCard__name">{name}</span>
             {model && <span className="kite-flyui-agentStatusCard__model">{model}</span>}
           </div>
@@ -153,6 +177,8 @@ export const AgentStatusCard = forwardRef<HTMLDivElement, AgentStatusCardProps>(
           </div>
         )}
 
+        {metaSlot}
+
         {/* ── Error banner ── */}
         {errorMessage && (
           <div className="kite-flyui-agentStatusCard__error" role="alert">
@@ -164,18 +190,35 @@ export const AgentStatusCard = forwardRef<HTMLDivElement, AgentStatusCardProps>(
         {/* ── Custom content slot ── */}
         {children}
 
-        {/* ── Built-in actions ── */}
+        {/* ── Built-in + extra actions ── */}
         {hasActions && (
           <div className="kite-flyui-agentStatusCard__actions">
             {onStop  && status === "running" && (
-              <button className="kite-flyui-agentBtn kite-flyui-agentBtn--danger"  onClick={onStop}  type="button">Stop</button>
+              <button className="kite-flyui-agentBtn kite-flyui-agentBtn--danger"  onClick={onStop}  type="button">
+                {actionLabels?.stop ?? "Stop"}
+              </button>
             )}
             {onRetry && status === "error"   && (
-              <button className="kite-flyui-agentBtn kite-flyui-agentBtn--primary" onClick={onRetry} type="button">Retry</button>
+              <button className="kite-flyui-agentBtn kite-flyui-agentBtn--primary" onClick={onRetry} type="button">
+                {actionLabels?.retry ?? "Retry"}
+              </button>
             )}
             {onReset && (
-              <button className="kite-flyui-agentBtn" onClick={onReset} type="button">Reset</button>
+              <button className="kite-flyui-agentBtn" onClick={onReset} type="button">
+                {actionLabels?.reset ?? "Reset"}
+              </button>
             )}
+            {extraActions?.map((action, i) => (
+              <button
+                key={i}
+                className={`kite-flyui-agentBtn${action.variant === "primary" ? " kite-flyui-agentBtn--primary" : action.variant === "danger" ? " kite-flyui-agentBtn--danger" : ""}`}
+                onClick={action.onClick}
+                type="button"
+                aria-label={action.ariaLabel}
+              >
+                {action.label}
+              </button>
+            ))}
           </div>
         )}
       </div>
