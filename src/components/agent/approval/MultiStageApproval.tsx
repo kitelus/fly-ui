@@ -49,7 +49,7 @@ export const MultiStageApproval = forwardRef<HTMLDivElement, MultiStageApprovalP
         style={{ ...themeStyle, ...style } as CSSProperties}
         {...rest}
       >
-        {title && <p className="kite-flyui-agentStatusCard__name" style={{ marginBottom: 14 }}>{title}</p>}
+        {title && <p className="kite-flyui-multiStage__title">{title}</p>}
         <div className="kite-flyui-multiStage__stages">
           {stages.map((stage) => (
             <div key={stage.id} className="kite-flyui-multiStage__stage">
@@ -60,10 +60,10 @@ export const MultiStageApproval = forwardRef<HTMLDivElement, MultiStageApprovalP
                 {ICON[stage.status]}
               </div>
               <div className="kite-flyui-multiStage__stageBody">
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div className="kite-flyui-multiStage__stageNameRow">
                   <span className="kite-flyui-multiStage__stageName">{stage.name}</span>
                   {stage.requiredCount !== undefined && (
-                    <span style={{ fontSize: 11, color: "var(--kite-muted)" }}>
+                    <span className="kite-flyui-multiStage__stageCount">
                       ({stage.approvers?.filter((a) => a.status === "approved").length ?? 0}/{stage.requiredCount} required)
                     </span>
                   )}
@@ -79,11 +79,11 @@ export const MultiStageApproval = forwardRef<HTMLDivElement, MultiStageApprovalP
                           {approver.avatarText ?? approver.name[0].toUpperCase()}
                         </div>
                         <span>{approver.name}</span>
-                        <span className={`kite-flyui-multiStage__approverStatus--${approver.status}`} style={{ fontSize: 11 }}>
+                        <span className={`kite-flyui-multiStage__approverStatus--${approver.status}`}>
                           {approver.status === "approved" ? "✓" : approver.status === "rejected" ? "✗" : "…"}
                         </span>
                         {approver.decidedAt && (
-                          <span style={{ fontSize: 10, color: "var(--kite-muted)" }}>{approver.decidedAt}</span>
+                          <span className="kite-flyui-multiStage__approverDecided">{approver.decidedAt}</span>
                         )}
                         {approver.comment && (
                           <p className="kite-flyui-multiStage__approverComment">"{approver.comment}"</p>

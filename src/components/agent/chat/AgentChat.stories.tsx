@@ -235,6 +235,7 @@ export const WithHoverActions: Story = {
   actions={[
     { label: "Copy", onClick: () => {} },
     { label: "Retry", onClick: () => {} },
+    { label: "Flag", onClick: () => {} },
   ]}
 />`,
       },
@@ -272,7 +273,15 @@ export const DarkMode: Story = {
       description: {
         story: "Dark-mode appearance — colours adapt automatically via `prefers-color-scheme: dark`.",
       },
-      source: { code: `<MessageBubble role="assistant" content="Hello." authorName="AI Agent" />` },
+      source: {
+        code: `<MessageBubble
+  role="assistant"
+  content="Dark mode is applied automatically via \`prefers-color-scheme: dark\`."
+  authorName="AI Agent"
+  timestamp="Now"
+  theme={{ primary: "#38bdf8", foreground: "#f1f5f9", muted: "#94a3b8", surface: "#1e293b", background: "#0f172a", border: "#334155" }}
+/>`,
+      },
     },
   },
   decorators: [
@@ -315,15 +324,15 @@ export const StreamingTextShowcase: Story = {
           "`StreamingText` renders inline text with an animated blinking cursor during streaming. Pass `onStopStream` and `onCopyText` to show action buttons.",
       },
       source: {
-        code: `// Streaming
-<StreamingText content="Analysing…" isStreaming cursorVisible />
+        code: `// Streaming with cursor
+<StreamingText content="Analysing your data in real time..." isStreaming cursorVisible />
 
-// Completed
-<StreamingText content="Done." isStreaming={false} />
+// Completed (no cursor)
+<StreamingText content="Analysis complete. Found 3 anomalies." isStreaming={false} />
 
-// With actions
+// With Stop + Copy buttons
 <StreamingText
-  content="Generating…"
+  content="Generating report..."
   isStreaming
   onStopStream={() => abortController.abort()}
   onCopyText={(text) => navigator.clipboard.writeText(text)}
@@ -341,11 +350,20 @@ export const MessageInputShowcase: Story = {
         placeholder="Ask the agent anything…"
         onSend={() => {}}
         onChange={() => {}}
-        hint="Shift+Enter for new line"
+        showAttach
+        onAttach={() => {}}
+        actions={[
+          { icon: "🌐", label: "Search the web", onClick: () => {} },
+          { icon: "📄", label: "Upload document", onClick: () => {} },
+          { icon: "🧠", label: "Use memory", onClick: () => {} },
+        ]}
+        hint="Enter to send"
       />
       <MessageInput
         value="Draft message with character count"
         maxLength={200}
+        showAttach
+        onAttach={() => {}}
         onSend={() => {}}
         onChange={() => {}}
       />
@@ -362,16 +380,42 @@ export const MessageInputShowcase: Story = {
     docs: {
       description: {
         story:
-          "`MessageInput` — controlled textarea with Send button. Supports `maxLength` with a live character counter, `hint` text, and `disabled` state. Press `Enter` to send, `Shift+Enter` for a new line.",
+          "`MessageInput` — modern pill-style input with attach button, actions dropdown, icon send button, char counter, and auto-grow textarea. Press `Enter` to send, `Shift+Enter` for a new line.",
       },
       source: {
-        code: `<MessageInput
+        code: `// Full-featured input with attach, actions menu, and hint
+<MessageInput
   value={draft}
   placeholder="Ask the agent anything…"
-  hint="Shift+Enter for new line"
-  maxLength={2000}
+  hint="Enter to send"
+  showAttach
+  onAttach={() => openFilePicker()}
+  actions={[
+    { icon: "🌐", label: "Search the web", onClick: () => {} },
+    { icon: "📄", label: "Upload document", onClick: () => {} },
+    { icon: "🧠", label: "Use memory", onClick: () => {} },
+  ]}
   onSend={(text) => sendMessage(text)}
   onChange={(text) => setDraft(text)}
+/>
+
+// With character counter
+<MessageInput
+  value={draft}
+  maxLength={200}
+  showAttach
+  onAttach={() => openFilePicker()}
+  onSend={(text) => sendMessage(text)}
+  onChange={(text) => setDraft(text)}
+/>
+
+// Disabled while agent is thinking
+<MessageInput
+  value=""
+  disabled
+  placeholder="Agent is thinking…"
+  onSend={() => {}}
+  onChange={() => {}}
 />`,
       },
     },
@@ -404,8 +448,11 @@ export const ConversationListShowcase: Story = {
       source: {
         code: `<ConversationList
   items={[
-    { id: "1", title: "Data analysis", preview: "Found 3 anomalies", timestamp: "10:42 AM", pinned: true, avatarText: "DA", unread: 2 },
-    { id: "2", title: "Code review", preview: "Auth logic looks solid", timestamp: "Mon", avatarText: "CR" },
+    { id: "1", title: "Data analysis report", preview: "Found 3 anomalies in the dataset", timestamp: "10:42 AM", pinned: true, avatarText: "DA", unread: 2 },
+    { id: "2", title: "Document summarisation", preview: "The executive summary covers Q3 results", timestamp: "Yesterday", pinned: true, avatarText: "DS" },
+    { id: "3", title: "Code review session", preview: "Authentication logic looks solid", timestamp: "Mon", avatarText: "CR" },
+    { id: "4", title: "Customer support triage", preview: "Issue escalated to engineering", timestamp: "Sun", avatarText: "CS", unread: 5 },
+    { id: "5", title: "Market research brief", preview: "Competitor analysis for Q4", timestamp: "Fri", avatarText: "MR" },
   ]}
   activeId={currentId}
   onSelect={(id) => setCurrentId(id)}
@@ -452,10 +499,24 @@ export const SuggestionPillsShowcase: Story = {
           "`SuggestionPills` — clickable prompt suggestion chips. Use `layout=\"row\"` (default) for horizontal wrap or `layout=\"column\"` for a vertical list. Each pill can have an optional `icon`.",
       },
       source: {
-        code: `<SuggestionPills
+        code: `// Row layout (default) with icons
+<SuggestionPills
   suggestions={[
     { id: "1", label: "Summarise document", icon: "📄" },
     { id: "2", label: "Find anomalies", icon: "🔍" },
+    { id: "3", label: "Generate report", icon: "📊" },
+    { id: "4", label: "Compare versions", icon: "⚖️" },
+  ]}
+  onSelect={(s) => setPrompt(s.label)}
+/>
+
+// Column layout
+<SuggestionPills
+  layout="column"
+  suggestions={[
+    { id: "a", label: "What are the key findings?" },
+    { id: "b", label: "Show me the data trends" },
+    { id: "c", label: "Draft an executive summary" },
   ]}
   onSelect={(s) => setPrompt(s.label)}
 />`,

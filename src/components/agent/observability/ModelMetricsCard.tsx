@@ -40,7 +40,7 @@ export const ModelMetricsCard = forwardRef<HTMLDivElement, ModelMetricsCardProps
           {metrics.map((m, i) => (
             <div key={i} className="kite-flyui-modelMetrics__kpi">
               <span className="kite-flyui-modelMetrics__kpiVal">
-                {m.value}{m.unit && <span style={{ fontSize: 12, fontWeight: 400 }}>{m.unit}</span>}
+                {m.value}{m.unit && <span className="kite-flyui-modelMetrics__kpiUnit">{m.unit}</span>}
               </span>
               <span className="kite-flyui-modelMetrics__kpiLabel">{m.label}</span>
               {m.trend && (

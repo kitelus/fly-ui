@@ -78,7 +78,7 @@ export const ApprovalCard = forwardRef<HTMLDivElement, ApprovalCardProps>(
             {requesterName && <span>{requesterName}</span>}
             {requestedAt && <span>· {requestedAt}</span>}
             {expiresAt && (
-              <span className="kite-flyui-approvalCard__expiry" style={{ marginLeft: "auto" }}>
+              <span className="kite-flyui-approvalCard__expiry">
                 Expires: {expiresAt}
               </span>
             )}

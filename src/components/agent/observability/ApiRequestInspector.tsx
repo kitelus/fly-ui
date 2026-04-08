@@ -104,7 +104,7 @@ export const ApiRequestInspector = forwardRef<HTMLDivElement, ApiRequestInspecto
               )}
               {responseHeaders && Object.keys(responseHeaders).length > 0 && (
                 <>
-                  <p className="kite-flyui-toolCall__sectionLabel" style={{ marginTop: 8 }}>Response Headers</p>
+                  <p className="kite-flyui-toolCall__sectionLabel kite-flyui-toolCall__sectionLabel--mt">Response Headers</p>
                   <pre className="kite-flyui-toolCall__code">
                     {serialize(responseHeaders)}
                   </pre>

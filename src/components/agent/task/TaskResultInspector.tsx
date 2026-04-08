@@ -69,7 +69,7 @@ export const TaskResultInspector = forwardRef<HTMLDivElement, TaskResultInspecto
               </button>
             ))}
           </div>
-          <div style={{ display: "flex", gap: 6 }}>
+          <div className="kite-flyui-taskResult__actions">
             {onCopy && (
               <button className="kite-flyui-agentBtn" onClick={() => onCopy(serialized)} type="button">
                 Copy

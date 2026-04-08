@@ -16,6 +16,7 @@ export interface MessageBubbleProps extends ComponentPropsWithoutRef<"div"> {
   content?: string;
   authorName?: string;
   avatarText?: string;
+  avatarUrl?: string;
   timestamp?: string;
   isLoading?: boolean;
   actions?: MessageAction[];
@@ -29,6 +30,7 @@ export const MessageBubble = forwardRef<HTMLDivElement, MessageBubbleProps>(
       content,
       authorName,
       avatarText,
+      avatarUrl,
       timestamp,
       isLoading = false,
       actions,
@@ -51,7 +53,10 @@ export const MessageBubble = forwardRef<HTMLDivElement, MessageBubbleProps>(
       >
         {role !== "system" && (
           <div className="kite-flyui-messageBubble__avatar" aria-hidden="true">
-            {avatarText ?? (authorName ? authorName[0].toUpperCase() : role === "user" ? "U" : "A")}
+            {avatarUrl
+              ? <img src={avatarUrl} alt={authorName ?? role} className="kite-flyui-messageBubble__avatarImg" />
+              : (avatarText ?? (authorName ? authorName[0].toUpperCase() : role === "user" ? "U" : "A"))
+            }
           </div>
         )}
         <div className="kite-flyui-messageBubble__body">
@@ -65,13 +70,13 @@ export const MessageBubble = forwardRef<HTMLDivElement, MessageBubbleProps>(
               )}
             </div>
           )}
-          {isLoading ? (
-            <Loading label="Loading response" style={{ padding: "10px 14px" }} />
-          ) : (
-            <div className="kite-flyui-messageBubble__bubble">
-              {children ?? content}
-            </div>
-          )}
+          <div className={`kite-flyui-messageBubble__bubble${isLoading ? " kite-flyui-messageBubble__bubble--loading" : ""}`}>
+            {isLoading ? (
+              <Loading label="Loading response" className="kite-flyui-messageBubble__loadingInline" />
+            ) : (
+              children ?? content
+            )}
+          </div>
           {actions && actions.length > 0 && (
             <div className="kite-flyui-messageBubble__actions">
               {actions.map((action) => (

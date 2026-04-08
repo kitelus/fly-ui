@@ -186,8 +186,14 @@ export const ParameterFormShowcase: Story = {
       },
       source: {
         code: `<WorkflowParameterForm
-  parameters={schema}
-  values={formValues}
+  parameters={[
+    { key: "source", label: "Data source", type: "select", required: true, options: [{ label: "Production DB", value: "prod" }, { label: "Staging DB", value: "staging" }, { label: "CSV Upload", value: "csv" }] },
+    { key: "limit", label: "Record limit", type: "number", placeholder: "e.g. 1000" },
+    { key: "model", label: "Model", type: "string", placeholder: "claude-opus-4" },
+    { key: "notify", label: "Send Slack notification", type: "boolean" },
+    { key: "tag", label: "Experiment tag", type: "string", validationError: "Tag cannot contain spaces." },
+  ]}
+  values={{ source: "prod", limit: 500, model: "claude-opus-4", notify: true, tag: "v2 test" }}
   onChange={(key, value) => setFormValues(prev => ({ ...prev, [key]: value }))}
 />`,
       },
@@ -237,12 +243,35 @@ export const TemplateCardShowcase: Story = {
       },
       source: {
         code: `<WorkflowTemplateCard
+  name="Data Quality Check"
+  description="Scans a dataset for missing values, type mismatches, and statistical outliers."
+  tags={["data", "validation", "reporting"]}
+  complexity="simple"
+  stepCount={4}
+  author="Platform Team"
+  onPreview={() => previewTemplate(id)}
+  onUse={() => startWorkflow(id)}
+/>
+
+<WorkflowTemplateCard
   name="Multi-Agent Research"
-  description="Orchestrates a researcher, analyst, and writer agent…"
-  tags={["multi-agent", "research"]}
+  description="Orchestrates a researcher, analyst, and writer agent to produce a research report."
+  tags={["multi-agent", "research", "report"]}
   complexity="complex"
   stepCount={12}
-  onUse={() => startWorkflow(templateId)}
+  author="AI Team"
+  onPreview={() => previewTemplate(id)}
+  onUse={() => startWorkflow(id)}
+/>
+
+<WorkflowTemplateCard
+  name="Document Summarisation"
+  description="Extracts key points from uploaded PDFs or URLs and delivers an executive summary."
+  tags={["NLP", "summarisation"]}
+  complexity="medium"
+  stepCount={6}
+  author="Community"
+  onUse={() => startWorkflow(id)}
 />`,
       },
     },

@@ -69,7 +69,7 @@ export const ErrorLogViewer = forwardRef<HTMLDivElement, ErrorLogViewerProps>(
             onChange={(e) => onFilterChange?.(e.target.value)}
             aria-label="Filter error logs"
           />
-          <span style={{ fontSize: 12, color: "var(--kite-muted)" }}>
+          <span className="kite-flyui-errorLog__count">
             {filtered.length} {filtered.length === 1 ? "entry" : "entries"}
           </span>
         </div>

@@ -33,9 +33,9 @@ export const DataSummaryCard = forwardRef<HTMLDivElement, DataSummaryCardProps>(
         {...rest}
       >
         {(title || source || lastUpdated) && (
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
+          <div className="kite-flyui-dataSummary__topRow">
             {title && <p className="kite-flyui-tokenUsage__title">{title}</p>}
-            <span style={{ fontSize: 11, color: "var(--kite-muted)" }}>
+            <span className="kite-flyui-dataSummary__meta">
               {source && <span>{source}</span>}
               {lastUpdated && <span>{source ? " · " : ""}Updated {lastUpdated}</span>}
             </span>

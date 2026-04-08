@@ -65,7 +65,7 @@ export const PromptVersionHistory = forwardRef<HTMLDivElement, PromptVersionHist
                   {v.createdAt && <span>{v.createdAt}</span>}
                   {v.tokens !== undefined && <span>{v.tokens} tokens</span>}
                   {v.isActive && (
-                    <span style={{ color: "var(--kite-success)", fontWeight: 600 }}>Active</span>
+                    <span className="kite-flyui-promptHistory__activeLabel">Active</span>
                   )}
                 </div>
                 {v.id === activeId && (v.diffAdded?.length || v.diffRemoved?.length) && (

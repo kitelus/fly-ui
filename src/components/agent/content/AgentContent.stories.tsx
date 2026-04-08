@@ -230,14 +230,27 @@ export const ContentPreviewShowcase: Story = {
           "`ContentPreview` — renders generated text with metadata (word count, reading time, quality score). Pass `onCopy` and `onEdit` to show toolbar action buttons. The `format` label (`text`, `markdown`, `html`) is shown in the toolbar.",
       },
       source: {
-        code: `<ContentPreview
-  title="Generated Summary"
-  content={generatedText}
-  format="markdown"
-  wordCount={wordCount}
-  qualityScore={qualityScore}
-  onCopy={(text) => navigator.clipboard.writeText(text)}
+        code: `// Text format
+<ContentPreview
+  title="Generated Executive Summary"
+  content="Q3 2025 revenue reached $4.2M, representing 23% year-over-year growth..."
+  format="text"
+  wordCount={52}
+  readingTimeMin={1}
+  qualityScore={88}
+  onCopy={() => navigator.clipboard.writeText(content)}
   onEdit={() => openEditor()}
+/>
+
+// Markdown format
+<ContentPreview
+  title="Product Description Draft"
+  content={"# FlyUI Component Library\\n\\nA modern, accessible React component library..."}
+  format="markdown"
+  wordCount={38}
+  readingTimeMin={1}
+  qualityScore={92}
+  onCopy={() => navigator.clipboard.writeText(content)}
 />`,
       },
     },
@@ -288,7 +301,11 @@ export const VariantComparisonShowcase: Story = {
       },
       source: {
         code: `<VariantComparison
-  variants={generatedVariants}
+  variants={[
+    { id: "v1", label: "Variant A — Formal", content: "Our Q3 financial results demonstrate robust growth...", score: 74, tags: ["formal", "concise"] },
+    { id: "v2", label: "Variant B — Conversational", content: "Great news: Q3 was our best quarter yet!...", score: 82, tags: ["conversational", "engaging"] },
+    { id: "v3", label: "Variant C — Data-first", content: "Q3 2025: $4.2M revenue (+23% YoY)...", score: 68, tags: ["data-dense", "brief"] },
+  ]}
   selectedId={selectedVariantId}
   onSelect={(id) => setSelectedVariantId(id)}
   onCopy={(content) => navigator.clipboard.writeText(content)}

@@ -40,7 +40,7 @@ export const DataQualityBadge = forwardRef<HTMLDivElement, DataQualityBadgeProps
               {issue.level === "critical" ? "✕" : issue.level === "high" ? "▲" : issue.level === "medium" ? "●" : "○"}
             </span>
             {issue.label}
-            {issue.count !== undefined && <span style={{ opacity: 0.7 }}> ({issue.count})</span>}
+            {issue.count !== undefined && <span className="kite-flyui-dataQuality__issueCount"> ({issue.count})</span>}
           </span>
         ))}
       </div>

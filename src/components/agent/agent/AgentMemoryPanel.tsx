@@ -67,7 +67,7 @@ export const AgentMemoryPanel = forwardRef<HTMLDivElement, AgentMemoryPanelProps
               </span>
               <span className="kite-flyui-agentMemory__itemContent">{entry.content}</span>
               {entry.createdAt && (
-                <span style={{ fontSize: 11, color: "var(--kite-muted)", flexShrink: 0 }}>{entry.createdAt}</span>
+                <span className="kite-flyui-agentMemory__itemTimestamp">{entry.createdAt}</span>
               )}
               {onDelete && (
                 <div className="kite-flyui-agentMemory__itemActions">

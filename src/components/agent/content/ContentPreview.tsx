@@ -46,8 +46,8 @@ export const ContentPreview = forwardRef<HTMLDivElement, ContentPreviewProps>(
       >
         <div className="kite-flyui-contentPreview__toolbar">
           {title && <p className="kite-flyui-contentPreview__title">{title}</p>}
-          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-            <span style={{ fontSize: 11, color: "var(--kite-muted)" }}>{format}</span>
+          <div className="kite-flyui-contentPreview__toolbarRight">
+            <span className="kite-flyui-contentPreview__format">{format}</span>
             {onEdit && (
               <button className="kite-flyui-agentBtn" onClick={onEdit} type="button">Edit</button>
             )}

@@ -1,4 +1,4 @@
-import { forwardRef, useState, type CSSProperties, type ComponentPropsWithoutRef } from "react";
+import { forwardRef, useState, type ReactNode, type CSSProperties, type ComponentPropsWithoutRef } from "react";
 import { buildKiteThemeStyle, mergeKiteTheme, type KiteTheme } from "../../kite/theme";
 import { useFlyUITheme } from "../../kite/theme";
 import "../agent.css";
@@ -13,6 +13,11 @@ export interface AgentStep {
   timestamp?: string;
   durationMs?: number;
   isStreaming?: boolean;
+  /**
+   * Custom icon for this step — overrides the default emoji.
+   * Accepts a string (emoji / text) or any ReactNode (SVG, component, etc.).
+   */
+  icon?: ReactNode;
 }
 
 export interface AgentStepTimelineProps extends ComponentPropsWithoutRef<"div"> {
@@ -21,11 +26,11 @@ export interface AgentStepTimelineProps extends ComponentPropsWithoutRef<"div"> 
 }
 
 const STEP_ICON: Record<StepType, string> = {
-  thought: "💭",
-  action: "⚡",
+  thought:     "💭",
+  action:      "⚡",
   observation: "👁",
-  tool_use: "🔧",
-  decision: "🎯",
+  tool_use:    "🔧",
+  decision:    "🎯",
 };
 
 export const AgentStepTimeline = forwardRef<HTMLDivElement, AgentStepTimelineProps>(
@@ -53,7 +58,7 @@ export const AgentStepTimeline = forwardRef<HTMLDivElement, AgentStepTimelinePro
         {steps.map((step) => (
           <div key={step.id} className="kite-flyui-agentTimeline__item">
             <div className={`kite-flyui-agentTimeline__icon kite-flyui-agentTimeline__icon--${step.type}`} aria-hidden="true">
-              {STEP_ICON[step.type]}
+              {step.icon ?? STEP_ICON[step.type]}
             </div>
             <div className="kite-flyui-agentTimeline__body">
               <div className="kite-flyui-agentTimeline__stepHeader">
@@ -97,3 +102,4 @@ export const AgentStepTimeline = forwardRef<HTMLDivElement, AgentStepTimelinePro
     );
   },
 );
+

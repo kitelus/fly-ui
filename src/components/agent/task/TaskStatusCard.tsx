@@ -64,9 +64,9 @@ export const TaskStatusCard = forwardRef<HTMLDivElement, TaskStatusCardProps>(
             <p className="kite-flyui-taskCard__name">{name}</p>
             {taskId && <span className="kite-flyui-taskCard__id">{taskId}</span>}
           </div>
-          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+          <div className="kite-flyui-taskCard__headerRight">
             {priority && (
-              <span className={`kite-flyui-taskCard__priority--${priority}`} style={{ fontSize: 11, fontWeight: 700 }}>
+              <span className={`kite-flyui-taskCard__priority--${priority}`}>
                 {priority.toUpperCase()}
               </span>
             )}

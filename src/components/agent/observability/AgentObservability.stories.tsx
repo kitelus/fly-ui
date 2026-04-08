@@ -196,8 +196,11 @@ export const ModelMetricsShowcase: Story = {
   modelName="claude-opus-4"
   metrics={[
     { label: "Avg latency", value: 1.24, unit: "s", trend: "down", trendLabel: "12%" },
-    { label: "Error rate", value: "0.3", unit: "%", trend: "down" },
     { label: "Throughput", value: 48, unit: " req/m", trend: "up", trendLabel: "8%" },
+    { label: "Error rate", value: "0.3", unit: "%", trend: "down", trendLabel: "0.1%" },
+    { label: "TTFT", value: 0.38, unit: "s", trend: "stable", trendLabel: "—" },
+    { label: "Total calls", value: "12.4k", trend: "up", trendLabel: "23%" },
+    { label: "Cache hits", value: "34", unit: "%", trend: "up", trendLabel: "5%" },
   ]}
 />`,
       },
@@ -281,14 +284,26 @@ export const ApiInspectorShowcase: Story = {
           "`ApiRequestInspector` — full HTTP request/response inspector. Tabs switch between Request body, Response body, and Headers. Status codes are colour-coded: 2xx green, 4xx/5xx red.",
       },
       source: {
-        code: `<ApiRequestInspector
+        code: `// Successful request
+<ApiRequestInspector
   method="POST"
   endpoint="/v1/messages"
   statusCode={200}
   latencyMs={1240}
-  requestBody={requestPayload}
-  responseBody={responsePayload}
-  requestHeaders={headers}
+  requestHeaders={{ "content-type": "application/json", "anthropic-version": "2023-06-01" }}
+  requestBody={{ model: "claude-opus-4", max_tokens: 4096, messages: [{ role: "user", content: "Hello" }] }}
+  responseBody={{ id: "msg_01", type: "message", role: "assistant", content: [{ type: "text", text: "Hello! How can I help?" }] }}
+  responseHeaders={{ "content-type": "application/json", "x-request-id": "req_abc123" }}
+/>
+
+// Rate-limited request
+<ApiRequestInspector
+  method="POST"
+  endpoint="/v1/messages"
+  statusCode={429}
+  latencyMs={58}
+  requestBody={{ model: "claude-opus-4" }}
+  responseBody={{ error: { type: "rate_limit_error", message: "Too many requests" } }}
 />`,
       },
     },

@@ -63,7 +63,7 @@ export const WorkflowParameterForm = forwardRef<HTMLDivElement, WorkflowParamete
                   onChange={(e) => onChange?.(param.key, e.target.checked)}
                   disabled={param.disabled}
                 />
-                <span className="kite-flyui-workflowParams__label" style={{ textTransform: "none", letterSpacing: 0, fontWeight: 400 }}>
+                <span className="kite-flyui-workflowParams__checkLabel">
                   {param.placeholder ?? "Enable"}
                 </span>
               </div>

@@ -43,7 +43,7 @@ export const BatchMonitor = forwardRef<HTMLDivElement, BatchMonitorProps>(
         style={{ ...themeStyle, ...style } as CSSProperties}
         {...rest}
       >
-        {batchName && <p className="kite-flyui-agentStatusCard__name" style={{ marginBottom: 12 }}>{batchName}</p>}
+        {batchName && <p className="kite-flyui-batchMonitor__title">{batchName}</p>}
         <div className="kite-flyui-batchMonitor__summary">
           <div className="kite-flyui-batchMonitor__stat">
             <span className="kite-flyui-batchMonitor__statVal kite-flyui-batchMonitor__statVal--total">{total}</span>
@@ -58,7 +58,7 @@ export const BatchMonitor = forwardRef<HTMLDivElement, BatchMonitorProps>(
             <span className="kite-flyui-batchMonitor__statLabel">Running</span>
           </div>
           <div className="kite-flyui-batchMonitor__stat">
-            <span className="kite-flyui-batchMonitor__statVal" style={{ color: "var(--kite-muted)" }}>{queued}</span>
+            <span className="kite-flyui-batchMonitor__statVal kite-flyui-batchMonitor__statVal--queued">{queued}</span>
             <span className="kite-flyui-batchMonitor__statLabel">Queued</span>
           </div>
           {failed > 0 && (
@@ -84,7 +84,7 @@ export const BatchMonitor = forwardRef<HTMLDivElement, BatchMonitorProps>(
         <div className="kite-flyui-batchMonitor__list">
           {items.map((item) => (
             <div key={item.id} className="kite-flyui-batchMonitor__item">
-              <span className={`kite-flyui-agentBadge kite-flyui-agentBadge--${itemBadge[item.status]}`} style={{ flexShrink: 0 }}>
+              <span className={`kite-flyui-agentBadge kite-flyui-agentBadge--${itemBadge[item.status]} kite-flyui-batchMonitor__badge`}>
                 {item.status}
               </span>
               <span className="kite-flyui-batchMonitor__itemName">{item.name}</span>

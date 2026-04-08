@@ -88,8 +88,8 @@ export const DiffViewer = forwardRef<HTMLDivElement, DiffViewerProps>(
         {...rest}
       >
         <div className="kite-flyui-diffViewer__toolbar">
-          <span style={{ fontSize: 13, fontWeight: 600, color: "var(--kite-foreground)", fontFamily: "var(--kite-font-family)" }}>Diff</span>
-          <div style={{ display: "flex", gap: 4 }} role="group" aria-label="Diff view mode">
+          <span className="kite-flyui-diffViewer__title">Diff</span>
+          <div className="kite-flyui-diffViewer__modes" role="group" aria-label="Diff view mode">
             {(["unified", "split"] as DiffMode[]).map((m) => (
               <button
                 key={m}

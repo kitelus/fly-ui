@@ -65,7 +65,7 @@ export const AuditLog = forwardRef<HTMLDivElement, AuditLogProps>(
           {onExport && (
             <button className="kite-flyui-agentBtn" onClick={onExport} type="button">Export</button>
           )}
-          <span style={{ fontSize: 11, color: "var(--kite-muted)" }}>
+          <span className="kite-flyui-auditLog__count">
             {filtered.length} {filtered.length === 1 ? "entry" : "entries"}
           </span>
         </div>
@@ -94,7 +94,7 @@ export const AuditLog = forwardRef<HTMLDivElement, AuditLogProps>(
               <div className="kite-flyui-auditLog__details">
                 {entry.details}
                 {entry.metadata && expanded.has(entry.id) && (
-                  <div style={{ marginTop: 6 }}>
+                  <div className="kite-flyui-auditLog__metaExpanded">
                     {Object.entries(entry.metadata).map(([k, v]) => (
                       <div key={k} className="kite-flyui-errorLog__detailRow">
                         <span className="kite-flyui-errorLog__detailLabel">{k}</span>

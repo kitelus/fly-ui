@@ -237,18 +237,38 @@ export const ColumnStatsShowcase: Story = {
           "`ColumnStatsCard` — detailed profile for an individual column. Numeric columns show min/max/mean/median; all columns show a mini bar chart of top values. Missing values are highlighted in amber when > 0.",
       },
       source: {
-        code: `<ColumnStatsCard
+        code: `// Numeric column
+<ColumnStatsCard
   columnName="revenue"
   dataType="number"
   totalCount={12450}
   missingCount={12}
+  uniqueCount={9840}
   min={0}
   max={142000}
   mean={8420.5}
+  median={4200}
   topBins={[
-    { label: "0–5k", count: 5200 },
-    { label: "5k–20k", count: 4800 },
-    { label: "20k+", count: 2450 },
+    { label: "0 – 2 k", count: 3200 },
+    { label: "2 k – 5 k", count: 4100 },
+    { label: "5 k – 20 k", count: 3600 },
+    { label: "20 k – 50 k", count: 1200 },
+    { label: "50 k+", count: 350 },
+  ]}
+/>
+
+// String/categorical column
+<ColumnStatsCard
+  columnName="region"
+  dataType="string"
+  totalCount={12450}
+  missingCount={0}
+  uniqueCount={6}
+  topBins={[
+    { label: "EMEA", count: 4800 },
+    { label: "Americas", count: 4200 },
+    { label: "APAC", count: 2100 },
+    { label: "Other", count: 1350 },
   ]}
 />`,
       },
@@ -285,11 +305,24 @@ export const DataQualityShowcase: Story = {
           "`DataQualityBadge` — colour-coded issue chips for data validation results. Severity levels: `critical` red, `high` orange, `medium` amber, `low` muted. Use `layout=\"column\"` for a stacked list or `layout=\"row\"` for inline chips. Hover to see the occurrence count.",
       },
       source: {
-        code: `<DataQualityBadge
+        code: `// Column layout (stacked list with counts)
+<DataQualityBadge
+  layout="column"
   issues={[
     { level: "critical", label: "Duplicate primary keys", count: 14 },
     { level: "high", label: "Missing required fields", count: 512 },
-    { level: "medium", label: "Outlier values detected" },
+    { level: "medium", label: "Outlier values detected", count: 89 },
+    { level: "low", label: "Inconsistent date formats", count: 23 },
+  ]}
+/>
+
+// Row layout (inline chips)
+<DataQualityBadge
+  layout="row"
+  issues={[
+    { level: "high", label: "Null in non-nullable column" },
+    { level: "medium", label: "Schema drift detected" },
+    { level: "low", label: "Soft deprecation warning" },
   ]}
 />`,
       },

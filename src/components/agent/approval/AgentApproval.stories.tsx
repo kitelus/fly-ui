@@ -270,11 +270,29 @@ export const ConfidenceScoreShowcase: Story = {
           "`ConfidenceScore` — visual confidence meter with a colour-coded progress bar. Green = high (≥ threshold), amber = medium, red = low. When score is below `threshold` and `onRequestVerification` is provided, a **Request Human Verification** button is shown.",
       },
       source: {
-        code: `<ConfidenceScore
+        code: `// High confidence (≥ threshold) — no verification button
+<ConfidenceScore
+  score={94}
+  label="Classification confidence"
+  reason="Strong lexical match across all 3 evaluation criteria."
+  threshold={80}
+/>
+
+// Medium confidence (below threshold) — verification button shown
+<ConfidenceScore
   score={72}
   label="Sentiment analysis"
-  reason="Ambiguous phrasing detected."
+  reason="Ambiguous phrasing detected — borderline positive/neutral."
   threshold={80}
+  onRequestVerification={() => flagForReview(itemId)}
+/>
+
+// Low confidence
+<ConfidenceScore
+  score={38}
+  label="Entity extraction"
+  reason="Multiple conflicting entity candidates; context window too short."
+  threshold={70}
   onRequestVerification={() => flagForReview(itemId)}
 />`,
       },
@@ -328,20 +346,29 @@ export const MultiStageShowcase: Story = {
       },
       source: {
         code: `<MultiStageApproval
-  title="Production Deployment"
+  title="Production Deployment — v2.4.1"
   stages={[
     {
       id: "s1",
       name: "Engineering Review",
       status: "completed",
       requiredCount: 1,
-      approvers: [{ id: "a1", name: "Alice", status: "approved" }],
+      approvers: [{ id: "a1", name: "Alice Chen", status: "approved", comment: "LGTM — tests pass.", decidedAt: "09:15" }],
     },
     {
       id: "s2",
       name: "Security Sign-off",
       status: "in_progress",
-      approvers: [{ id: "a2", name: "David", status: "pending" }],
+      requiredCount: 1,
+      dueAt: "Today 11:00",
+      approvers: [{ id: "a2", name: "David Lee", status: "pending" }],
+    },
+    {
+      id: "s3",
+      name: "VP Approval",
+      status: "pending",
+      requiredCount: 1,
+      approvers: [{ id: "a3", name: "Sarah Park", status: "pending" }],
     },
   ]}
 />`,
