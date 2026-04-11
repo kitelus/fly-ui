@@ -1,0 +1,60 @@
+/*
+  Storybook demo override:
+  Keep FlyUI loading animations visible in docs even when the host OS/browser
+  requests reduced motion.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .sb-show-main .kite-flyui-float {
+    animation:
+      kite-flyui-float 4.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite,
+      kite-flyui-breath 3.8s ease-in-out infinite !important;
+  }
+
+  .sb-show-main .kite-flyui-shadowBreathe {
+    animation: kite-flyui-shadow-breathe 4.8s ease-in-out infinite !important;
+  }
+
+  .sb-show-main .kite-flyui-stringSway {
+    animation: kite-flyui-string-sway 4.8s ease-in-out infinite !important;
+  }
+
+  .sb-show-main .kite-flyui-cloudDriftFar {
+    animation: kite-flyui-cloud-pass-far 4.6s cubic-bezier(0.4, 0.06, 0.6, 0.94)
+      infinite !important;
+  }
+
+  .sb-show-main .kite-flyui-cloudDriftNear {
+    animation: kite-flyui-cloud-pass-near 3.5s
+      cubic-bezier(0.34, 0.08, 0.58, 0.96) infinite !important;
+    animation-delay: -1.6s !important;
+  }
+
+  .sb-show-main .kite-flyui-cloudDriftHigh {
+    animation: kite-flyui-cloud-pass-high 3.2s
+      cubic-bezier(0.36, 0.07, 0.58, 0.95) infinite !important;
+    animation-delay: -2.4s !important;
+  }
+
+  .sb-show-main .kite-flyui-cloudDriftAlt {
+    animation: kite-flyui-cloud-pass-alt 4.1s
+      cubic-bezier(0.38, 0.06, 0.62, 0.95) infinite !important;
+    animation-delay: -0.9s !important;
+  }
+
+  .sb-show-main .kite-flyui-loadingDot {
+    animation: kite-flyui-dot 1.2s ease-in-out infinite !important;
+  }
+
+  .sb-show-main .kite-flyui-loadingDot1 {
+    animation-delay: 0.15s !important;
+  }
+
+  .sb-show-main .kite-flyui-loadingDot2 {
+    animation-delay: 0.3s !important;
+  }
+
+  .sb-show-main .kite-flyui-label,
+  .sb-show-main .kite-flyui-loadingTextPulse {
+    animation: kite-flyui-label-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
+  }
+}

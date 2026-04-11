@@ -7,7 +7,8 @@ import { DiffViewer } from "./DiffViewer";
 import { MultiStageApproval } from "./MultiStageApproval";
 
 const themeArgType = {
-  description: "Optional per-component theme override. Use `FlyUIThemeProvider` for app-wide theming.",
+  description:
+    "Optional per-component theme override. Use `FlyUIThemeProvider` for app-wide theming.",
   control: "object",
   table: {
     type: {
@@ -26,8 +27,10 @@ const meta = {
   tags: ["autodocs"],
   args: {
     title: "Deploy to Production",
-    description: "Agent has prepared a deployment package for the Q3 reporting service. Human approval is required before the action is executed.",
-    actionDescription: "Run `kubectl apply -f deploy/prod/reporting-v2.yaml` on the production cluster.",
+    description:
+      "Agent has prepared a deployment package for the Q3 reporting service. Human approval is required before the action is executed.",
+    actionDescription:
+      "Run `kubectl apply -f deploy/prod/reporting-v2.yaml` on the production cluster.",
     requesterName: "Research Agent",
     requestedAt: "10:42 AM",
     expiresAt: "11:42 AM",
@@ -45,7 +48,8 @@ const meta = {
       table: { defaultValue: { summary: "undefined" } },
     },
     actionDescription: {
-      description: "Exact action that will be executed if approved — displayed in a highlighted monospace box.",
+      description:
+        "Exact action that will be executed if approved — displayed in a highlighted monospace box.",
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
@@ -55,7 +59,8 @@ const meta = {
       table: { defaultValue: { summary: "undefined" } },
     },
     requesterAvatar: {
-      description: "Avatar URL for the requester. When provided, shows a small avatar image next to the requester name.",
+      description:
+        "Avatar URL for the requester. When provided, shows a small avatar image next to the requester name.",
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
@@ -65,7 +70,8 @@ const meta = {
       table: { defaultValue: { summary: "undefined" } },
     },
     expiresAt: {
-      description: "Expiry time shown in the requester row — prompts urgency for the approver.",
+      description:
+        "Expiry time shown in the requester row — prompts urgency for the approver.",
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
@@ -77,22 +83,26 @@ const meta = {
       table: { defaultValue: { summary: "pending" } },
     },
     resolvedBy: {
-      description: "Name of the person who resolved the request — shown in the resolved banner.",
+      description:
+        "Name of the person who resolved the request — shown in the resolved banner.",
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
     resolvedAt: {
-      description: "Time the request was resolved — shown in the resolved banner.",
+      description:
+        "Time the request was resolved — shown in the resolved banner.",
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
     resolvedComment: {
-      description: "Comment left at resolution time — shown in the resolved banner.",
+      description:
+        "Comment left at resolution time — shown in the resolved banner.",
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
     disabled: {
-      description: "Disables the comment textarea and action buttons — useful while the approval is being submitted.",
+      description:
+        "Disables the comment textarea and action buttons — useful while the approval is being submitted.",
       control: "boolean",
       table: { defaultValue: { summary: "false" } },
     },
@@ -117,12 +127,14 @@ const meta = {
       table: { defaultValue: { summary: '"Reject"' } },
     },
     resolvedLabels: {
-      description: "Override the icon and/or label shown in the resolved banner per status. `{ approved?: { icon?, label? }, rejected?: { icon?, label? }, expired?: { icon?, label? } }`.",
+      description:
+        "Override the icon and/or label shown in the resolved banner per status. `{ approved?: { icon?, label? }, rejected?: { icon?, label? }, expired?: { icon?, label? } }`.",
       control: "object",
       table: { defaultValue: { summary: "undefined" } },
     },
     onApprove: {
-      description: "Called with the comment string when **Approve** is clicked.",
+      description:
+        "Called with the comment string when **Approve** is clicked.",
       control: false,
     },
     onReject: {
@@ -130,7 +142,8 @@ const meta = {
       control: false,
     },
     bodySlot: {
-      description: "ReactNode rendered between the action description and the comment textarea. Use for risk warnings, attached diffs, or custom context.",
+      description:
+        "ReactNode rendered between the action description and the comment textarea. Use for risk warnings, attached diffs, or custom context.",
       control: false,
       table: { category: "Slots" },
     },
@@ -143,6 +156,8 @@ const meta = {
       description: {
         component: `
 Human-in-the-loop (HITL) approval components for AI agent workflows that require explicit human sign-off before taking high-stakes actions.
+
+      > Availability: These components are available in '@kitelus/fly-ui' version '0.1.5-rc.0' and later.
 
 ---
 
@@ -275,7 +290,12 @@ export const Approved: Story = {
     resolvedComment: "Looks good — proceeding.",
   },
   parameters: {
-    docs: { description: { story: "Approved state — shows a green resolved banner with the approver name, time, and comment." } },
+    docs: {
+      description: {
+        story:
+          "Approved state — shows a green resolved banner with the approver name, time, and comment.",
+      },
+    },
   },
 };
 
@@ -284,10 +304,16 @@ export const Rejected: Story = {
     status: "rejected",
     resolvedBy: "Bob Smith",
     resolvedAt: "10:45 AM",
-    resolvedComment: "Not enough test coverage — revert and add integration tests first.",
+    resolvedComment:
+      "Not enough test coverage — revert and add integration tests first.",
   },
   parameters: {
-    docs: { description: { story: "Rejected state — shows a red resolved banner with a left accent border." } },
+    docs: {
+      description: {
+        story:
+          "Rejected state — shows a red resolved banner with a left accent border.",
+      },
+    },
   },
 };
 
@@ -297,7 +323,12 @@ export const Expired: Story = {
     expiresAt: "10:42 AM",
   },
   parameters: {
-    docs: { description: { story: "Expired state — shown when no decision was made within the expiry window." } },
+    docs: {
+      description: {
+        story:
+          "Expired state — shown when no decision was made within the expiry window.",
+      },
+    },
   },
 };
 
@@ -314,7 +345,8 @@ export const CustomLabels: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Override `approveLabel` and `rejectLabel` for domain-specific terminology. Use `commentPlaceholder` to guide reviewers, and `commentMaxLength` to limit comment length.",
+        story:
+          "Override `approveLabel` and `rejectLabel` for domain-specific terminology. Use `commentPlaceholder` to guide reviewers, and `commentMaxLength` to limit comment length.",
       },
       source: {
         code: `<ApprovalCard
@@ -341,13 +373,14 @@ export const CustomResolvedLabels: Story = {
     resolvedLabels: {
       approved: { label: "Authorised" },
       rejected: { label: "Denied" },
-      expired:  { label: "Timed out" },
+      expired: { label: "Timed out" },
     },
   },
   parameters: {
     docs: {
       description: {
-        story: "Use `resolvedLabels` to override the text shown in the resolved banner per status — useful for i18n or domain-specific terminology.",
+        story:
+          "Use `resolvedLabels` to override the text shown in the resolved banner per status — useful for i18n or domain-specific terminology.",
       },
       source: {
         code: `<ApprovalCard
@@ -373,7 +406,17 @@ export const WithBodySlot: Story = {
     onApprove: () => {},
     onReject: () => {},
     bodySlot: (
-      <div style={{ padding: "8px 12px", borderRadius: 6, background: "var(--kite-warning-subtle)", border: "1px solid color-mix(in srgb, var(--kite-warning) 40%, transparent)", fontSize: 12, color: "var(--kite-warning)" }}>
+      <div
+        style={{
+          padding: "8px 12px",
+          borderRadius: 6,
+          background: "var(--kite-warning-subtle)",
+          border:
+            "1px solid color-mix(in srgb, var(--kite-warning) 40%, transparent)",
+          fontSize: 12,
+          color: "var(--kite-warning)",
+        }}
+      >
         This action will affect 1 240 customers in the APAC segment.
       </div>
     ),
@@ -408,12 +451,22 @@ export const WithBodySlot: Story = {
 export const Themed: Story = {
   args: {
     status: "pending",
-    theme: { primary: "#7c3aed", primarySubtle: "#ede9fe", border: "#ddd6fe", success: "#16a34a", danger: "#dc2626" },
+    theme: {
+      primary: "#7c3aed",
+      primarySubtle: "#ede9fe",
+      border: "#ddd6fe",
+      success: "#16a34a",
+      danger: "#dc2626",
+    },
     onApprove: () => {},
     onReject: () => {},
   },
   parameters: {
-    docs: { description: { story: "Per-component colour override via the `theme` prop." } },
+    docs: {
+      description: {
+        story: "Per-component colour override via the `theme` prop.",
+      },
+    },
   },
 };
 
@@ -421,7 +474,14 @@ export const Themed: Story = {
 
 export const ConfidenceScoreShowcase: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 420 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 16,
+        maxWidth: 420,
+      }}
+    >
       <ConfidenceScore
         score={94}
         label="Classification confidence"
@@ -538,7 +598,13 @@ export const MultiStageShowcase: Story = {
             status: "completed",
             requiredCount: 1,
             approvers: [
-              { id: "a1", name: "Alice Chen", status: "approved", comment: "LGTM — tests pass.", decidedAt: "09:15" },
+              {
+                id: "a1",
+                name: "Alice Chen",
+                status: "approved",
+                comment: "LGTM — tests pass.",
+                decidedAt: "09:15",
+              },
             ],
           },
           {
@@ -547,18 +613,14 @@ export const MultiStageShowcase: Story = {
             status: "in_progress",
             requiredCount: 1,
             dueAt: "Today 11:00",
-            approvers: [
-              { id: "a2", name: "David Lee", status: "pending" },
-            ],
+            approvers: [{ id: "a2", name: "David Lee", status: "pending" }],
           },
           {
             id: "s3",
             name: "VP Approval",
             status: "pending",
             requiredCount: 1,
-            approvers: [
-              { id: "a3", name: "Sarah Park", status: "pending" },
-            ],
+            approvers: [{ id: "a3", name: "Sarah Park", status: "pending" }],
           },
         ]}
         onStageAction={() => {}}
@@ -622,11 +684,42 @@ export const AuditLogShowcase: Story = {
     <div style={{ maxWidth: 560 }}>
       <AuditLog
         entries={[
-          { id: "e1", action: "created",   actor: "Research Agent", timestamp: "10:41 AM", details: "Approval request created for production deployment." },
-          { id: "e2", action: "commented", actor: "Alice Chen",     timestamp: "10:43 AM", details: "Added comment: \"Need to check the rollback plan first.\"" },
-          { id: "e3", action: "approved",  actor: "Alice Chen",     timestamp: "10:45 AM", details: "Stage 1 (Engineering) approved." },
-          { id: "e4", action: "modified",  actor: "Research Agent", timestamp: "10:46 AM", details: "Updated expiry window from 30 min to 60 min." },
-          { id: "e5", action: "rejected",  actor: "David Lee",      timestamp: "10:52 AM", details: "Stage 2 (Security) rejected — firewall rules not updated." },
+          {
+            id: "e1",
+            action: "created",
+            actor: "Research Agent",
+            timestamp: "10:41 AM",
+            details: "Approval request created for production deployment.",
+          },
+          {
+            id: "e2",
+            action: "commented",
+            actor: "Alice Chen",
+            timestamp: "10:43 AM",
+            details: 'Added comment: "Need to check the rollback plan first."',
+          },
+          {
+            id: "e3",
+            action: "approved",
+            actor: "Alice Chen",
+            timestamp: "10:45 AM",
+            details: "Stage 1 (Engineering) approved.",
+          },
+          {
+            id: "e4",
+            action: "modified",
+            actor: "Research Agent",
+            timestamp: "10:46 AM",
+            details: "Updated expiry window from 30 min to 60 min.",
+          },
+          {
+            id: "e5",
+            action: "rejected",
+            actor: "David Lee",
+            timestamp: "10:52 AM",
+            details:
+              "Stage 2 (Security) rejected — firewall rules not updated.",
+          },
         ]}
         searchPlaceholder="Search audit events…"
         onExport={() => {}}
@@ -670,9 +763,18 @@ export const AuditLogShowcase: Story = {
 
 export const DiffViewerShowcase: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 620 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 24,
+        maxWidth: 620,
+      }}
+    >
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Unified mode — with line numbers and copy</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Unified mode — with line numbers and copy
+        </p>
         <DiffViewer
           title="Prompt change — v2 → v3"
           beforeLabel="v2 (current)"
@@ -693,7 +795,9 @@ Do not use markdown formatting.`}
         />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Custom mode labels + toolbar slot</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Custom mode labels + toolbar slot
+        </p>
         <DiffViewer
           beforeLabel="Original"
           afterLabel="Revised"
@@ -701,7 +805,9 @@ Do not use markdown formatting.`}
           before="The product is excellent."
           after="The product is excellent and highly recommended."
           toolbarSlot={
-            <span style={{ fontSize: 11, color: "#64748b", marginLeft: "auto" }}>
+            <span
+              style={{ fontSize: 11, color: "#64748b", marginLeft: "auto" }}
+            >
               1 addition · 0 removals
             </span>
           }

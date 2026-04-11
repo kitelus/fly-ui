@@ -1,7 +1,7 @@
 {
   "name": "@kitelus/fly-ui",
   "private": false,
-  "version": "0.1.5-rc.0",
+  "version": "0.1.5-rc.1",
   "description": "Fly UI - isolated React component library with modern Storybook docs",
   "license": "MIT",
   "repository": {
@@ -50,9 +50,10 @@
     "react": ">=18",
     "react-dom": ">=18"
   },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.2.8"
+  },
   "devDependencies": {
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
     "@chromatic-com/storybook": "^5.1.1",
     "@eslint/js": "^9.39.4",
     "@storybook/addon-a11y": "^10.3.4",
@@ -74,6 +75,8 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "playwright": "^1.59.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "storybook": "^10.3.4",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",

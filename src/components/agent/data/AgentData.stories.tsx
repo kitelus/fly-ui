@@ -5,7 +5,8 @@ import { DataQualityBadge } from "./DataQualityBadge";
 import { DataSummaryCard } from "./DataSummaryCard";
 
 const themeArgType = {
-  description: "Optional per-component theme override. Use `FlyUIThemeProvider` for app-wide theming.",
+  description:
+    "Optional per-component theme override. Use `FlyUIThemeProvider` for app-wide theming.",
   control: "object",
   table: {
     type: {
@@ -25,9 +26,9 @@ const meta = {
   args: {
     title: "Sales Dataset Overview",
     stats: [
-      { label: "Rows",      value: "12,450" },
-      { label: "Columns",   value: 18 },
-      { label: "Missing",   value: "2.3%" },
+      { label: "Rows", value: "12,450" },
+      { label: "Columns", value: 18 },
+      { label: "Missing", value: "2.3%" },
       { label: "Duplicates", value: 0 },
     ],
     source: "sales_data_q3.csv",
@@ -46,17 +47,20 @@ const meta = {
       table: { defaultValue: { summary: "[]" } },
     },
     insights: {
-      description: "Array of insight strings rendered as highlighted callout rows below the stats grid.",
+      description:
+        "Array of insight strings rendered as highlighted callout rows below the stats grid.",
       control: "object",
       table: { defaultValue: { summary: "undefined" } },
     },
     source: {
-      description: "Data source identifier shown in the top-right corner (e.g. filename or table name).",
+      description:
+        "Data source identifier shown in the top-right corner (e.g. filename or table name).",
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
     lastUpdated: {
-      description: "Timestamp or relative time shown alongside the source label.",
+      description:
+        "Timestamp or relative time shown alongside the source label.",
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
@@ -66,7 +70,8 @@ const meta = {
       control: false,
     },
     onRefresh: {
-      description: "Callback — shows a Refresh button in the header when provided.",
+      description:
+        "Callback — shows a Refresh button in the header when provided.",
       control: false,
     },
     refreshLabel: {
@@ -75,12 +80,14 @@ const meta = {
       table: { defaultValue: { summary: '"Refresh"' } },
     },
     refreshing: {
-      description: "When `true`, disables the Refresh button and shows a loading indicator.",
+      description:
+        "When `true`, disables the Refresh button and shows a loading indicator.",
       control: "boolean",
       table: { defaultValue: { summary: "false" } },
     },
     renderStat: {
-      description: "Custom render function for a single stat — receives the `DataStat` object and returns a ReactNode.",
+      description:
+        "Custom render function for a single stat — receives the `DataStat` object and returns a ReactNode.",
       control: false,
     },
     headerSlot: {
@@ -102,6 +109,8 @@ const meta = {
       description: {
         component: `
 Data inspection components for surfacing dataset statistics, column profiles, and quality issues in AI data pipelines.
+
+      > Availability: These components are available in '@kitelus/fly-ui' version '0.1.5-rc.0' and later.
 
 ---
 
@@ -198,9 +207,9 @@ export const WithInsights: Story = {
   args: {
     title: "Customer Churn Dataset",
     stats: [
-      { label: "Rows",       value: "45,200" },
-      { label: "Columns",    value: 23 },
-      { label: "Missing",    value: "4.1%" },
+      { label: "Rows", value: "45,200" },
+      { label: "Columns", value: 23 },
+      { label: "Missing", value: "4.1%" },
       { label: "Churn Rate", value: "12.4%" },
     ],
     insights: [
@@ -225,10 +234,15 @@ export const WithRefreshAndClick: Story = {
   args: {
     title: "Sales Dataset Overview",
     stats: [
-      { id: "rows",    label: "Rows",      value: "12,450" },
-      { id: "cols",    label: "Columns",   value: 18, unit: "fields" },
-      { id: "missing", label: "Missing",   value: "2.3%", description: "Primarily in the age column" },
-      { id: "dupes",   label: "Duplicates", value: 0 },
+      { id: "rows", label: "Rows", value: "12,450" },
+      { id: "cols", label: "Columns", value: 18, unit: "fields" },
+      {
+        id: "missing",
+        label: "Missing",
+        value: "2.3%",
+        description: "Primarily in the age column",
+      },
+      { id: "dupes", label: "Duplicates", value: 0 },
     ],
     onStatClick: () => {},
     onRefresh: () => {},
@@ -263,7 +277,7 @@ export const Refreshing: Story = {
   args: {
     title: "Sales Dataset Overview",
     stats: [
-      { label: "Rows",    value: "12,450" },
+      { label: "Rows", value: "12,450" },
       { label: "Columns", value: 18 },
     ],
     onRefresh: () => {},
@@ -273,7 +287,8 @@ export const Refreshing: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Set `refreshing={true}` to show a loading indicator and disable the Refresh button while data is being reloaded.",
+        story:
+          "Set `refreshing={true}` to show a loading indicator and disable the Refresh button while data is being reloaded.",
       },
       source: {
         code: `<DataSummaryCard
@@ -293,13 +308,18 @@ export const MinimalStats: Story = {
     title: undefined,
     stats: [
       { label: "Total records", value: "1,200" },
-      { label: "Fields",        value: 8 },
+      { label: "Fields", value: 8 },
     ],
     source: undefined,
     lastUpdated: undefined,
   },
   parameters: {
-    docs: { description: { story: "Minimal usage — just `stats` with no title, source, or insights." } },
+    docs: {
+      description: {
+        story:
+          "Minimal usage — just `stats` with no title, source, or insights.",
+      },
+    },
   },
 };
 
@@ -308,7 +328,11 @@ export const Themed: Story = {
     theme: { primary: "#0d9488", surface: "#f0fdfa", border: "#99f6e4" },
   },
   parameters: {
-    docs: { description: { story: "Per-component colour override via the `theme` prop." } },
+    docs: {
+      description: {
+        story: "Per-component colour override via the `theme` prop.",
+      },
+    },
   },
 };
 
@@ -316,7 +340,14 @@ export const Themed: Story = {
 
 export const ColumnStatsShowcase: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 520 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 16,
+        maxWidth: 520,
+      }}
+    >
       <ColumnStatsCard
         columnName="revenue"
         dataType="number"
@@ -329,14 +360,22 @@ export const ColumnStatsShowcase: Story = {
         median={4200}
         selected
         topBins={[
-          { label: "0 – 2 k",    count: 3200 },
-          { label: "2 k – 5 k",  count: 4100 },
+          { label: "0 – 2 k", count: 3200 },
+          { label: "2 k – 5 k", count: 4100 },
           { label: "5 k – 20 k", count: 3600 },
           { label: "20 k – 50 k", count: 1200 },
-          { label: "50 k+",       count: 350 },
+          { label: "50 k+", count: 350 },
         ]}
         onSelect={() => {}}
-        statLabels={{ total: "Rows", unique: "Distinct", min: "Min", max: "Max", mean: "Average", median: "Median", missing: "Nulls" }}
+        statLabels={{
+          total: "Rows",
+          unique: "Distinct",
+          min: "Min",
+          max: "Max",
+          mean: "Average",
+          median: "Median",
+          missing: "Nulls",
+        }}
       />
       <ColumnStatsCard
         columnName="region"
@@ -345,10 +384,10 @@ export const ColumnStatsShowcase: Story = {
         missingCount={0}
         uniqueCount={6}
         topBins={[
-          { label: "EMEA",     count: 4800 },
+          { label: "EMEA", count: 4800 },
           { label: "Americas", count: 4200 },
-          { label: "APAC",     count: 2100 },
-          { label: "Other",    count: 1350 },
+          { label: "APAC", count: 2100 },
+          { label: "Other", count: 1350 },
         ]}
       />
     </div>
@@ -414,51 +453,97 @@ export const ColumnStatsShowcase: Story = {
 
 export const DataQualityShowcase: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 520 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 24,
+        maxWidth: 520,
+      }}
+    >
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Column layout — with click handler and level icons</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Column layout — with click handler and level icons
+        </p>
         <DataQualityBadge
           layout="column"
           issues={[
-            { id: "dupes",   level: "critical", label: "Duplicate primary keys",  count: 14,  description: "14 rows share a non-unique primary key" },
-            { id: "missing", level: "high",     label: "Missing required fields",  count: 512 },
-            { id: "outlier", level: "medium",   label: "Outlier values detected",  count: 89 },
-            { id: "format",  level: "low",      label: "Inconsistent date formats", count: 23 },
+            {
+              id: "dupes",
+              level: "critical",
+              label: "Duplicate primary keys",
+              count: 14,
+              description: "14 rows share a non-unique primary key",
+            },
+            {
+              id: "missing",
+              level: "high",
+              label: "Missing required fields",
+              count: 512,
+            },
+            {
+              id: "outlier",
+              level: "medium",
+              label: "Outlier values detected",
+              count: 89,
+            },
+            {
+              id: "format",
+              level: "low",
+              label: "Inconsistent date formats",
+              count: 23,
+            },
           ]}
           onIssueClick={() => {}}
           ariaLabel="Data quality summary"
         />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Row layout — inline chips</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Row layout — inline chips
+        </p>
         <DataQualityBadge
           layout="row"
           issues={[
-            { level: "high",   label: "Null in non-nullable column" },
+            { level: "high", label: "Null in non-nullable column" },
             { level: "medium", label: "Schema drift detected" },
-            { level: "low",    label: "Soft deprecation warning" },
+            { level: "low", label: "Soft deprecation warning" },
           ]}
         />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Custom level icons</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Custom level icons
+        </p>
         <DataQualityBadge
           layout="column"
           issues={[
-            { id: "c1", level: "critical", label: "Critical integrity issue", count: 3 },
-            { id: "c2", level: "high",     label: "High severity warning",    count: 7 },
+            {
+              id: "c1",
+              level: "critical",
+              label: "Critical integrity issue",
+              count: 3,
+            },
+            {
+              id: "c2",
+              level: "high",
+              label: "High severity warning",
+              count: 7,
+            },
           ]}
           levelIcons={{
             critical: <span style={{ fontSize: 12 }}>🚨</span>,
-            high:     <span style={{ fontSize: 12 }}>⚠️</span>,
-            medium:   <span style={{ fontSize: 12 }}>ℹ️</span>,
-            low:      <span style={{ fontSize: 12 }}>💡</span>,
+            high: <span style={{ fontSize: 12 }}>⚠️</span>,
+            medium: <span style={{ fontSize: 12 }}>ℹ️</span>,
+            low: <span style={{ fontSize: 12 }}>💡</span>,
           }}
           onIssueClick={() => {}}
         />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Empty state</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Empty state
+        </p>
         <DataQualityBadge
           layout="column"
           issues={[]}

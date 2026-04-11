@@ -5,7 +5,8 @@ import { TaskResultInspector } from "./TaskResultInspector";
 import { TaskStatusCard } from "./TaskStatusCard";
 
 const themeArgType = {
-  description: "Optional per-component theme override. Use `FlyUIThemeProvider` for app-wide theming.",
+  description:
+    "Optional per-component theme override. Use `FlyUIThemeProvider` for app-wide theming.",
   control: "object",
   table: {
     type: {
@@ -50,7 +51,8 @@ const meta = {
       table: { defaultValue: { summary: "queued" } },
     },
     priority: {
-      description: "Priority label shown with colour coding: `low` muted, `normal` primary, `high` warning, `urgent` danger.",
+      description:
+        "Priority label shown with colour coding: `low` muted, `normal` primary, `high` warning, `urgent` danger.",
       options: ["low", "normal", "high", "urgent"],
       control: { type: "inline-radio" },
       table: { defaultValue: { summary: "undefined" } },
@@ -61,12 +63,14 @@ const meta = {
       table: { defaultValue: { summary: "undefined" } },
     },
     progress: {
-      description: "Completion percentage (0–100). When provided, renders a progress bar.",
+      description:
+        "Completion percentage (0–100). When provided, renders a progress bar.",
       control: { type: "range", min: 0, max: 100, step: 1 },
       table: { defaultValue: { summary: "undefined" } },
     },
     progressLabel: {
-      description: "Custom label shown next to or above the progress bar (e.g. `\"3 / 7 files\"`).",
+      description:
+        'Custom label shown next to or above the progress bar (e.g. `"3 / 7 files"`).',
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
@@ -86,28 +90,34 @@ const meta = {
       table: { defaultValue: { summary: "undefined" } },
     },
     errorMessage: {
-      description: "Error description shown in a red alert box when `status === \"failed\"`.",
+      description:
+        'Error description shown in a red alert box when `status === "failed"`.',
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
     onCancel: {
-      description: "Callback — shows a **Cancel** button when `status === \"running\"`.",
+      description:
+        'Callback — shows a **Cancel** button when `status === "running"`.',
       control: false,
     },
     onRetry: {
-      description: "Callback — shows a **Retry** button when `status === \"failed\"`.",
+      description:
+        'Callback — shows a **Retry** button when `status === "failed"`.',
       control: false,
     },
     onPause: {
-      description: "Callback — shows a **Pause** button when `status === \"running\"` (unless `alwaysShowPauseResume` is false).",
+      description:
+        'Callback — shows a **Pause** button when `status === "running"` (unless `alwaysShowPauseResume` is false).',
       control: false,
     },
     onResume: {
-      description: "Callback — shows a **Resume** button when `status === \"cancelled\"` or a paused state.",
+      description:
+        'Callback — shows a **Resume** button when `status === "cancelled"` or a paused state.',
       control: false,
     },
     alwaysShowPauseResume: {
-      description: "When `true`, shows Pause/Resume buttons regardless of the current status.",
+      description:
+        "When `true`, shows Pause/Resume buttons regardless of the current status.",
       control: "boolean",
       table: { defaultValue: { summary: "false" } },
     },
@@ -132,16 +142,19 @@ const meta = {
       table: { defaultValue: { summary: '"Resume"' } },
     },
     extraActions: {
-      description: "Additional action buttons rendered alongside the built-in ones. Each: `{ label, onClick, variant?, ariaLabel? }`.",
+      description:
+        "Additional action buttons rendered alongside the built-in ones. Each: `{ label, onClick, variant?, ariaLabel? }`.",
       control: false,
     },
     headerSlot: {
-      description: "ReactNode rendered in the card header alongside the task name.",
+      description:
+        "ReactNode rendered in the card header alongside the task name.",
       control: false,
       table: { category: "Slots" },
     },
     children: {
-      description: "ReactNode rendered below all built-in rows — use for custom progress indicators, metadata, or sub-task lists.",
+      description:
+        "ReactNode rendered below all built-in rows — use for custom progress indicators, metadata, or sub-task lists.",
       control: false,
       table: { category: "Slots" },
     },
@@ -154,6 +167,8 @@ const meta = {
       description: {
         component: `
 Task management components for tracking individual tasks, monitoring batch jobs, and inspecting results.
+
+      > Availability: These components are available in '@kitelus/fly-ui' version '0.1.5-rc.0' and later.
 
 ---
 
@@ -238,9 +253,19 @@ export const Playground: Story = {
 };
 
 export const Queued: Story = {
-  args: { status: "queued", progress: undefined, startedAt: undefined, eta: undefined, priority: "normal" },
+  args: {
+    status: "queued",
+    progress: undefined,
+    startedAt: undefined,
+    eta: undefined,
+    priority: "normal",
+  },
   parameters: {
-    docs: { description: { story: "Task is queued and waiting to be picked up by an executor." } },
+    docs: {
+      description: {
+        story: "Task is queued and waiting to be picked up by an executor.",
+      },
+    },
   },
 };
 
@@ -291,7 +316,8 @@ export const RunningWithPause: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Pass `onPause` alongside `onCancel` to show a Pause button for tasks that can be suspended. Labels are overridable via `pauseLabel` and `cancelLabel`.",
+        story:
+          "Pass `onPause` alongside `onCancel` to show a Pause button for tasks that can be suspended. Labels are overridable via `pauseLabel` and `cancelLabel`.",
       },
       source: {
         code: `<TaskStatusCard
@@ -309,9 +335,20 @@ export const RunningWithPause: Story = {
 };
 
 export const Completed: Story = {
-  args: { status: "completed", priority: "normal", progress: 100, startedAt: "10:41 AM", completedAt: "10:43 AM", eta: undefined },
+  args: {
+    status: "completed",
+    priority: "normal",
+    progress: 100,
+    startedAt: "10:41 AM",
+    completedAt: "10:43 AM",
+    eta: undefined,
+  },
   parameters: {
-    docs: { description: { story: "Task completed — progress bar turns green, duration is shown." } },
+    docs: {
+      description: {
+        story: "Task completed — progress bar turns green, duration is shown.",
+      },
+    },
   },
 };
 
@@ -345,7 +382,8 @@ export const Cancelled: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Task was cancelled — pass `onResume` to show a Resume button so the user can restart from where it left off.",
+        story:
+          "Task was cancelled — pass `onResume` to show a Resume button so the user can restart from where it left off.",
       },
       source: {
         code: `<TaskStatusCard
@@ -366,15 +404,15 @@ export const WithExtraActions: Story = {
     priority: "normal",
     progress: 100,
     extraActions: [
-      { label: "View result",  onClick: () => {}, variant: "primary" },
-      { label: "Export",       onClick: () => {} },
+      { label: "View result", onClick: () => {}, variant: "primary" },
+      { label: "Export", onClick: () => {} },
     ],
   },
   parameters: {
     docs: {
       description: {
         story:
-          "Use `extraActions` to add custom buttons alongside the built-in Cancel/Retry. Each action accepts `label`, `onClick`, and optional `variant` (`\"primary\"`, `\"danger\"`, or `\"default\"`).",
+          'Use `extraActions` to add custom buttons alongside the built-in Cancel/Retry. Each action accepts `label`, `onClick`, and optional `variant` (`"primary"`, `"danger"`, or `"default"`).',
       },
       source: {
         code: `<TaskStatusCard
@@ -405,7 +443,8 @@ export const WithCustomLabels: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Override all labels for i18n support — `priorityLabel`, `cancelLabel`, `pauseLabel`, `resumeLabel`, `retryLabel` all accept custom strings.",
+        story:
+          "Override all labels for i18n support — `priorityLabel`, `cancelLabel`, `pauseLabel`, `resumeLabel`, `retryLabel` all accept custom strings.",
       },
       source: {
         code: `<TaskStatusCard
@@ -430,10 +469,21 @@ export const WithChildrenSlot: Story = {
     priority: "normal",
     progress: 40,
     children: (
-      <div style={{ fontSize: 12, color: "#64748b", marginTop: 8, display: "flex", flexDirection: "column", gap: 4 }}>
+      <div
+        style={{
+          fontSize: 12,
+          color: "#64748b",
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          gap: 4,
+        }}
+      >
         <div>✓ Step 1: Data validation</div>
         <div>✓ Step 2: Schema mapping</div>
-        <div style={{ color: "#3b82f6" }}>⟳ Step 3: Model inference (running…)</div>
+        <div style={{ color: "#3b82f6" }}>
+          ⟳ Step 3: Model inference (running…)
+        </div>
         <div style={{ color: "#94a3b8" }}>○ Step 4: Report generation</div>
       </div>
     ),
@@ -441,7 +491,8 @@ export const WithChildrenSlot: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Use the `children` slot to render a sub-task list, custom progress indicator, or any metadata below the built-in rows.",
+        story:
+          "Use the `children` slot to render a sub-task list, custom progress indicator, or any metadata below the built-in rows.",
       },
       source: {
         code: `<TaskStatusCard
@@ -458,10 +509,19 @@ export const WithChildrenSlot: Story = {
 
 export const Themed: Story = {
   args: {
-    theme: { primary: "#0d9488", success: "#16a34a", danger: "#dc2626", warning: "#d97706" },
+    theme: {
+      primary: "#0d9488",
+      success: "#16a34a",
+      danger: "#dc2626",
+      warning: "#d97706",
+    },
   },
   parameters: {
-    docs: { description: { story: "Per-component colour override via the `theme` prop." } },
+    docs: {
+      description: {
+        story: "Per-component colour override via the `theme` prop.",
+      },
+    },
   },
 };
 
@@ -473,13 +533,38 @@ export const BatchMonitorShowcase: Story = {
       <BatchMonitor
         batchName="Nightly Document Summarisation"
         items={[
-          { id: "t1", name: "Q3 Financial Report.pdf",        status: "completed", progress: 100 },
-          { id: "t2", name: "Product Roadmap 2025.docx",      status: "completed", progress: 100 },
-          { id: "t3", name: "Customer Feedback June.xlsx",    status: "running",   progress: 67 },
-          { id: "t4", name: "Board Meeting Minutes.pdf",      status: "running",   progress: 22 },
-          { id: "t5", name: "Legal Contract v4.docx",         status: "queued" },
-          { id: "t6", name: "Competitor Analysis.pptx",       status: "failed",    errorMessage: "File parse error: unsupported format." },
-          { id: "t7", name: "HR Policy Update.pdf",           status: "queued" },
+          {
+            id: "t1",
+            name: "Q3 Financial Report.pdf",
+            status: "completed",
+            progress: 100,
+          },
+          {
+            id: "t2",
+            name: "Product Roadmap 2025.docx",
+            status: "completed",
+            progress: 100,
+          },
+          {
+            id: "t3",
+            name: "Customer Feedback June.xlsx",
+            status: "running",
+            progress: 67,
+          },
+          {
+            id: "t4",
+            name: "Board Meeting Minutes.pdf",
+            status: "running",
+            progress: 22,
+          },
+          { id: "t5", name: "Legal Contract v4.docx", status: "queued" },
+          {
+            id: "t6",
+            name: "Competitor Analysis.pptx",
+            status: "failed",
+            errorMessage: "File parse error: unsupported format.",
+          },
+          { id: "t7", name: "HR Policy Update.pdf", status: "queued" },
         ]}
         onRetryFailed={() => {}}
         onRetryItem={() => {}}
@@ -489,7 +574,13 @@ export const BatchMonitorShowcase: Story = {
         cancelAllLabel="Cancel batch"
         retryItemLabel="Retry"
         cancelItemLabel="Cancel"
-        statLabels={{ total: "Files", done: "Done", running: "Running", queued: "Queued", failed: "Failed" }}
+        statLabels={{
+          total: "Files",
+          done: "Done",
+          running: "Running",
+          queued: "Queued",
+          failed: "Failed",
+        }}
       />
     </div>
   ),
@@ -545,7 +636,8 @@ export const BatchMonitorEmpty: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Pass `emptyText` (or `renderEmpty()`) to customise the empty state when there are no batch items.",
+        story:
+          "Pass `emptyText` (or `renderEmpty()`) to customise the empty state when there are no batch items.",
       },
       source: {
         code: `<BatchMonitor
@@ -574,18 +666,31 @@ export const BatchMonitorEmpty: Story = {
 
 export const TaskResultShowcase: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 580 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 24,
+        maxWidth: 580,
+      }}
+    >
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>JSON result with copy and download</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          JSON result with copy and download
+        </p>
         <TaskResultInspector
           result={{
-            summary: "Q3 revenue grew 23% YoY driven by enterprise segment expansion.",
+            summary:
+              "Q3 revenue grew 23% YoY driven by enterprise segment expansion.",
             keyFindings: [
               "Widget Pro contributed $142k — 34% of total revenue",
               "Churn rate decreased from 4.2% to 2.8%",
               "APAC region showed 41% growth",
             ],
-            recommendations: ["Increase Widget Pro inventory by 20%", "Invest in APAC marketing"],
+            recommendations: [
+              "Increase Widget Pro inventory by 20%",
+              "Invest in APAC marketing",
+            ],
             generatedAt: "2025-01-14T10:45:00Z",
             modelUsed: "claude-opus-4",
             tokenCount: 8350,
@@ -597,14 +702,24 @@ export const TaskResultShowcase: Story = {
         />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Custom format labels + extra format tab</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Custom format labels + extra format tab
+        </p>
         <TaskResultInspector
           result={{ status: "ok", data: [1, 2, 3] }}
           tokenCount={120}
           durationMs={340}
-          formatLabels={{ json: "Raw JSON", text: "Readable", markdown: "Markdown" }}
+          formatLabels={{
+            json: "Raw JSON",
+            text: "Readable",
+            markdown: "Markdown",
+          }}
           extraFormats={[
-            { id: "csv", label: "CSV", render: (r) => Object.values(r as object).join(",") },
+            {
+              id: "csv",
+              label: "CSV",
+              render: (r) => Object.values(r as object).join(","),
+            },
           ]}
           toolbarSlot={
             <span style={{ fontSize: 11, color: "#64748b" }}>v1.2.0</span>

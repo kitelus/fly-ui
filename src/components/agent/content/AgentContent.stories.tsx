@@ -13,7 +13,14 @@ function renderMarkdown(text: string) {
 
   const flushList = () => {
     if (listItems.length) {
-      nodes.push(<ul key={`ul-${nodes.length}`} style={{ margin: "4px 0", paddingLeft: 20 }}>{listItems}</ul>);
+      nodes.push(
+        <ul
+          key={`ul-${nodes.length}`}
+          style={{ margin: "4px 0", paddingLeft: 20 }}
+        >
+          {listItems}
+        </ul>,
+      );
       listItems = [];
     }
   };
@@ -27,7 +34,21 @@ function renderMarkdown(text: string) {
       if (m.index > last) parts.push(s.slice(last, m.index));
       if (m[1] !== undefined) parts.push(<strong key={m.index}>{m[1]}</strong>);
       else if (m[2] !== undefined) parts.push(<em key={m.index}>{m[2]}</em>);
-      else if (m[3] !== undefined) parts.push(<code key={m.index} style={{ fontFamily: "monospace", background: "var(--kite-surface)", padding: "1px 4px", borderRadius: 3, fontSize: "0.9em" }}>{m[3]}</code>);
+      else if (m[3] !== undefined)
+        parts.push(
+          <code
+            key={m.index}
+            style={{
+              fontFamily: "monospace",
+              background: "var(--kite-surface)",
+              padding: "1px 4px",
+              borderRadius: 3,
+              fontSize: "0.9em",
+            }}
+          >
+            {m[3]}
+          </code>,
+        );
       last = m.index + m[0].length;
     }
     if (last < s.length) parts.push(s.slice(last));
@@ -41,12 +62,21 @@ function renderMarkdown(text: string) {
       flushList();
       const Tag = `h${heading[1].length}` as "h1" | "h2" | "h3";
       const sizes = { h1: 18, h2: 15, h3: 13 } as const;
-      nodes.push(<Tag key={i} style={{ margin: "4px 0", fontSize: sizes[Tag] }}>{renderInline(heading[2], i)}</Tag>);
+      nodes.push(
+        <Tag key={i} style={{ margin: "4px 0", fontSize: sizes[Tag] }}>
+          {renderInline(heading[2], i)}
+        </Tag>,
+      );
     } else if (li) {
       listItems.push(<li key={i}>{renderInline(li[1], i)}</li>);
     } else {
       flushList();
-      if (line.trim()) nodes.push(<p key={i} style={{ margin: "2px 0" }}>{renderInline(line, i)}</p>);
+      if (line.trim())
+        nodes.push(
+          <p key={i} style={{ margin: "2px 0" }}>
+            {renderInline(line, i)}
+          </p>,
+        );
     }
   });
   flushList();
@@ -54,7 +84,8 @@ function renderMarkdown(text: string) {
 }
 
 const themeArgType = {
-  description: "Optional per-component theme override. Use `FlyUIThemeProvider` for app-wide theming.",
+  description:
+    "Optional per-component theme override. Use `FlyUIThemeProvider` for app-wide theming.",
   control: "object",
   table: {
     type: {
@@ -101,22 +132,26 @@ const meta = {
       table: { defaultValue: { summary: '"Enter your prompt…"' } },
     },
     estimatedTokens: {
-      description: "Estimated token count shown in the toolbar. Turns amber when above 90% of `maxTokens`.",
+      description:
+        "Estimated token count shown in the toolbar. Turns amber when above 90% of `maxTokens`.",
       control: { type: "number", min: 0 },
       table: { defaultValue: { summary: "undefined" } },
     },
     maxTokens: {
-      description: "Token limit — shown alongside `estimatedTokens` as `n / max`.",
+      description:
+        "Token limit — shown alongside `estimatedTokens` as `n / max`.",
       control: { type: "number", min: 0 },
       table: { defaultValue: { summary: "undefined" } },
     },
     readOnly: {
-      description: "Disables editing — useful for displaying a prompt without allowing changes.",
+      description:
+        "Disables editing — useful for displaying a prompt without allowing changes.",
       control: "boolean",
       table: { defaultValue: { summary: "false" } },
     },
     rows: {
-      description: "Number of visible rows for the textarea. Used to set the default height before scrolling.",
+      description:
+        "Number of visible rows for the textarea. Used to set the default height before scrolling.",
       control: { type: "number", min: 1 },
       table: { defaultValue: { summary: "6" } },
     },
@@ -126,7 +161,8 @@ const meta = {
       table: { defaultValue: { summary: "false" } },
     },
     minHeight: {
-      description: "Minimum height of the textarea. Accepts CSS values (e.g. `\"120px\"`) or a number (treated as px).",
+      description:
+        'Minimum height of the textarea. Accepts CSS values (e.g. `"120px"`) or a number (treated as px).',
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
@@ -142,11 +178,13 @@ const meta = {
       table: { defaultValue: { summary: "undefined" } },
     },
     onSave: {
-      description: "Callback — shows a Save button when provided. Receives the current prompt text.",
+      description:
+        "Callback — shows a Save button when provided. Receives the current prompt text.",
       control: false,
     },
     onFormat: {
-      description: "Callback — shows a Format button when provided. Receives the current prompt text.",
+      description:
+        "Callback — shows a Format button when provided. Receives the current prompt text.",
       control: false,
     },
     saveLabel: {
@@ -160,11 +198,13 @@ const meta = {
       table: { defaultValue: { summary: '"Format"' } },
     },
     onChange: {
-      description: "Controlled change callback — receives the updated text string.",
+      description:
+        "Controlled change callback — receives the updated text string.",
       control: false,
     },
     onVariableInsert: {
-      description: "Called with the variable name when a variable chip is clicked.",
+      description:
+        "Called with the variable name when a variable chip is clicked.",
       control: false,
     },
     toolbarSlot: {
@@ -186,6 +226,8 @@ const meta = {
       description: {
         component: `
 Content generation components — prompt editing, output preview, and variant comparison for AI-generated content workflows.
+
+      > Availability: These components are available in '@kitelus/fly-ui' version '0.1.5-rc.0' and later.
 
 ---
 
@@ -277,12 +319,22 @@ export const Playground: Story = {
 
 export const WithVariables: Story = {
   args: {
-    value: "Analyse the {{data_source}} and summarise the top {{num_insights}} findings in a {{output_format}} format.",
+    value:
+      "Analyse the {{data_source}} and summarise the top {{num_insights}} findings in a {{output_format}} format.",
     label: "Prompt Template",
     variables: [
-      { name: "data_source",   description: "Source dataset or document to analyse" },
-      { name: "num_insights",  description: "Number of key insights to extract" },
-      { name: "output_format", description: "Response format: JSON, markdown, or plain text" },
+      {
+        name: "data_source",
+        description: "Source dataset or document to analyse",
+      },
+      {
+        name: "num_insights",
+        description: "Number of key insights to extract",
+      },
+      {
+        name: "output_format",
+        description: "Response format: JSON, markdown, or plain text",
+      },
     ],
     estimatedTokens: 32,
     onVariableInsert: () => {},
@@ -327,7 +379,8 @@ export const WithLineNumbers: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Pass `showLineNumbers` to display a line number gutter on the left. Use `rows` to set the initial height, and `minHeight` / `maxHeight` for finer control.",
+        story:
+          "Pass `showLineNumbers` to display a line number gutter on the left. Use `rows` to set the initial height, and `minHeight` / `maxHeight` for finer control.",
       },
       source: {
         code: `<PromptEditor
@@ -355,7 +408,8 @@ export const WithSaveAndFormat: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Provide `onSave` and/or `onFormat` to show action buttons in the toolbar. Labels are customisable via `saveLabel` and `formatLabel`.",
+        story:
+          "Provide `onSave` and/or `onFormat` to show action buttons in the toolbar. Labels are customisable via `saveLabel` and `formatLabel`.",
       },
       source: {
         code: `<PromptEditor
@@ -392,7 +446,12 @@ export const NearTokenLimit: Story = {
 export const ReadOnly: Story = {
   args: { readOnly: true, label: "Active Prompt (read-only)" },
   parameters: {
-    docs: { description: { story: "Pass `readOnly` to display the prompt without allowing edits — the textarea is non-interactive." } },
+    docs: {
+      description: {
+        story:
+          "Pass `readOnly` to display the prompt without allowing edits — the textarea is non-interactive.",
+      },
+    },
   },
 };
 
@@ -401,7 +460,17 @@ export const WithFooterSlot: Story = {
     label: "System Prompt",
     onSave: () => {},
     footerSlot: (
-      <div style={{ marginTop: 8, padding: "8px 10px", background: "#f8fafc", borderRadius: 6, fontSize: 11, color: "#64748b", border: "1px solid #e2e8f0" }}>
+      <div
+        style={{
+          marginTop: 8,
+          padding: "8px 10px",
+          background: "#f8fafc",
+          borderRadius: 6,
+          fontSize: 11,
+          color: "#64748b",
+          border: "1px solid #e2e8f0",
+        }}
+      >
         ℹ️ Changes will take effect on the next agent run.
       </div>
     ),
@@ -409,7 +478,8 @@ export const WithFooterSlot: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Use `footerSlot` to inject additional content below the editor — for help text, save status, or validation messages.",
+        story:
+          "Use `footerSlot` to inject additional content below the editor — for help text, save status, or validation messages.",
       },
       source: {
         code: `<PromptEditor
@@ -433,7 +503,11 @@ export const Themed: Story = {
     theme: { primary: "#7c3aed", border: "#ddd6fe", background: "#fafafa" },
   },
   parameters: {
-    docs: { description: { story: "Per-component colour override via the `theme` prop." } },
+    docs: {
+      description: {
+        story: "Per-component colour override via the `theme` prop.",
+      },
+    },
   },
 };
 
@@ -441,9 +515,18 @@ export const Themed: Story = {
 
 export const ContentPreviewShowcase: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 20, maxWidth: 600 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 20,
+        maxWidth: 600,
+      }}
+    >
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Text format — full action bar</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Text format — full action bar
+        </p>
         <ContentPreview
           title="Generated Executive Summary"
           content="Q3 2025 revenue reached $4.2M, representing 23% year-over-year growth. The enterprise segment was the primary driver, contributing 61% of total revenue. Customer retention improved to 97.2%, the highest recorded level. Key wins include three Fortune 500 expansions and entry into the APAC market."
@@ -463,7 +546,9 @@ export const ContentPreviewShowcase: Story = {
         />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Markdown format — renderContent with inline parser</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Markdown format — renderContent with inline parser
+        </p>
         <ContentPreview
           title="Product Description Draft"
           content={`# FlyUI Component Library\n\nA modern, accessible React component library designed for AI-powered enterprise applications.\n\n## Features\n- 30+ production-ready components\n- Automatic dark mode\n- Full keyboard navigation`}
@@ -476,7 +561,9 @@ export const ContentPreviewShowcase: Story = {
         />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Low quality score + custom format label</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Low quality score + custom format label
+        </p>
         <ContentPreview
           content="Short draft."
           format="text"
@@ -549,9 +636,18 @@ export const ContentPreviewShowcase: Story = {
 
 export const VariantComparisonShowcase: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 720 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 24,
+        maxWidth: 720,
+      }}
+    >
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>3 variants — Variant B pre-selected</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          3 variants — Variant B pre-selected
+        </p>
         <VariantComparison
           variants={[
             {
@@ -593,7 +689,9 @@ export const VariantComparisonShowcase: Story = {
         />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Empty state with custom message</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Empty state with custom message
+        </p>
         <VariantComparison
           variants={[]}
           onSelect={() => {}}

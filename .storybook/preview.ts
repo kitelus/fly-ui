@@ -1,5 +1,6 @@
 import type { Preview } from "@storybook/react-vite";
 import { themes } from "storybook/theming";
+import "./preview-motion-override.css";
 
 const preview: Preview = {
   parameters: {

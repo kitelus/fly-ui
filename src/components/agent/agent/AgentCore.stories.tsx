@@ -8,7 +8,8 @@ import { MultiAgentDiagram } from "./MultiAgentDiagram";
 import { ToolCallInspector } from "./ToolCallInspector";
 
 const themeArgType = {
-  description: "Optional per-component theme override. Use `FlyUIThemeProvider` for app-wide theming.",
+  description:
+    "Optional per-component theme override. Use `FlyUIThemeProvider` for app-wide theming.",
   control: "object",
   table: {
     type: {
@@ -23,13 +24,19 @@ const themeArgType = {
 const meta = {
   title: "Components/Agent",
   component: AgentStatusCard,
-  subcomponents: { AgentStepTimeline, ToolCallInspector, AgentMemoryPanel, MultiAgentDiagram },
+  subcomponents: {
+    AgentStepTimeline,
+    ToolCallInspector,
+    AgentMemoryPanel,
+    MultiAgentDiagram,
+  },
   tags: ["autodocs"],
   args: {
     name: "Research Agent",
     status: "running",
     model: "claude-opus-4",
-    description: "Autonomously researching and summarising the provided documents.",
+    description:
+      "Autonomously researching and summarising the provided documents.",
     inputTokens: 12_400,
     outputTokens: 3_200,
   },
@@ -52,12 +59,14 @@ const meta = {
       table: { defaultValue: { summary: "undefined" } },
     },
     description: {
-      description: "Short human-readable description of what the agent is currently doing.",
+      description:
+        "Short human-readable description of what the agent is currently doing.",
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
     inputTokens: {
-      description: "Input (prompt) token count shown in the meta row. Requires `showTokens` to not be `false`.",
+      description:
+        "Input (prompt) token count shown in the meta row. Requires `showTokens` to not be `false`.",
       control: { type: "number", min: 0 },
       table: { defaultValue: { summary: "undefined" } },
     },
@@ -67,27 +76,29 @@ const meta = {
       table: { defaultValue: { summary: "undefined" } },
     },
     showTokens: {
-      description: "When `false`, hides the token usage row even if `inputTokens` / `outputTokens` are provided.",
+      description:
+        "When `false`, hides the token usage row even if `inputTokens` / `outputTokens` are provided.",
       control: "boolean",
       table: { defaultValue: { summary: "true" } },
     },
     errorMessage: {
-      description: "Error description rendered in a compact red alert banner. Always shown when provided, regardless of `status`.",
+      description:
+        "Error description rendered in a compact red alert banner. Always shown when provided, regardless of `status`.",
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
     color: {
       description:
-        "Accent colour for the card — any CSS colour string (`\"#f97316\"`, `\"oklch(70% 0.2 30)\"`). Overrides the automatic status colour. Tints the badge, background, and border via `color-mix`.",
+        'Accent colour for the card — any CSS colour string (`"#f97316"`, `"oklch(70% 0.2 30)"`). Overrides the automatic status colour. Tints the badge, background, and border via `color-mix`.',
       control: "color",
       table: { defaultValue: { summary: "status colour" } },
     },
     variant: {
       description:
-        "Visual weight of the card background.\n- `\"tinted\"` — subtle background tint (default)\n- `\"flat\"` — solid background, no tint\n- `\"outline\"` — transparent background, coloured border only",
+        'Visual weight of the card background.\n- `"tinted"` — subtle background tint (default)\n- `"flat"` — solid background, no tint\n- `"outline"` — transparent background, coloured border only',
       options: ["tinted", "flat", "outline"],
       control: { type: "inline-radio" },
-      table: { defaultValue: { summary: "\"tinted\"" } },
+      table: { defaultValue: { summary: '"tinted"' } },
     },
     icon: {
       description:
@@ -96,15 +107,18 @@ const meta = {
       table: { category: "Slots" },
     },
     onStop: {
-      description: "Callback — shows a **Stop** button when `status === \"running\"` and this prop is provided.",
+      description:
+        'Callback — shows a **Stop** button when `status === "running"` and this prop is provided.',
       control: false,
     },
     onRetry: {
-      description: "Callback — shows a **Retry** button when `status === \"error\"` and this prop is provided.",
+      description:
+        'Callback — shows a **Retry** button when `status === "error"` and this prop is provided.',
       control: false,
     },
     onReset: {
-      description: "Callback — shows a **Reset** button when provided (visible in all statuses).",
+      description:
+        "Callback — shows a **Reset** button when provided (visible in all statuses).",
       control: false,
     },
     actionLabels: {
@@ -115,16 +129,18 @@ const meta = {
     },
     extraActions: {
       description:
-        "Additional action buttons rendered alongside the built-in ones. Each item: `{ label, onClick, variant?, ariaLabel? }`. `variant` accepts `\"primary\"`, `\"danger\"`, or `\"default\"`.",
+        'Additional action buttons rendered alongside the built-in ones. Each item: `{ label, onClick, variant?, ariaLabel? }`. `variant` accepts `"primary"`, `"danger"`, or `"default"`.',
       control: false,
     },
     cardAriaLabel: {
-      description: "Accessible label for the card container element. Useful for screen readers in dashboards with multiple agent cards.",
+      description:
+        "Accessible label for the card container element. Useful for screen readers in dashboards with multiple agent cards.",
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
     metaSlot: {
-      description: "ReactNode rendered in the meta row alongside the description and token counts.",
+      description:
+        "ReactNode rendered in the meta row alongside the description and token counts.",
       control: false,
       table: { category: "Slots" },
     },
@@ -142,6 +158,8 @@ const meta = {
       description: {
         component: `
 Agent status and inspection components for monitoring AI agent execution in real time.
+
+  > Availability: These components are available in '@kitelus/fly-ui' version '0.1.5-rc.0' and later.
 
 ---
 
@@ -248,22 +266,34 @@ export const Playground: Story = {
 };
 
 export const Idle: Story = {
-  args: { status: "idle", description: "Waiting for task assignment.", inputTokens: undefined, outputTokens: undefined },
+  args: {
+    status: "idle",
+    description: "Waiting for task assignment.",
+    inputTokens: undefined,
+    outputTokens: undefined,
+  },
   parameters: {
-    docs: { description: { story: "Agent is initialised but not yet running — muted badge, no token counts." } },
+    docs: {
+      description: {
+        story:
+          "Agent is initialised but not yet running — muted badge, no token counts.",
+      },
+    },
   },
 };
 
 export const Running: Story = {
   args: {
     status: "running",
-    description: "Executing step 3 of 7 — extracting entities from the document.",
+    description:
+      "Executing step 3 of 7 — extracting entities from the document.",
     onStop: () => {},
   },
   parameters: {
     docs: {
       description: {
-        story: "Agent is actively running. Pass `onStop` to reveal a Stop button. The status dot pulses blue.",
+        story:
+          "Agent is actively running. Pass `onStop` to reveal a Stop button. The status dot pulses blue.",
       },
       source: {
         code: `<AgentStatusCard
@@ -288,32 +318,44 @@ export const Thinking: Story = {
     outputTokens: 0,
   },
   parameters: {
-    docs: { description: { story: "Agent is in a reasoning/thinking phase — dot pulses in primary colour." } },
+    docs: {
+      description: {
+        story:
+          "Agent is in a reasoning/thinking phase — dot pulses in primary colour.",
+      },
+    },
   },
 };
 
 export const Completed: Story = {
   args: {
     status: "completed",
-    description: "Task completed successfully. Generated a 3-page executive summary.",
+    description:
+      "Task completed successfully. Generated a 3-page executive summary.",
     inputTokens: 45_000,
     outputTokens: 12_500,
   },
   parameters: {
-    docs: { description: { story: "Agent has finished its task — badge turns green." } },
+    docs: {
+      description: {
+        story: "Agent has finished its task — badge turns green.",
+      },
+    },
   },
 };
 
 export const Error: Story = {
   args: {
     status: "error",
-    errorMessage: "Rate limit exceeded on the web_search tool. Retry after 30 s.",
+    errorMessage:
+      "Rate limit exceeded on the web_search tool. Retry after 30 s.",
     onRetry: () => {},
   },
   parameters: {
     docs: {
       description: {
-        story: "Error state — shows a red alert with `errorMessage`. Pass `onRetry` to offer a retry button.",
+        story:
+          "Error state — shows a red alert with `errorMessage`. Pass `onRetry` to offer a retry button.",
       },
       source: {
         code: `<AgentStatusCard
@@ -329,10 +371,41 @@ export const Error: Story = {
 
 export const Variants: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 420 }}>
-      <AgentStatusCard name="Research Agent" status="running" model="claude-opus-4" description="Step 3 of 7 — extracting entities." inputTokens={12_400} outputTokens={3_200} variant="tinted" />
-      <AgentStatusCard name="Research Agent" status="running" model="claude-opus-4" description="Step 3 of 7 — extracting entities." inputTokens={12_400} outputTokens={3_200} variant="flat" />
-      <AgentStatusCard name="Research Agent" status="running" model="claude-opus-4" description="Step 3 of 7 — extracting entities." inputTokens={12_400} outputTokens={3_200} variant="outline" />
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
+        maxWidth: 420,
+      }}
+    >
+      <AgentStatusCard
+        name="Research Agent"
+        status="running"
+        model="claude-opus-4"
+        description="Step 3 of 7 — extracting entities."
+        inputTokens={12_400}
+        outputTokens={3_200}
+        variant="tinted"
+      />
+      <AgentStatusCard
+        name="Research Agent"
+        status="running"
+        model="claude-opus-4"
+        description="Step 3 of 7 — extracting entities."
+        inputTokens={12_400}
+        outputTokens={3_200}
+        variant="flat"
+      />
+      <AgentStatusCard
+        name="Research Agent"
+        status="running"
+        model="claude-opus-4"
+        description="Step 3 of 7 — extracting entities."
+        inputTokens={12_400}
+        outputTokens={3_200}
+        variant="outline"
+      />
     </div>
   ),
   parameters: {
@@ -352,10 +425,44 @@ export const Variants: Story = {
 
 export const CustomColor: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 420 }}>
-      <AgentStatusCard name="Marketing Agent" status="running"    model="claude-haiku-4-5"  description="Drafting campaign copy for Q2 launch."   color="#f97316" variant="tinted"  inputTokens={4_200}  outputTokens={800} />
-      <AgentStatusCard name="Finance Agent"   status="completed"  model="claude-opus-4"     description="Q3 reconciliation complete."              color="#8b5cf6" variant="tinted"  inputTokens={22_000} outputTokens={5_400} />
-      <AgentStatusCard name="DevOps Agent"    status="error"      model="claude-sonnet-4-5" description="Deployment pipeline failed."              color="#e11d48" variant="outline" errorMessage="Container image pull failed — registry unreachable." onRetry={() => {}} />
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
+        maxWidth: 420,
+      }}
+    >
+      <AgentStatusCard
+        name="Marketing Agent"
+        status="running"
+        model="claude-haiku-4-5"
+        description="Drafting campaign copy for Q2 launch."
+        color="#f97316"
+        variant="tinted"
+        inputTokens={4_200}
+        outputTokens={800}
+      />
+      <AgentStatusCard
+        name="Finance Agent"
+        status="completed"
+        model="claude-opus-4"
+        description="Q3 reconciliation complete."
+        color="#8b5cf6"
+        variant="tinted"
+        inputTokens={22_000}
+        outputTokens={5_400}
+      />
+      <AgentStatusCard
+        name="DevOps Agent"
+        status="error"
+        model="claude-sonnet-4-5"
+        description="Deployment pipeline failed."
+        color="#e11d48"
+        variant="outline"
+        errorMessage="Container image pull failed — registry unreachable."
+        onRetry={() => {}}
+      />
     </div>
   ),
   parameters: {
@@ -408,9 +515,9 @@ export const WithExtraActions: Story = {
         inputTokens={18_000}
         outputTokens={4_100}
         extraActions={[
-          { label: "View output",  onClick: () => {}, variant: "primary" },
+          { label: "View output", onClick: () => {}, variant: "primary" },
           { label: "Download PDF", onClick: () => {} },
-          { label: "Re-run",       onClick: () => {} },
+          { label: "Re-run", onClick: () => {} },
         ]}
       />
     </div>
@@ -419,7 +526,7 @@ export const WithExtraActions: Story = {
     docs: {
       description: {
         story:
-          "Use `extraActions` to render additional buttons alongside the built-in Stop/Retry/Reset. Each action accepts `label`, `onClick`, optional `variant` (`\"primary\"`, `\"danger\"`, `\"default\"`), and `ariaLabel`.",
+          'Use `extraActions` to render additional buttons alongside the built-in Stop/Retry/Reset. Each action accepts `label`, `onClick`, optional `variant` (`"primary"`, `"danger"`, `"default"`), and `ariaLabel`.',
       },
       source: {
         code: `<AgentStatusCard
@@ -438,7 +545,14 @@ export const WithExtraActions: Story = {
 
 export const WithCustomContent: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 420 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 12,
+        maxWidth: 420,
+      }}
+    >
       {/* Progress bar injected via children */}
       <AgentStatusCard
         name="Summarisation Agent"
@@ -450,11 +564,33 @@ export const WithCustomContent: Story = {
         onStop={() => {}}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "var(--kite-muted)" }}>
-            <span>Progress</span><span>3 / 7</span>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              fontSize: 11,
+              color: "var(--kite-muted)",
+            }}
+          >
+            <span>Progress</span>
+            <span>3 / 7</span>
           </div>
-          <div style={{ height: 4, background: "var(--kite-border)", borderRadius: 9999, overflow: "hidden" }}>
-            <div style={{ width: "43%", height: "100%", background: "var(--kite-primary)", borderRadius: 9999 }} />
+          <div
+            style={{
+              height: 4,
+              background: "var(--kite-border)",
+              borderRadius: 9999,
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                width: "43%",
+                height: "100%",
+                background: "var(--kite-primary)",
+                borderRadius: 9999,
+              }}
+            />
           </div>
         </div>
       </AgentStatusCard>
@@ -475,7 +611,10 @@ export const WithCustomContent: Story = {
                 fontSize: 11,
                 padding: "2px 8px",
                 borderRadius: 4,
-                background: i < 2 ? "var(--kite-success-subtle)" : "var(--kite-primary-subtle)",
+                background:
+                  i < 2
+                    ? "var(--kite-success-subtle)"
+                    : "var(--kite-primary-subtle)",
                 color: i < 2 ? "var(--kite-success)" : "var(--kite-primary)",
                 fontWeight: 600,
               }}
@@ -513,7 +652,14 @@ export const WithCustomContent: Story = {
 
 export const CustomLabelsAndIcon: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 420 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
+        maxWidth: 420,
+      }}
+    >
       <AgentStatusCard
         name="Build Pipeline"
         status="running"
@@ -522,7 +668,18 @@ export const CustomLabelsAndIcon: Story = {
         inputTokens={5_200}
         outputTokens={900}
         icon={
-          <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--kite-primary-subtle)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>
+          <div
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: "50%",
+              background: "var(--kite-primary-subtle)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 16,
+            }}
+          >
             CI
           </div>
         }
@@ -572,11 +729,20 @@ export const Themed: Story = {
   args: {
     status: "running",
     description: "Custom theme applied via the `theme` prop.",
-    theme: { primary: "#16a34a", primarySubtle: "#dcfce7", foreground: "#14532d" },
+    theme: {
+      primary: "#16a34a",
+      primarySubtle: "#dcfce7",
+      foreground: "#14532d",
+    },
     onStop: () => {},
   },
   parameters: {
-    docs: { description: { story: "Per-component colour override via the `theme` prop. No provider needed." } },
+    docs: {
+      description: {
+        story:
+          "Per-component colour override via the `theme` prop. No provider needed.",
+      },
+    },
   },
 };
 
@@ -584,31 +750,84 @@ export const Themed: Story = {
 
 export const AgentStepTimelineShowcase: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 560 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 24,
+        maxWidth: 560,
+      }}
+    >
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Default step types (thought / tool_use / observation / action / decision)</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Default step types (thought / tool_use / observation / action /
+          decision)
+        </p>
         <AgentStepTimeline
           steps={[
-            { id: "1", type: "thought",     content: "I need to retrieve the latest sales data before analysing trends.", timestamp: "10:00:01", durationMs: 120 },
-            { id: "2", type: "tool_use",    content: "Calling database_query tool", detail: '{ "table": "sales", "limit": 500, "order": "desc" }', timestamp: "10:00:02", durationMs: 340 },
-            { id: "3", type: "observation", content: "Retrieved 500 rows. Top product: Widget Pro ($142 k revenue).", timestamp: "10:00:03" },
-            { id: "4", type: "action",      content: "Generating trend analysis chart", timestamp: "10:00:04", isStreaming: true },
-            { id: "5", type: "decision",    content: "Recommend increasing Widget Pro inventory by 20%.", timestamp: "10:00:05" },
+            {
+              id: "1",
+              type: "thought",
+              content:
+                "I need to retrieve the latest sales data before analysing trends.",
+              timestamp: "10:00:01",
+              durationMs: 120,
+            },
+            {
+              id: "2",
+              type: "tool_use",
+              content: "Calling database_query tool",
+              detail: '{ "table": "sales", "limit": 500, "order": "desc" }',
+              timestamp: "10:00:02",
+              durationMs: 340,
+            },
+            {
+              id: "3",
+              type: "observation",
+              content:
+                "Retrieved 500 rows. Top product: Widget Pro ($142 k revenue).",
+              timestamp: "10:00:03",
+            },
+            {
+              id: "4",
+              type: "action",
+              content: "Generating trend analysis chart",
+              timestamp: "10:00:04",
+              isStreaming: true,
+            },
+            {
+              id: "5",
+              type: "decision",
+              content: "Recommend increasing Widget Pro inventory by 20%.",
+              timestamp: "10:00:05",
+            },
           ]}
           onStepClick={() => {}}
         />
       </div>
 
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Custom icons per step — ReactNode, emoji, or text</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Custom icons per step — ReactNode, emoji, or text
+        </p>
         <AgentStepTimeline
           steps={[
             {
               id: "a",
               type: "thought",
               icon: (
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/>
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 16v-4m0-4h.01" />
                 </svg>
               ),
               content: "Evaluating risk factors from the uploaded contract.",
@@ -617,28 +836,64 @@ export const AgentStepTimelineShowcase: Story = {
               id: "b",
               type: "tool_use",
               icon: (
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.35-4.35" />
                 </svg>
               ),
               content: "Searching legal precedents database",
-              detail: '{ "query": "force majeure clause", "jurisdiction": "UK" }',
+              detail:
+                '{ "query": "force majeure clause", "jurisdiction": "UK" }',
             },
-            { id: "c", type: "observation", icon: "found", content: "Found 3 relevant precedents from 2019–2023." },
-            { id: "d", type: "decision",    icon: "clear",  content: "Clause is standard — no escalation required." },
+            {
+              id: "c",
+              type: "observation",
+              icon: "found",
+              content: "Found 3 relevant precedents from 2019–2023.",
+            },
+            {
+              id: "d",
+              type: "decision",
+              icon: "clear",
+              content: "Clause is standard — no escalation required.",
+            },
           ]}
         />
       </div>
 
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Custom step type labels + global stepIcons override</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Custom step type labels + global stepIcons override
+        </p>
         <AgentStepTimeline
           steps={[
-            { id: "x", type: "plan",    content: "Break the task into three sub-tasks." },
-            { id: "y", type: "execute", content: "Running sub-task 1: fetch market data.", isStreaming: true },
+            {
+              id: "x",
+              type: "plan",
+              content: "Break the task into three sub-tasks.",
+            },
+            {
+              id: "y",
+              type: "execute",
+              content: "Running sub-task 1: fetch market data.",
+              isStreaming: true,
+            },
             { id: "z", type: "validate", content: "Verifying output schema…" },
           ]}
-          stepTypeLabels={{ plan: "Plan", execute: "Execute", validate: "Validate" }}
+          stepTypeLabels={{
+            plan: "Plan",
+            execute: "Execute",
+            validate: "Validate",
+          }}
           stepIcons={{ plan: "P", execute: "E", validate: "V" }}
         />
       </div>
@@ -712,28 +967,49 @@ export const AgentStepTimelineShowcase: Story = {
 
 export const ToolCallInspectorShowcase: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 560 }}>
-      <p style={{ fontSize: 12, color: "#64748b", margin: 0 }}>Completed — with copy buttons</p>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 12,
+        maxWidth: 560,
+      }}
+    >
+      <p style={{ fontSize: 12, color: "#64748b", margin: 0 }}>
+        Completed — with copy buttons
+      </p>
       <ToolCallInspector
         toolName="web_search"
         description="Search the web for recent information"
         status="completed"
         input={{ query: "latest Claude API updates 2025", max_results: 5 }}
-        output={[{ title: "Claude API v3 released", url: "https://example.com", snippet: "Anthropic announces..." }]}
+        output={[
+          {
+            title: "Claude API v3 released",
+            url: "https://example.com",
+            snippet: "Anthropic announces...",
+          },
+        ]}
         latencyMs={412}
         timestamp="10:41:05 AM"
         onCopy={() => {}}
         copyFeedbackLabel="Copied!"
       />
-      <p style={{ fontSize: 12, color: "#64748b", margin: 0 }}>Running — expanded by default</p>
+      <p style={{ fontSize: 12, color: "#64748b", margin: 0 }}>
+        Running — expanded by default
+      </p>
       <ToolCallInspector
         toolName="database_query"
         description="Execute a read-only SQL query"
         status="running"
-        input={{ sql: "SELECT * FROM orders WHERE status = 'pending' LIMIT 100" }}
+        input={{
+          sql: "SELECT * FROM orders WHERE status = 'pending' LIMIT 100",
+        }}
         defaultOpen
       />
-      <p style={{ fontSize: 12, color: "#64748b", margin: 0 }}>Error — with retry button and custom input/output labels</p>
+      <p style={{ fontSize: 12, color: "#64748b", margin: 0 }}>
+        Error — with retry button and custom input/output labels
+      </p>
       <ToolCallInspector
         toolName="send_email"
         description="Send an email notification"
@@ -824,17 +1100,50 @@ export const ToolCallInspectorShowcase: Story = {
 
 export const AgentMemoryPanelShowcase: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 480 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 24,
+        maxWidth: 480,
+      }}
+    >
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Full panel — warn/danger thresholds + all actions</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Full panel — warn/danger thresholds + all actions
+        </p>
         <AgentMemoryPanel
           usedTokens={68_000}
           maxTokens={100_000}
           entries={[
-            { id: "m1", type: "short_term", content: "User asked to analyse Q3 sales data from the uploaded CSV.", createdAt: "Just now" },
-            { id: "m2", type: "short_term", content: "Database query returned 500 rows; Widget Pro leads revenue.", createdAt: "30 s ago" },
-            { id: "m3", type: "long_term",  content: "User prefers concise bullet-point summaries, not prose.", createdAt: "5 days ago" },
-            { id: "m4", type: "episodic",   content: "Previous session: user analysed Q2 data and found 12% growth.", createdAt: "2 wks ago" },
+            {
+              id: "m1",
+              type: "short_term",
+              content:
+                "User asked to analyse Q3 sales data from the uploaded CSV.",
+              createdAt: "Just now",
+            },
+            {
+              id: "m2",
+              type: "short_term",
+              content:
+                "Database query returned 500 rows; Widget Pro leads revenue.",
+              createdAt: "30 s ago",
+            },
+            {
+              id: "m3",
+              type: "long_term",
+              content:
+                "User prefers concise bullet-point summaries, not prose.",
+              createdAt: "5 days ago",
+            },
+            {
+              id: "m4",
+              type: "episodic",
+              content:
+                "Previous session: user analysed Q2 data and found 12% growth.",
+              createdAt: "2 wks ago",
+            },
           ]}
           onDelete={() => {}}
           onEdit={() => {}}
@@ -845,19 +1154,36 @@ export const AgentMemoryPanelShowcase: Story = {
       </div>
 
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Custom type labels + near-danger threshold</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Custom type labels + near-danger threshold
+        </p>
         <AgentMemoryPanel
           usedTokens={92_000}
           maxTokens={100_000}
           entries={[
-            { id: "x1", type: "working",    content: "Current task: classify 300 support tickets.", createdAt: "Now" },
-            { id: "x2", type: "persistent", content: "Company voice guide: professional, concise, no jargon.", createdAt: "1 mo ago" },
+            {
+              id: "x1",
+              type: "working",
+              content: "Current task: classify 300 support tickets.",
+              createdAt: "Now",
+            },
+            {
+              id: "x2",
+              type: "persistent",
+              content: "Company voice guide: professional, concise, no jargon.",
+              createdAt: "1 mo ago",
+            },
           ]}
           onDelete={() => {}}
           onEdit={() => {}}
           warnThreshold={70}
           dangerThreshold={90}
-          typeLabels={{ working: "Working memory", persistent: "Persistent rules", short_term: "Short-term", long_term: "Long-term" }}
+          typeLabels={{
+            working: "Working memory",
+            persistent: "Persistent rules",
+            short_term: "Short-term",
+            long_term: "Long-term",
+          }}
           contextWindowLabel="Context window usage"
         />
       </div>
@@ -921,46 +1247,125 @@ export const AgentMemoryPanelShowcase: Story = {
 
 export const MultiAgentDiagramShowcase: Story = {
   render: () => {
-    const [selectedNode, setSelectedNode] = React.useState<string | null>("analyst");
+    const [selectedNode, setSelectedNode] = React.useState<string | null>(
+      "analyst",
+    );
     const [selectedEdge, setSelectedEdge] = React.useState<string | null>(null);
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 640 }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 24,
+          maxWidth: 640,
+        }}
+      >
         <div>
-          <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Click a node to select; click an edge to highlight; drag to reposition</p>
+          <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+            Click a node to select; click an edge to highlight; drag to
+            reposition
+          </p>
           <MultiAgentDiagram
             title="Research pipeline"
             nodes={[
-              { id: "orchestrator", label: "Orchestrator", status: "running",   role: "Coordinator" },
-              { id: "researcher",   label: "Researcher",   status: "completed", role: "Web Search" },
-              { id: "analyst",      label: "Analyst",      status: "thinking",  role: "Data Analysis" },
-              { id: "writer",       label: "Writer",       status: "idle",      role: "Report Generation" },
+              {
+                id: "orchestrator",
+                label: "Orchestrator",
+                status: "running",
+                role: "Coordinator",
+              },
+              {
+                id: "researcher",
+                label: "Researcher",
+                status: "completed",
+                role: "Web Search",
+              },
+              {
+                id: "analyst",
+                label: "Analyst",
+                status: "thinking",
+                role: "Data Analysis",
+              },
+              {
+                id: "writer",
+                label: "Writer",
+                status: "idle",
+                role: "Report Generation",
+              },
             ]}
             edges={[
-              { from: "orchestrator", to: "researcher", label: "search task",     animated: true },
-              { from: "orchestrator", to: "analyst",    label: "analyse results", animated: true },
-              { from: "analyst",      to: "writer",     label: "findings" },
+              {
+                from: "orchestrator",
+                to: "researcher",
+                label: "search task",
+                animated: true,
+              },
+              {
+                from: "orchestrator",
+                to: "analyst",
+                label: "analyse results",
+                animated: true,
+              },
+              { from: "analyst", to: "writer", label: "findings" },
             ]}
             selectedId={selectedNode ?? undefined}
-            onSelectNode={(id) => { setSelectedNode(id); setSelectedEdge(null); }}
+            onSelectNode={(id) => {
+              setSelectedNode(id);
+              setSelectedEdge(null);
+            }}
             selectedEdgeId={selectedEdge ?? undefined}
-            onSelectEdge={(id) => { setSelectedEdge(id); setSelectedNode(null); }}
+            onSelectEdge={(id) => {
+              setSelectedEdge(id);
+              setSelectedNode(null);
+            }}
             onNodeDoubleClick={(id) => alert(`Double-clicked: ${id}`)}
             canvasHeight={240}
           />
         </div>
 
         <div>
-          <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Custom node colours + animated edges</p>
+          <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+            Custom node colours + animated edges
+          </p>
           <MultiAgentDiagram
             nodes={[
-              { id: "planner",  label: "Planner",  status: "running",  role: "Planning",  color: "#8b5cf6" },
-              { id: "coder",    label: "Coder",     status: "acting",   role: "Code Gen",  color: "#0ea5e9" },
-              { id: "reviewer", label: "Reviewer",  status: "thinking", role: "QA Review", color: "#f59e0b" },
-              { id: "deployer", label: "Deployer",  status: "idle",     role: "Deploy",    color: "#10b981" },
+              {
+                id: "planner",
+                label: "Planner",
+                status: "running",
+                role: "Planning",
+                color: "#8b5cf6",
+              },
+              {
+                id: "coder",
+                label: "Coder",
+                status: "acting",
+                role: "Code Gen",
+                color: "#0ea5e9",
+              },
+              {
+                id: "reviewer",
+                label: "Reviewer",
+                status: "thinking",
+                role: "QA Review",
+                color: "#f59e0b",
+              },
+              {
+                id: "deployer",
+                label: "Deployer",
+                status: "idle",
+                role: "Deploy",
+                color: "#10b981",
+              },
             ]}
             edges={[
-              { from: "planner",  to: "coder",    color: "#8b5cf6" },
-              { from: "coder",    to: "reviewer", color: "#0ea5e9", animated: true },
+              { from: "planner", to: "coder", color: "#8b5cf6" },
+              {
+                from: "coder",
+                to: "reviewer",
+                color: "#0ea5e9",
+                animated: true,
+              },
               { from: "reviewer", to: "deployer", color: "#f59e0b" },
             ]}
             canvasHeight={240}
