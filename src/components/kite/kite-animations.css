@@ -1,33 +1,33 @@
 /* ─── Scoped host + CSS custom properties ─────────────────────────────────── */
 
 .kite-flyui-host {
-  /* ── Primary ──────────────────────────────────────────────────────────── */
-  --kite-primary: #0ea5e9;
-  --kite-primary-hover: #38bdf8;
-  --kite-primary-active: #0284c7;
-  --kite-primary-subtle: #e0f2fe;
-  /* ── Text ─────────────────────────────────────────────────────────────── */
-  --kite-foreground: #0f172a;
-  --kite-muted: #64748b;
-  --kite-disabled: #cbd5e1;
+  /* ── Primary — violet/indigo ──────────────────────────────────────────── */
+  --kite-primary: #6366f1;
+  --kite-primary-hover: #4f46e5;
+  --kite-primary-active: #4338ca;
+  --kite-primary-subtle: #eef2ff;
+  /* ── Text — zinc neutrals ─────────────────────────────────────────────── */
+  --kite-foreground: #18181b;
+  --kite-muted: #71717a;
+  --kite-disabled: #d4d4d8;
   /* ── Background ───────────────────────────────────────────────────────── */
   --kite-background: #ffffff;
-  --kite-surface: #f8fafc;
+  --kite-surface: #fafafa;
   /* ── Border ───────────────────────────────────────────────────────────── */
-  --kite-border: #e2e8f0;
+  --kite-border: #e4e4e7;
   --kite-radius: 8px;
   /* ── Semantic status ──────────────────────────────────────────────────── */
-  --kite-success: #22c55e;
-  --kite-warning: #f59e0b;
-  --kite-danger: #ef4444;
+  --kite-success: #16a34a;
+  --kite-warning: #d97706;
+  --kite-danger: #dc2626;
   /* ── Typography ───────────────────────────────────────────────────────── */
   --kite-font-family: "Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif;
   /* ── Elevation ────────────────────────────────────────────────────────── */
-  --kite-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --kite-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --kite-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  --kite-shadow-md: 0 4px 8px -2px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.06);
   /* ── Overlay ──────────────────────────────────────────────────────────── */
-  --kite-overlay-background: rgba(255, 255, 255, 0.82);
-  --kite-overlay-blur: 2px;
+  --kite-overlay-background: rgba(255, 255, 255, 0.85);
+  --kite-overlay-blur: 4px;
 
   color: var(--kite-foreground);
   font-family: var(--kite-font-family);
@@ -47,29 +47,29 @@
 @media (prefers-color-scheme: dark) {
   .kite-flyui-host {
     /* ── Primary ────────────────────────────────────────────────────────── */
-    --kite-primary: #38bdf8;
-    --kite-primary-hover: #7dd3fc;
-    --kite-primary-active: #0ea5e9;
-    --kite-primary-subtle: #0c4a6e;
+    --kite-primary: #818cf8;
+    --kite-primary-hover: #a5b4fc;
+    --kite-primary-active: #6366f1;
+    --kite-primary-subtle: #1e1b4b;
     /* ── Text ───────────────────────────────────────────────────────────── */
-    --kite-foreground: #f1f5f9;
-    --kite-muted: #94a3b8;
-    --kite-disabled: #475569;
+    --kite-foreground: #fafafa;
+    --kite-muted: #a1a1aa;
+    --kite-disabled: #52525b;
     /* ── Background ─────────────────────────────────────────────────────── */
-    --kite-background: #0f172a;
-    --kite-surface: #1e293b;
+    --kite-background: #09090b;
+    --kite-surface: #18181b;
     /* ── Border ─────────────────────────────────────────────────────────── */
-    --kite-border: #334155;
+    --kite-border: #27272a;
     /* ── Semantic status ────────────────────────────────────────────────── */
     --kite-success: #4ade80;
     --kite-warning: #fbbf24;
     --kite-danger: #f87171;
     /* ── Elevation ──────────────────────────────────────────────────────── */
-    --kite-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4);
-    --kite-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+    --kite-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+    --kite-shadow-md: 0 4px 8px -2px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4);
     /* ── Overlay ────────────────────────────────────────────────────────── */
-    --kite-overlay-background: rgba(15, 23, 42, 0.88);
-    --kite-overlay-blur: 4px;
+    --kite-overlay-background: rgba(9, 9, 11, 0.90);
+    --kite-overlay-blur: 6px;
   }
 }
 

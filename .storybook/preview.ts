@@ -5,7 +5,32 @@ const preview: Preview = {
   parameters: {
     options: {
       storySort: {
-        order: ["Guides", "Kite Components", "Components"],
+        order: [
+          "Guides",
+          "Kite Components",
+          "Components",
+          [
+            "Loading",
+            "Chat",
+            "Agent",
+            "Observability",
+            "Workflow",
+            "Task Management",
+            "Content",
+            "Data",
+            "Approval",
+          ],
+          "Examples",
+          [
+            "Chat Interface",
+            "Agent Dashboard",
+            "Research Pipeline",
+            "Data Pipeline",
+            "Content Generation",
+            "Human Approval Flow",
+            "Prompt Management",
+          ],
+        ],
         method: "alphabetical",
       },
     },
