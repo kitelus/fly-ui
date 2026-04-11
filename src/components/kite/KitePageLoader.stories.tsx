@@ -14,7 +14,8 @@ const meta = {
   },
   argTypes: {
     message: {
-      description: "Status message shown below the animation. Also used as the accessible `aria-label`.",
+      description:
+        "Status message shown below the animation. Also used as the accessible `aria-label`.",
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
@@ -30,12 +31,14 @@ const meta = {
       table: { defaultValue: { summary: "Fly" } },
     },
     subBrand: {
-      description: "Secondary brand segment (light weight) appended after the name.",
+      description:
+        "Secondary brand segment (light weight) appended after the name.",
       control: "text",
       table: { defaultValue: { summary: "UI" } },
     },
     theme: {
-      description: "Optional per-component theme override. Use `FlyUIThemeProvider` for app-wide theming.",
+      description:
+        "Optional per-component theme override. Use `FlyUIThemeProvider` for app-wide theming.",
       control: "object",
       table: {
         type: {
@@ -68,7 +71,8 @@ export const Playground: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Interactive playground — toggle `overlay`, edit `message`, and adjust the `theme` using the controls panel.",
+        story:
+          "Interactive playground — toggle `overlay`, edit `message`, and adjust the `theme` using the controls panel.",
       },
     },
   },
@@ -94,10 +98,19 @@ export const Overlay: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ position: "relative", height: "400px", overflow: "hidden", background: "#f1f5f9" }}>
-        <div style={{ padding: "2rem", fontFamily: "sans-serif", color: "#334155" }}>
+      <div
+        style={{
+          position: "relative",
+          height: "400px",
+          overflow: "hidden",
+          background: "#f1f5f9",
+        }}
+      >
+        <div style={{ padding: "2rem", color: "#334155" }}>
           <h2 style={{ margin: "0 0 0.5rem" }}>Page content behind overlay</h2>
-          <p style={{ margin: 0 }}>This content is blocked while the overlay loader is visible.</p>
+          <p style={{ margin: 0 }}>
+            This content is blocked while the overlay loader is visible.
+          </p>
         </div>
         <Story />
       </div>
@@ -142,7 +155,8 @@ export const Themed: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Per-component colour override via the `theme` prop — including overlay background and blur.",
+        story:
+          "Per-component colour override via the `theme` prop — including overlay background and blur.",
       },
     },
   },
@@ -163,7 +177,8 @@ export const DarkMode: Story = {
     backgrounds: { default: "ink" },
     docs: {
       description: {
-        story: "Automatic dark-mode colours applied by `prefers-color-scheme: dark`.",
+        story:
+          "Automatic dark-mode colours applied by `prefers-color-scheme: dark`.",
       },
       source: {
         code: `<KitePageLoader message="Preparing workspace..." name="Fly" subBrand="UI" />`,

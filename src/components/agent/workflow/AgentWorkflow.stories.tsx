@@ -5,7 +5,8 @@ import { WorkflowStepList } from "./WorkflowStepList";
 import { WorkflowTemplateCard } from "./WorkflowTemplateCard";
 
 const themeArgType = {
-  description: "Optional per-component theme override. Use `FlyUIThemeProvider` for app-wide theming.",
+  description:
+    "Optional per-component theme override. Use `FlyUIThemeProvider` for app-wide theming.",
   control: "object",
   table: {
     type: {
@@ -18,11 +19,26 @@ const themeArgType = {
 };
 
 const DEMO_STEPS = [
-  { id: "1", label: "Validate input schema",          status: "completed" as const, durationMs: 42 },
-  { id: "2", label: "Fetch external data sources",    status: "completed" as const, durationMs: 820 },
-  { id: "3", label: "Run ML classification model",   status: "running" as const,   description: "Classifying 1 240 records…" },
-  { id: "4", label: "Generate summary report",        status: "pending" as const },
-  { id: "5", label: "Send Slack notification",        status: "pending" as const },
+  {
+    id: "1",
+    label: "Validate input schema",
+    status: "completed" as const,
+    durationMs: 42,
+  },
+  {
+    id: "2",
+    label: "Fetch external data sources",
+    status: "completed" as const,
+    durationMs: 820,
+  },
+  {
+    id: "3",
+    label: "Run ML classification model",
+    status: "running" as const,
+    description: "Classifying 1 240 records…",
+  },
+  { id: "4", label: "Generate summary report", status: "pending" as const },
+  { id: "5", label: "Send Slack notification", status: "pending" as const },
 ];
 
 const meta = {
@@ -41,19 +57,23 @@ const meta = {
       table: { defaultValue: { summary: "[]" } },
     },
     onStepClick: {
-      description: "Called with `(id, step)` when a step row is clicked. Makes the row an interactive button.",
+      description:
+        "Called with `(id, step)` when a step row is clicked. Makes the row an interactive button.",
       control: false,
     },
     onStepRetry: {
-      description: "Called with `(id, step)` — shows a Retry button on failed steps when provided.",
+      description:
+        "Called with `(id, step)` — shows a Retry button on failed steps when provided.",
       control: false,
     },
     onStepSkip: {
-      description: "Called with `(id, step)` — shows a Skip button on pending/failed steps when provided.",
+      description:
+        "Called with `(id, step)` — shows a Skip button on pending/failed steps when provided.",
       control: false,
     },
     statusIcons: {
-      description: "Map of `status → ReactNode` to override the default step status icons. Partial — merged with built-in icons. Keys: `pending`, `running`, `completed`, `failed`, `skipped`.",
+      description:
+        "Map of `status → ReactNode` to override the default step status icons. Partial — merged with built-in icons. Keys: `pending`, `running`, `completed`, `failed`, `skipped`.",
       control: false,
     },
     retryLabel: {
@@ -67,11 +87,13 @@ const meta = {
       table: { defaultValue: { summary: '"Skip"' } },
     },
     renderStep: {
-      description: "Custom render function for a single step row — receives the `WorkflowStep` object.",
+      description:
+        "Custom render function for a single step row — receives the `WorkflowStep` object.",
       control: false,
     },
     renderEmpty: {
-      description: "Custom render function for the empty state — shown when `steps` is empty.",
+      description:
+        "Custom render function for the empty state — shown when `steps` is empty.",
       control: false,
     },
     emptyText: {
@@ -88,6 +110,8 @@ const meta = {
       description: {
         component: `
 Workflow configuration and visualisation components — step lists, parameter forms, and template cards.
+
+      > Availability: These components are available in '@kitelus/fly-ui' version '0.1.5-rc.0' and later.
 
 ---
 
@@ -174,17 +198,33 @@ export const Playground: Story = {
 export const AllStatuses: Story = {
   args: {
     steps: [
-      { id: "1", label: "Completed step",    status: "completed", durationMs: 1200 },
-      { id: "2", label: "Currently running", status: "running",   description: "Processing records…" },
-      { id: "3", label: "Failed step",       status: "failed",    errorMessage: "Connection refused on port 5432." },
-      { id: "4", label: "Pending step",      status: "pending" },
-      { id: "5", label: "Skipped step",      status: "skipped" },
+      {
+        id: "1",
+        label: "Completed step",
+        status: "completed",
+        durationMs: 1200,
+      },
+      {
+        id: "2",
+        label: "Currently running",
+        status: "running",
+        description: "Processing records…",
+      },
+      {
+        id: "3",
+        label: "Failed step",
+        status: "failed",
+        errorMessage: "Connection refused on port 5432.",
+      },
+      { id: "4", label: "Pending step", status: "pending" },
+      { id: "5", label: "Skipped step", status: "skipped" },
     ],
   },
   parameters: {
     docs: {
       description: {
-        story: "All five step statuses side by side — the connector line runs between all steps.",
+        story:
+          "All five step statuses side by side — the connector line runs between all steps.",
       },
     },
   },
@@ -208,10 +248,16 @@ export const RunningWorkflow: Story = {
 export const WithErrorsAndRetry: Story = {
   args: {
     steps: [
-      { id: "1", label: "Load dataset",       status: "completed", durationMs: 230 },
-      { id: "2", label: "Normalise columns",  status: "failed",    errorMessage: "Column 'revenue' contains non-numeric values.", durationMs: 140 },
-      { id: "3", label: "Train model",        status: "pending" },
-      { id: "4", label: "Evaluate accuracy",  status: "pending" },
+      { id: "1", label: "Load dataset", status: "completed", durationMs: 230 },
+      {
+        id: "2",
+        label: "Normalise columns",
+        status: "failed",
+        errorMessage: "Column 'revenue' contains non-numeric values.",
+        durationMs: 140,
+      },
+      { id: "3", label: "Train model", status: "pending" },
+      { id: "4", label: "Evaluate accuracy", status: "pending" },
     ],
     onStepRetry: () => {},
     onStepSkip: () => {},
@@ -242,16 +288,17 @@ export const WithCustomStatusIcons: Story = {
     steps: DEMO_STEPS,
     statusIcons: {
       completed: <span style={{ fontSize: 14 }}>✅</span>,
-      running:   <span style={{ fontSize: 14 }}>⚡</span>,
-      pending:   <span style={{ fontSize: 14 }}>⏳</span>,
-      failed:    <span style={{ fontSize: 14 }}>❌</span>,
-      skipped:   <span style={{ fontSize: 14 }}>⏭️</span>,
+      running: <span style={{ fontSize: 14 }}>⚡</span>,
+      pending: <span style={{ fontSize: 14 }}>⏳</span>,
+      failed: <span style={{ fontSize: 14 }}>❌</span>,
+      skipped: <span style={{ fontSize: 14 }}>⏭️</span>,
     },
   },
   parameters: {
     docs: {
       description: {
-        story: "Use `statusIcons` to override the default status indicators — accepts a partial map of `status → ReactNode`. Useful for custom icon libraries or brand icons.",
+        story:
+          "Use `statusIcons` to override the default status indicators — accepts a partial map of `status → ReactNode`. Useful for custom icon libraries or brand icons.",
       },
       source: {
         code: `<WorkflowStepList
@@ -277,7 +324,8 @@ export const EmptyWorkflow: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Pass `emptyText` (or `renderEmpty()`) to customise the empty state when the steps array is empty.",
+        story:
+          "Pass `emptyText` (or `renderEmpty()`) to customise the empty state when the steps array is empty.",
       },
       source: {
         code: `<WorkflowStepList
@@ -306,7 +354,11 @@ export const Themed: Story = {
     theme: { primary: "#f97316", success: "#16a34a", danger: "#dc2626" },
   },
   parameters: {
-    docs: { description: { story: "Per-component colour override via the `theme` prop." } },
+    docs: {
+      description: {
+        story: "Per-component colour override via the `theme` prop.",
+      },
+    },
   },
 };
 
@@ -314,9 +366,18 @@ export const Themed: Story = {
 
 export const ParameterFormShowcase: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 480 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 24,
+        maxWidth: 480,
+      }}
+    >
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>All field types with validation</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          All field types with validation
+        </p>
         <WorkflowParameterForm
           parameters={[
             {
@@ -324,20 +385,61 @@ export const ParameterFormShowcase: Story = {
               label: "Data source",
               type: "select",
               required: true,
-              description: "Choose the input data source for this workflow run.",
+              description:
+                "Choose the input data source for this workflow run.",
               options: [
                 { label: "Production DB", value: "prod" },
-                { label: "Staging DB",    value: "staging" },
-                { label: "CSV Upload",    value: "csv" },
+                { label: "Staging DB", value: "staging" },
+                { label: "CSV Upload", value: "csv" },
               ],
             },
-            { key: "limit",  label: "Record limit", type: "number", description: "Maximum number of records to process per batch.", placeholder: "e.g. 1000", min: 1, max: 100000 },
-            { key: "model",  label: "Model",         type: "string", description: "AI model to use for classification.",            placeholder: "claude-opus-4" },
-            { key: "notes",  label: "Run notes",     type: "textarea", description: "Optional notes for this workflow run.",       placeholder: "e.g. Testing v2 prompt", rows: 3 },
-            { key: "notify", label: "Send Slack notification", type: "boolean", description: "Post a summary to #ai-reports when the workflow completes." },
-            { key: "tag",    label: "Experiment tag", type: "string", description: "Optional label for tracking runs.", validationError: "Tag cannot contain spaces." },
+            {
+              key: "limit",
+              label: "Record limit",
+              type: "number",
+              description: "Maximum number of records to process per batch.",
+              placeholder: "e.g. 1000",
+              min: 1,
+              max: 100000,
+            },
+            {
+              key: "model",
+              label: "Model",
+              type: "string",
+              description: "AI model to use for classification.",
+              placeholder: "claude-opus-4",
+            },
+            {
+              key: "notes",
+              label: "Run notes",
+              type: "textarea",
+              description: "Optional notes for this workflow run.",
+              placeholder: "e.g. Testing v2 prompt",
+              rows: 3,
+            },
+            {
+              key: "notify",
+              label: "Send Slack notification",
+              type: "boolean",
+              description:
+                "Post a summary to #ai-reports when the workflow completes.",
+            },
+            {
+              key: "tag",
+              label: "Experiment tag",
+              type: "string",
+              description: "Optional label for tracking runs.",
+              validationError: "Tag cannot contain spaces.",
+            },
           ]}
-          values={{ source: "prod", limit: 500, model: "claude-opus-4", notes: "", notify: true, tag: "v2 test" }}
+          values={{
+            source: "prod",
+            limit: 500,
+            model: "claude-opus-4",
+            notes: "",
+            notify: true,
+            tag: "v2 test",
+          }}
           onChange={() => {}}
           onSubmit={() => {}}
           onReset={() => {}}
@@ -346,12 +448,23 @@ export const ParameterFormShowcase: Story = {
         />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Read-only mode</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Read-only mode
+        </p>
         <WorkflowParameterForm
           parameters={[
-            { key: "source", label: "Data source", type: "select", options: [{ label: "Production DB", value: "prod" }] },
-            { key: "model",  label: "Model",        type: "string" },
-            { key: "notify", label: "Send Slack notification", type: "boolean" },
+            {
+              key: "source",
+              label: "Data source",
+              type: "select",
+              options: [{ label: "Production DB", value: "prod" }],
+            },
+            { key: "model", label: "Model", type: "string" },
+            {
+              key: "notify",
+              label: "Send Slack notification",
+              type: "boolean",
+            },
           ]}
           values={{ source: "prod", model: "claude-opus-4", notify: true }}
           onChange={() => {}}
@@ -418,7 +531,14 @@ export const ParameterFormShowcase: Story = {
 
 export const TemplateCardShowcase: Story = {
   render: () => (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16, maxWidth: 680 }}>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+        gap: 16,
+        maxWidth: 680,
+      }}
+    >
       <WorkflowTemplateCard
         name="Data Quality Check"
         description="Scans a dataset for missing values, type mismatches, and statistical outliers. Generates a detailed report."
@@ -443,7 +563,20 @@ export const TemplateCardShowcase: Story = {
         stepCount={12}
         author="AI Team"
         estimatedRuntime="~8 min"
-        badge={<span style={{ fontSize: 10, fontWeight: 700, padding: "2px 6px", borderRadius: 4, background: "#fef3c7", color: "#d97706" }}>Popular</span>}
+        badge={
+          <span
+            style={{
+              fontSize: 10,
+              fontWeight: 700,
+              padding: "2px 6px",
+              borderRadius: 4,
+              background: "#fef3c7",
+              color: "#d97706",
+            }}
+          >
+            Popular
+          </span>
+        }
         onPreview={() => {}}
         onUse={() => {}}
         onFavorite={() => {}}
@@ -459,7 +592,9 @@ export const TemplateCardShowcase: Story = {
         estimatedRuntime="~3 min"
         onUse={() => {}}
         headerSlot={
-          <span style={{ fontSize: 10, color: "#64748b" }}>Last updated 2 days ago</span>
+          <span style={{ fontSize: 10, color: "#64748b" }}>
+            Last updated 2 days ago
+          </span>
         }
       />
     </div>

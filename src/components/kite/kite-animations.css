@@ -1,3 +1,5 @@
+@import "@fontsource-variable/inter";
+
 /* ─── Scoped host + CSS custom properties ─────────────────────────────────── */
 
 .kite-flyui-host {
@@ -21,10 +23,13 @@
   --kite-warning: #d97706;
   --kite-danger: #dc2626;
   /* ── Typography ───────────────────────────────────────────────────────── */
-  --kite-font-family: "Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif;
+  --kite-font-family:
+    "Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif;
   /* ── Elevation ────────────────────────────────────────────────────────── */
-  --kite-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
-  --kite-shadow-md: 0 4px 8px -2px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+  --kite-shadow-sm:
+    0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  --kite-shadow-md:
+    0 4px 8px -2px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.06);
   /* ── Overlay ──────────────────────────────────────────────────────────── */
   --kite-overlay-background: rgba(255, 255, 255, 0.85);
   --kite-overlay-blur: 4px;
@@ -65,10 +70,12 @@
     --kite-warning: #fbbf24;
     --kite-danger: #f87171;
     /* ── Elevation ──────────────────────────────────────────────────────── */
-    --kite-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4);
-    --kite-shadow-md: 0 4px 8px -2px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+    --kite-shadow-sm:
+      0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+    --kite-shadow-md:
+      0 4px 8px -2px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4);
     /* ── Overlay ────────────────────────────────────────────────────────── */
-    --kite-overlay-background: rgba(9, 9, 11, 0.90);
+    --kite-overlay-background: rgba(9, 9, 11, 0.9);
     --kite-overlay-blur: 6px;
   }
 }

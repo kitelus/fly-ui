@@ -15,7 +15,14 @@ function renderMarkdown(text: string) {
 
   const flushList = () => {
     if (listItems.length) {
-      nodes.push(<ul key={`ul-${nodes.length}`} style={{ margin: "4px 0", paddingLeft: 20 }}>{listItems}</ul>);
+      nodes.push(
+        <ul
+          key={`ul-${nodes.length}`}
+          style={{ margin: "4px 0", paddingLeft: 20 }}
+        >
+          {listItems}
+        </ul>,
+      );
       listItems = [];
     }
   };
@@ -29,7 +36,21 @@ function renderMarkdown(text: string) {
       if (m.index > last) parts.push(s.slice(last, m.index));
       if (m[1] !== undefined) parts.push(<strong key={m.index}>{m[1]}</strong>);
       else if (m[2] !== undefined) parts.push(<em key={m.index}>{m[2]}</em>);
-      else if (m[3] !== undefined) parts.push(<code key={m.index} style={{ fontFamily: "monospace", background: "var(--kite-surface)", padding: "1px 4px", borderRadius: 3, fontSize: "0.9em" }}>{m[3]}</code>);
+      else if (m[3] !== undefined)
+        parts.push(
+          <code
+            key={m.index}
+            style={{
+              fontFamily: "monospace",
+              background: "var(--kite-surface)",
+              padding: "1px 4px",
+              borderRadius: 3,
+              fontSize: "0.9em",
+            }}
+          >
+            {m[3]}
+          </code>,
+        );
       last = m.index + m[0].length;
     }
     if (last < s.length) parts.push(s.slice(last));
@@ -42,7 +63,12 @@ function renderMarkdown(text: string) {
       listItems.push(<li key={i}>{renderInline(li[1], i)}</li>);
     } else {
       flushList();
-      if (line.trim()) nodes.push(<p key={i} style={{ margin: "2px 0" }}>{renderInline(line, i)}</p>);
+      if (line.trim())
+        nodes.push(
+          <p key={i} style={{ margin: "2px 0" }}>
+            {renderInline(line, i)}
+          </p>,
+        );
     }
   });
   flushList();
@@ -50,7 +76,8 @@ function renderMarkdown(text: string) {
 }
 
 const themeArgType = {
-  description: "Optional per-component theme override. Use `FlyUIThemeProvider` for app-wide theming.",
+  description:
+    "Optional per-component theme override. Use `FlyUIThemeProvider` for app-wide theming.",
   control: "object",
   table: {
     type: {
@@ -65,7 +92,12 @@ const themeArgType = {
 const meta = {
   title: "Components/Chat",
   component: MessageBubble,
-  subcomponents: { MessageInput, StreamingText, ConversationList, SuggestionPills },
+  subcomponents: {
+    MessageInput,
+    StreamingText,
+    ConversationList,
+    SuggestionPills,
+  },
   tags: ["autodocs"],
   args: {
     role: "assistant",
@@ -84,7 +116,8 @@ const meta = {
       table: { defaultValue: { summary: "assistant" } },
     },
     content: {
-      description: "Text content rendered inside the bubble. Ignored when `renderContent` is provided.",
+      description:
+        "Text content rendered inside the bubble. Ignored when `renderContent` is provided.",
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
@@ -101,7 +134,8 @@ const meta = {
       table: { defaultValue: { summary: "undefined" } },
     },
     avatarUrl: {
-      description: "URL of an avatar image. When provided, replaces the initials with the image.",
+      description:
+        "URL of an avatar image. When provided, replaces the initials with the image.",
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
@@ -111,32 +145,38 @@ const meta = {
       table: { defaultValue: { summary: "undefined" } },
     },
     showTimestamp: {
-      description: "Show or hide the timestamp. When `false`, the timestamp is not rendered even if `timestamp` is set.",
+      description:
+        "Show or hide the timestamp. When `false`, the timestamp is not rendered even if `timestamp` is set.",
       control: "boolean",
       table: { defaultValue: { summary: "true" } },
     },
     isLoading: {
-      description: "When `true`, replaces the bubble content with a three-dot animated indicator.",
+      description:
+        "When `true`, replaces the bubble content with a three-dot animated indicator.",
       control: "boolean",
       table: { defaultValue: { summary: "false" } },
     },
     loadingLabel: {
-      description: "Accessible label read by screen readers when the loading indicator is shown.",
+      description:
+        "Accessible label read by screen readers when the loading indicator is shown.",
       control: "text",
       table: { defaultValue: { summary: '"Loading response"' } },
     },
     isFailed: {
-      description: "Marks the message as failed — dims the bubble and shows `errorMessage` below it.",
+      description:
+        "Marks the message as failed — dims the bubble and shows `errorMessage` below it.",
       control: "boolean",
       table: { defaultValue: { summary: "false" } },
     },
     errorMessage: {
-      description: "Error text shown below the bubble when the message failed to send.",
+      description:
+        "Error text shown below the bubble when the message failed to send.",
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
     onRetry: {
-      description: "Callback — shows a Retry button below a failed message when provided.",
+      description:
+        "Callback — shows a Retry button below a failed message when provided.",
       control: false,
     },
     retryLabel: {
@@ -161,11 +201,13 @@ const meta = {
       control: false,
     },
     renderAvatar: {
-      description: "Custom render function for the avatar — receives `role` and returns a ReactNode.",
+      description:
+        "Custom render function for the avatar — receives `role` and returns a ReactNode.",
       control: false,
     },
     headerSlot: {
-      description: "ReactNode injected in the bubble header (between the author row and the bubble).",
+      description:
+        "ReactNode injected in the bubble header (between the author row and the bubble).",
       control: false,
       table: { category: "Slots" },
     },
@@ -183,6 +225,8 @@ const meta = {
       description: {
         component: `
 Chat UI components for AI agent conversations — messages, input, conversation sidebar, and prompt suggestions.
+
+  > Availability: These components are available in '@kitelus/fly-ui' version '0.1.5-rc.0' and later.
 
 ---
 
@@ -276,7 +320,10 @@ export const AssistantBubble: Story = {
   },
   parameters: {
     docs: {
-      description: { story: "Assistant role — left-aligned with a surface background, suitable for agent responses." },
+      description: {
+        story:
+          "Assistant role — left-aligned with a surface background, suitable for agent responses.",
+      },
     },
   },
 };
@@ -289,7 +336,12 @@ export const UserBubble: Story = {
     timestamp: "10:41 AM",
   },
   parameters: {
-    docs: { description: { story: "User role — right-aligned with primary colour background, mirrored layout." } },
+    docs: {
+      description: {
+        story:
+          "User role — right-aligned with primary colour background, mirrored layout.",
+      },
+    },
   },
 };
 
@@ -301,7 +353,10 @@ export const SystemBubble: Story = {
   },
   parameters: {
     docs: {
-      description: { story: "System role — centred with a horizontal rule separator. Use for status notices and agent metadata." },
+      description: {
+        story:
+          "System role — centred with a horizontal rule separator. Use for status notices and agent metadata.",
+      },
     },
   },
 };
@@ -317,7 +372,8 @@ export const LoadingBubble: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Pass `isLoading` to replace the bubble content with a three-dot animation while waiting for a model response. `loadingLabel` is read by screen readers.",
+        story:
+          "Pass `isLoading` to replace the bubble content with a three-dot animation while waiting for a model response. `loadingLabel` is read by screen readers.",
       },
       source: {
         code: `<MessageBubble
@@ -365,13 +421,14 @@ export const FailedBubble: Story = {
 export const WithHoverActions: Story = {
   args: {
     role: "assistant",
-    content: "The root cause is a misconfigured retry policy in the payment gateway.",
+    content:
+      "The root cause is a misconfigured retry policy in the payment gateway.",
     authorName: "AI Agent",
     timestamp: "11:05 AM",
     actions: [
-      { label: "Copy",  onClick: () => {} },
+      { label: "Copy", onClick: () => {} },
       { label: "Retry", onClick: () => {} },
-      { label: "Flag",  onClick: () => {}, danger: true },
+      { label: "Flag", onClick: () => {}, danger: true },
     ],
     actionsAriaLabel: "Message actions",
   },
@@ -409,7 +466,8 @@ export const WithTimestampHidden: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Set `showTimestamp={false}` to hide the timestamp even when a `timestamp` value is provided — useful for dense chat layouts.",
+        story:
+          "Set `showTimestamp={false}` to hide the timestamp even when a `timestamp` value is provided — useful for dense chat layouts.",
       },
       source: {
         code: `<MessageBubble
@@ -423,7 +481,6 @@ export const WithTimestampHidden: Story = {
     },
   },
 };
-
 
 export const CustomContentRender: Story = {
   render: (args) => (
@@ -467,7 +524,14 @@ export const WithHeaderAndFooterSlots: Story = {
     authorName: "Analysis Agent",
     timestamp: "10:45 AM",
     headerSlot: (
-      <div style={{ fontSize: 11, color: "#7c3aed", fontWeight: 600, marginBottom: 4 }}>
+      <div
+        style={{
+          fontSize: 11,
+          color: "#7c3aed",
+          fontWeight: 600,
+          marginBottom: 4,
+        }}
+      >
         AGENT · HIGH PRIORITY
       </div>
     ),
@@ -480,7 +544,8 @@ export const WithHeaderAndFooterSlots: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Use `headerSlot` to inject content above the bubble and `footerSlot` to append content below the actions row — for metadata, reactions, or thread counts.",
+        story:
+          "Use `headerSlot` to inject content above the bubble and `footerSlot` to append content below the actions row — for metadata, reactions, or thread counts.",
       },
       source: {
         code: `<MessageBubble
@@ -500,26 +565,43 @@ export const Themed: Story = {
     role: "assistant",
     content: "Theme applied via the `theme` prop — no provider needed.",
     authorName: "Agent",
-    theme: { primary: "#7c3aed", primarySubtle: "#ede9fe", foreground: "#1e1b4b" },
+    theme: {
+      primary: "#7c3aed",
+      primarySubtle: "#ede9fe",
+      foreground: "#1e1b4b",
+    },
   },
   parameters: {
-    docs: { description: { story: "Per-component colour override via the `theme` prop." } },
+    docs: {
+      description: {
+        story: "Per-component colour override via the `theme` prop.",
+      },
+    },
   },
 };
 
 export const DarkMode: Story = {
   args: {
     role: "assistant",
-    content: "Dark mode is applied automatically via `prefers-color-scheme: dark`.",
+    content:
+      "Dark mode is applied automatically via `prefers-color-scheme: dark`.",
     authorName: "AI Agent",
     timestamp: "Now",
-    theme: { primary: "#38bdf8", foreground: "#f1f5f9", muted: "#94a3b8", surface: "#1e293b", background: "#0f172a", border: "#334155" },
+    theme: {
+      primary: "#38bdf8",
+      foreground: "#f1f5f9",
+      muted: "#94a3b8",
+      surface: "#1e293b",
+      background: "#0f172a",
+      border: "#334155",
+    },
   },
   parameters: {
     backgrounds: { default: "ink" },
     docs: {
       description: {
-        story: "Dark-mode appearance — supply a dark theme or rely on `prefers-color-scheme: dark` in production.",
+        story:
+          "Dark-mode appearance — supply a dark theme or rely on `prefers-color-scheme: dark` in production.",
       },
       source: {
         code: `<MessageBubble
@@ -534,7 +616,14 @@ export const DarkMode: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ background: "#0f172a", padding: "1.5rem", borderRadius: 8, maxWidth: 480 }}>
+      <div
+        style={{
+          background: "#0f172a",
+          padding: "1.5rem",
+          borderRadius: 8,
+          maxWidth: 480,
+        }}
+      >
         <Story />
       </div>
     ),
@@ -545,17 +634,37 @@ export const DarkMode: Story = {
 
 export const StreamingTextShowcase: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 560 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 24,
+        maxWidth: 560,
+      }}
+    >
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Streaming — cursor visible</p>
-        <StreamingText content="Analysing your data in real time..." isStreaming cursorVisible />
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Streaming — cursor visible
+        </p>
+        <StreamingText
+          content="Analysing your data in real time..."
+          isStreaming
+          cursorVisible
+        />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Completed — no cursor</p>
-        <StreamingText content="Analysis complete. Found 3 anomalies." isStreaming={false} />
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Completed — no cursor
+        </p>
+        <StreamingText
+          content="Analysis complete. Found 3 anomalies."
+          isStreaming={false}
+        />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>With Stop + Copy + extra action</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          With Stop + Copy + extra action
+        </p>
         <StreamingText
           content="Generating executive summary..."
           isStreaming
@@ -565,11 +674,15 @@ export const StreamingTextShowcase: Story = {
           copyLabel="Copy text"
           copyFeedbackLabel="Copied!"
           copyFeedbackDuration={2000}
-          extraActions={[{ label: "Export", onClick: () => {}, ariaLabel: "Export content" }]}
+          extraActions={[
+            { label: "Export", onClick: () => {}, ariaLabel: "Export content" },
+          ]}
         />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>renderContent — inline markdown formatting</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          renderContent — inline markdown formatting
+        </p>
         <StreamingText
           content="**Analysis complete.** Found `3 anomalies` in the dataset. Key finding: _revenue is trending upward_."
           isStreaming={false}
@@ -579,7 +692,9 @@ export const StreamingTextShowcase: Story = {
         />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>No copy feedback (set to null)</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          No copy feedback (set to null)
+        </p>
         <StreamingText
           content="Silent copy — no feedback shown."
           isStreaming={false}
@@ -648,9 +763,18 @@ export const StreamingTextShowcase: Story = {
 
 export const MessageInputShowcase: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 560 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 24,
+        maxWidth: 560,
+      }}
+    >
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Full-featured — attach, actions, hint</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Full-featured — attach, actions, hint
+        </p>
         <MessageInput
           value=""
           placeholder="Ask the agent anything…"
@@ -668,7 +792,9 @@ export const MessageInputShowcase: Story = {
         />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Character counter + text-label send button</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Character counter + text-label send button
+        </p>
         <MessageInput
           value="Draft message with character counter enabled"
           maxLength={200}
@@ -679,7 +805,9 @@ export const MessageInputShowcase: Story = {
         />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Enter key disabled — button-only send</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Enter key disabled — button-only send
+        </p>
         <MessageInput
           value=""
           placeholder="Press the button to send…"
@@ -689,7 +817,9 @@ export const MessageInputShowcase: Story = {
         />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Disabled — agent is thinking</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Disabled — agent is thinking
+        </p>
         <MessageInput
           value=""
           disabled
@@ -783,16 +913,67 @@ export const MessageInputShowcase: Story = {
 export const ConversationListShowcase: Story = {
   render: () => (
     <div style={{ display: "flex", gap: 24 }}>
-      <div style={{ width: 280, border: "1px solid #e2e8f0", borderRadius: 8, overflow: "hidden" }}>
-        <p style={{ fontSize: 11, color: "#64748b", padding: "8px 12px", margin: 0, borderBottom: "1px solid #e2e8f0" }}>Default — with search and groups</p>
+      <div
+        style={{
+          width: 280,
+          border: "1px solid #e2e8f0",
+          borderRadius: 8,
+          overflow: "hidden",
+        }}
+      >
+        <p
+          style={{
+            fontSize: 11,
+            color: "#64748b",
+            padding: "8px 12px",
+            margin: 0,
+            borderBottom: "1px solid #e2e8f0",
+          }}
+        >
+          Default — with search and groups
+        </p>
         <ConversationList
           label="Conversations"
           items={[
-            { id: "1", title: "Data analysis report",      preview: "Found 3 anomalies in the dataset",           timestamp: "10:42 AM", pinned: true, avatarText: "DA", unread: 2 },
-            { id: "2", title: "Document summarisation",    preview: "The executive summary covers Q3 results",    timestamp: "Yesterday", pinned: true, avatarText: "DS" },
-            { id: "3", title: "Code review session",       preview: "Authentication logic looks solid",           timestamp: "Mon", avatarText: "CR" },
-            { id: "4", title: "Customer support triage",   preview: "Issue escalated to engineering",             timestamp: "Sun", avatarText: "CS", unread: 5 },
-            { id: "5", title: "Market research brief",     preview: "Competitor analysis for Q4",                 timestamp: "Fri", avatarText: "MR" },
+            {
+              id: "1",
+              title: "Data analysis report",
+              preview: "Found 3 anomalies in the dataset",
+              timestamp: "10:42 AM",
+              pinned: true,
+              avatarText: "DA",
+              unread: 2,
+            },
+            {
+              id: "2",
+              title: "Document summarisation",
+              preview: "The executive summary covers Q3 results",
+              timestamp: "Yesterday",
+              pinned: true,
+              avatarText: "DS",
+            },
+            {
+              id: "3",
+              title: "Code review session",
+              preview: "Authentication logic looks solid",
+              timestamp: "Mon",
+              avatarText: "CR",
+            },
+            {
+              id: "4",
+              title: "Customer support triage",
+              preview: "Issue escalated to engineering",
+              timestamp: "Sun",
+              avatarText: "CS",
+              unread: 5,
+            },
+            {
+              id: "5",
+              title: "Market research brief",
+              preview: "Competitor analysis for Q4",
+              timestamp: "Fri",
+              avatarText: "MR",
+            },
           ]}
           activeId="1"
           onSelect={() => {}}
@@ -809,12 +990,41 @@ export const ConversationListShowcase: Story = {
           emptyText="No conversations yet."
         />
       </div>
-      <div style={{ width: 280, border: "1px solid #e2e8f0", borderRadius: 8, overflow: "hidden" }}>
-        <p style={{ fontSize: 11, color: "#64748b", padding: "8px 12px", margin: 0, borderBottom: "1px solid #e2e8f0" }}>No search bar</p>
+      <div
+        style={{
+          width: 280,
+          border: "1px solid #e2e8f0",
+          borderRadius: 8,
+          overflow: "hidden",
+        }}
+      >
+        <p
+          style={{
+            fontSize: 11,
+            color: "#64748b",
+            padding: "8px 12px",
+            margin: 0,
+            borderBottom: "1px solid #e2e8f0",
+          }}
+        >
+          No search bar
+        </p>
         <ConversationList
           items={[
-            { id: "a", title: "Quick task",   preview: "Ask me anything", timestamp: "Just now", avatarText: "QT" },
-            { id: "b", title: "Long session", preview: "Deep dive analysis", timestamp: "2h ago", avatarText: "LS" },
+            {
+              id: "a",
+              title: "Quick task",
+              preview: "Ask me anything",
+              timestamp: "Just now",
+              avatarText: "QT",
+            },
+            {
+              id: "b",
+              title: "Long session",
+              preview: "Deep dive analysis",
+              timestamp: "2h ago",
+              avatarText: "LS",
+            },
           ]}
           activeId="a"
           showSearch={false}
@@ -874,22 +1084,49 @@ export const ConversationListShowcase: Story = {
 
 export const SuggestionPillsShowcase: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 560 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 24,
+        maxWidth: 560,
+      }}
+    >
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Row layout (default) — with descriptions</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Row layout (default) — with descriptions
+        </p>
         <SuggestionPills
           suggestions={[
-            { id: "1", label: "Summarise document",  description: "Extract key points from uploaded files" },
-            { id: "2", label: "Find anomalies",       description: "Detect outliers in the dataset" },
-            { id: "3", label: "Generate report",      description: "Create a formatted executive summary" },
-            { id: "4", label: "Compare versions",     description: "Show a diff between two outputs" },
+            {
+              id: "1",
+              label: "Summarise document",
+              description: "Extract key points from uploaded files",
+            },
+            {
+              id: "2",
+              label: "Find anomalies",
+              description: "Detect outliers in the dataset",
+            },
+            {
+              id: "3",
+              label: "Generate report",
+              description: "Create a formatted executive summary",
+            },
+            {
+              id: "4",
+              label: "Compare versions",
+              description: "Show a diff between two outputs",
+            },
           ]}
           onSelect={() => {}}
           ariaLabel="Suggested actions"
         />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Column layout — with maxVisible=3</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Column layout — with maxVisible=3
+        </p>
         <SuggestionPills
           layout="column"
           maxVisible={3}
@@ -903,7 +1140,9 @@ export const SuggestionPillsShowcase: Story = {
         />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Grid layout — icon at end</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Grid layout — icon at end
+        </p>
         <SuggestionPills
           layout="grid"
           iconPosition="end"
@@ -917,7 +1156,9 @@ export const SuggestionPillsShowcase: Story = {
         />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Disabled state</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Disabled state
+        </p>
         <SuggestionPills
           disabled
           suggestions={[
@@ -928,7 +1169,9 @@ export const SuggestionPillsShowcase: Story = {
         />
       </div>
       <div>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Loading skeleton state</p>
+        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>
+          Loading skeleton state
+        </p>
         <SuggestionPills
           suggestions={[]}
           loading

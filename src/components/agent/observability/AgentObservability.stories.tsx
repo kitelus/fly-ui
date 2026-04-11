@@ -7,7 +7,8 @@ import { PromptVersionHistory } from "./PromptVersionHistory";
 import { TokenUsageCard } from "./TokenUsageCard";
 
 const themeArgType = {
-  description: "Optional per-component theme override. Use `FlyUIThemeProvider` for app-wide theming.",
+  description:
+    "Optional per-component theme override. Use `FlyUIThemeProvider` for app-wide theming.",
   control: "object",
   table: {
     type: {
@@ -22,7 +23,12 @@ const themeArgType = {
 const meta = {
   title: "Components/Observability",
   component: TokenUsageCard,
-  subcomponents: { ModelMetricsCard, ErrorLogViewer, ApiRequestInspector, PromptVersionHistory },
+  subcomponents: {
+    ModelMetricsCard,
+    ErrorLogViewer,
+    ApiRequestInspector,
+    PromptVersionHistory,
+  },
   tags: ["autodocs"],
   args: {
     modelName: "claude-opus-4",
@@ -31,12 +37,14 @@ const meta = {
   },
   argTypes: {
     title: {
-      description: "Card heading shown above the stats grid. Overrides the default \"Token Usage\" heading.",
+      description:
+        'Card heading shown above the stats grid. Overrides the default "Token Usage" heading.',
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
     modelName: {
-      description: "Model identifier shown in the card header alongside the title.",
+      description:
+        "Model identifier shown in the card header alongside the title.",
       control: "text",
       table: { defaultValue: { summary: "undefined" } },
     },
@@ -51,27 +59,32 @@ const meta = {
       table: { defaultValue: { summary: "0" } },
     },
     totalTokens: {
-      description: "Explicit total — defaults to `inputTokens + outputTokens` when omitted.",
+      description:
+        "Explicit total — defaults to `inputTokens + outputTokens` when omitted.",
       control: { type: "number", min: 0 },
       table: { defaultValue: { summary: "inputTokens + outputTokens" } },
     },
     costUsd: {
-      description: "Estimated cost in USD. When provided, renders a fourth stat column.",
+      description:
+        "Estimated cost in USD. When provided, renders a fourth stat column.",
       control: { type: "number", min: 0, step: 0.0001 },
       table: { defaultValue: { summary: "undefined" } },
     },
     maxTokens: {
-      description: "Context window limit. Renders a progress bar; bar turns amber at `warnThreshold`% and red at `dangerThreshold`%.",
+      description:
+        "Context window limit. Renders a progress bar; bar turns amber at `warnThreshold`% and red at `dangerThreshold`%.",
       control: { type: "number", min: 0 },
       table: { defaultValue: { summary: "undefined" } },
     },
     warnThreshold: {
-      description: "Percentage of `maxTokens` at which the progress bar turns amber. Only applies when `maxTokens` is set.",
+      description:
+        "Percentage of `maxTokens` at which the progress bar turns amber. Only applies when `maxTokens` is set.",
       control: { type: "number", min: 0, max: 100 },
       table: { defaultValue: { summary: "80" } },
     },
     dangerThreshold: {
-      description: "Percentage of `maxTokens` at which the bar turns red and a warning message appears.",
+      description:
+        "Percentage of `maxTokens` at which the bar turns red and a warning message appears.",
       control: { type: "number", min: 0, max: 100 },
       table: { defaultValue: { summary: "90" } },
     },
@@ -87,16 +100,18 @@ const meta = {
     },
     onStatClick: {
       description:
-        "Called with the stat key (`\"input\"`, `\"output\"`, `\"total\"`, `\"cost\"`, or a custom `extraStats` id) when a stat column is clicked.",
+        'Called with the stat key (`"input"`, `"output"`, `"total"`, `"cost"`, or a custom `extraStats` id) when a stat column is clicked.',
       control: false,
     },
     statLabels: {
-      description: "Override displayed labels for each stat column. Keys: `input`, `output`, `total`, `cost`, `max`.",
+      description:
+        "Override displayed labels for each stat column. Keys: `input`, `output`, `total`, `cost`, `max`.",
       control: "object",
       table: { defaultValue: { summary: "undefined" } },
     },
     extraStats: {
-      description: "Additional stat columns rendered after the built-in ones. Each item: `{ label, value, id? }`. The `id` is passed to `onStatClick`.",
+      description:
+        "Additional stat columns rendered after the built-in ones. Each item: `{ label, value, id? }`. The `id` is passed to `onStatClick`.",
       control: "object",
       table: { defaultValue: { summary: "undefined" } },
     },
@@ -106,17 +121,20 @@ const meta = {
       control: false,
     },
     headerSlot: {
-      description: "ReactNode rendered in the card header alongside the model name and title.",
+      description:
+        "ReactNode rendered in the card header alongside the model name and title.",
       control: false,
       table: { category: "Slots" },
     },
     footerSlot: {
-      description: "ReactNode rendered at the bottom of the card after all stats and the progress bar.",
+      description:
+        "ReactNode rendered at the bottom of the card after all stats and the progress bar.",
       control: false,
       table: { category: "Slots" },
     },
     children: {
-      description: "ReactNode rendered below the stats grid — use for custom charts, breakdowns, or additional context.",
+      description:
+        "ReactNode rendered below the stats grid — use for custom charts, breakdowns, or additional context.",
       control: false,
     },
     theme: themeArgType,
@@ -128,6 +146,8 @@ const meta = {
       description: {
         component: `
 Observability components for monitoring LLM token usage, latency, errors, API traffic, and prompt versions in real time.
+
+      > Availability: These components are available in '@kitelus/fly-ui' version '0.1.5-rc.0' and later.
 
 ---
 
@@ -227,7 +247,8 @@ export const WithCost: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Add `costUsd` to render a fourth cost column. Use `currencySymbol` to change the currency prefix (default `$`).",
+        story:
+          "Add `costUsd` to render a fourth cost column. Use `currencySymbol` to change the currency prefix (default `$`).",
       },
       source: {
         code: `<TokenUsageCard
@@ -280,7 +301,7 @@ export const ClickableStats: Story = {
     costUsd: 0.0142,
     onStatClick: () => {},
     extraStats: [
-      { id: "cache",   label: "Cache hits", value: "34%" },
+      { id: "cache", label: "Cache hits", value: "34%" },
       { id: "cached_tokens", label: "Cached tokens", value: "8 420" },
     ],
   },
@@ -313,7 +334,12 @@ export const CustomStatLabels: Story = {
     outputTokens: 8_350,
     costUsd: 0.0142,
     title: "Usage Summary",
-    statLabels: { input: "Prompt", output: "Completion", total: "Sum", cost: "Cost (USD)" },
+    statLabels: {
+      input: "Prompt",
+      output: "Completion",
+      total: "Sum",
+      cost: "Cost (USD)",
+    },
   },
   parameters: {
     docs: {
@@ -337,10 +363,18 @@ export const CustomStatLabels: Story = {
 
 export const Themed: Story = {
   args: {
-    theme: { primary: "#7c3aed", primaryActive: "#5b21b6", foreground: "#1e1b4b" },
+    theme: {
+      primary: "#7c3aed",
+      primaryActive: "#5b21b6",
+      foreground: "#1e1b4b",
+    },
   },
   parameters: {
-    docs: { description: { story: "Per-component colour override via the `theme` prop." } },
+    docs: {
+      description: {
+        story: "Per-component colour override via the `theme` prop.",
+      },
+    },
   },
 };
 
@@ -348,29 +382,94 @@ export const Themed: Story = {
 
 export const ModelMetricsShowcase: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 20, maxWidth: 560 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 20,
+        maxWidth: 560,
+      }}
+    >
       <ModelMetricsCard
         title="Model Performance"
         modelName="claude-opus-4"
         metrics={[
-          { label: "Avg latency", value: 1.24, unit: "s",      trend: "down",   trendLabel: "12%",  description: "P50 across all requests in the last hour" },
-          { label: "Throughput",  value: 48,   unit: " req/m", trend: "up",     trendLabel: "8%" },
-          { label: "Error rate",  value: "0.3", unit: "%",     trend: "down",   trendLabel: "0.1%" },
-          { label: "TTFT",        value: 0.38, unit: "s",      trend: "stable", trendLabel: "—",    description: "Time to first token" },
-          { label: "Total calls", value: "12.4k",              trend: "up",     trendLabel: "23%" },
-          { label: "Cache hits",  value: "34", unit: "%",      trend: "up",     trendLabel: "5%" },
+          {
+            label: "Avg latency",
+            value: 1.24,
+            unit: "s",
+            trend: "down",
+            trendLabel: "12%",
+            description: "P50 across all requests in the last hour",
+          },
+          {
+            label: "Throughput",
+            value: 48,
+            unit: " req/m",
+            trend: "up",
+            trendLabel: "8%",
+          },
+          {
+            label: "Error rate",
+            value: "0.3",
+            unit: "%",
+            trend: "down",
+            trendLabel: "0.1%",
+          },
+          {
+            label: "TTFT",
+            value: 0.38,
+            unit: "s",
+            trend: "stable",
+            trendLabel: "—",
+            description: "Time to first token",
+          },
+          {
+            label: "Total calls",
+            value: "12.4k",
+            trend: "up",
+            trendLabel: "23%",
+          },
+          {
+            label: "Cache hits",
+            value: "34",
+            unit: "%",
+            trend: "up",
+            trendLabel: "5%",
+          },
         ]}
         onRefresh={() => {}}
         refreshing={false}
-        headerSlot={<span style={{ fontSize: 11, color: "#94a3b8" }}>Last updated 30 s ago</span>}
+        headerSlot={
+          <span style={{ fontSize: 11, color: "#94a3b8" }}>
+            Last updated 30 s ago
+          </span>
+        }
       />
       <ModelMetricsCard
         title="Haiku — Cost-optimised model"
         modelName="claude-haiku-4-5"
         metrics={[
-          { label: "Avg latency", value: 0.41, unit: "s",    trend: "down",  trendLabel: "31%" },
-          { label: "Error rate",  value: "0.1", unit: "%",   trend: "stable", trendLabel: "—" },
-          { label: "Cost / 1k",   value: "$0.00025",         trend: "stable", trendLabel: "—" },
+          {
+            label: "Avg latency",
+            value: 0.41,
+            unit: "s",
+            trend: "down",
+            trendLabel: "31%",
+          },
+          {
+            label: "Error rate",
+            value: "0.1",
+            unit: "%",
+            trend: "stable",
+            trendLabel: "—",
+          },
+          {
+            label: "Cost / 1k",
+            value: "$0.00025",
+            trend: "stable",
+            trendLabel: "—",
+          },
         ]}
         onRefresh={() => {}}
       />
@@ -434,7 +533,8 @@ export const ErrorLogShowcase: Story = {
             timestamp: "10:42:03",
             source: "ToolExecutor",
             code: "TOOL_TIMEOUT",
-            stack: "ToolExecutor.call (executor.ts:142)\nAgent.step (agent.ts:89)\nAgent.run (agent.ts:54)",
+            stack:
+              "ToolExecutor.call (executor.ts:142)\nAgent.step (agent.ts:89)\nAgent.run (agent.ts:54)",
           },
           {
             id: "e2",
@@ -447,7 +547,8 @@ export const ErrorLogShowcase: Story = {
           {
             id: "e3",
             severity: "info",
-            message: "Retrying web_search with exponential backoff (attempt 2/3)",
+            message:
+              "Retrying web_search with exponential backoff (attempt 2/3)",
             timestamp: "10:42:05",
             source: "RetryPolicy",
           },
@@ -465,7 +566,12 @@ export const ErrorLogShowcase: Story = {
         onExport={() => {}}
         onEntryClick={() => {}}
         filterPlaceholder="Filter by message, source, or code…"
-        severityLabels={{ all: "All", error: "Errors", warning: "Warnings", info: "Info" }}
+        severityLabels={{
+          all: "All",
+          error: "Errors",
+          warning: "Warnings",
+          info: "Info",
+        }}
       />
     </div>
   ),
@@ -517,20 +623,48 @@ export const ErrorLogShowcase: Story = {
 
 export const ApiInspectorShowcase: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 620 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 16,
+        maxWidth: 620,
+      }}
+    >
       <ApiRequestInspector
         method="POST"
         endpoint="/v1/messages"
         statusCode={200}
         latencyMs={1240}
-        requestHeaders={{ "content-type": "application/json", "anthropic-version": "2023-06-01", "x-api-key": "sk-ant-***" }}
-        requestBody={{ model: "claude-opus-4", max_tokens: 4096, messages: [{ role: "user", content: "Hello" }] }}
-        responseBody={{ id: "msg_01", type: "message", role: "assistant", content: [{ type: "text", text: "Hello! How can I help?" }] }}
-        responseHeaders={{ "content-type": "application/json", "x-request-id": "req_abc123", "request-id": "req_abc123" }}
+        requestHeaders={{
+          "content-type": "application/json",
+          "anthropic-version": "2023-06-01",
+          "x-api-key": "sk-ant-***",
+        }}
+        requestBody={{
+          model: "claude-opus-4",
+          max_tokens: 4096,
+          messages: [{ role: "user", content: "Hello" }],
+        }}
+        responseBody={{
+          id: "msg_01",
+          type: "message",
+          role: "assistant",
+          content: [{ type: "text", text: "Hello! How can I help?" }],
+        }}
+        responseHeaders={{
+          "content-type": "application/json",
+          "x-request-id": "req_abc123",
+          "request-id": "req_abc123",
+        }}
         defaultTab="response"
         onCopy={() => {}}
         copyFeedbackLabel="Copied!"
-        tabLabels={{ request: "Request body", response: "Response body", headers: "Headers" }}
+        tabLabels={{
+          request: "Request body",
+          response: "Response body",
+          headers: "Headers",
+        }}
       />
       <ApiRequestInspector
         method="POST"
@@ -538,7 +672,12 @@ export const ApiInspectorShowcase: Story = {
         statusCode={429}
         latencyMs={58}
         requestBody={{ model: "claude-opus-4", max_tokens: 4096 }}
-        responseBody={{ error: { type: "rate_limit_error", message: "Too many requests. Please retry after 30 s." } }}
+        responseBody={{
+          error: {
+            type: "rate_limit_error",
+            message: "Too many requests. Please retry after 30 s.",
+          },
+        }}
         onRetry={() => {}}
         retryLabel="Retry request"
       />
@@ -660,7 +799,16 @@ export const PromptVersionShowcase: Story = {
         emptyText="No prompt versions yet."
         footerSlot={
           <div style={{ paddingTop: 8 }}>
-            <button style={{ fontSize: 12, color: "var(--kite-primary)", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+            <button
+              style={{
+                fontSize: 12,
+                color: "var(--kite-primary)",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                padding: 0,
+              }}
+            >
               + Save current as new version
             </button>
           </div>
