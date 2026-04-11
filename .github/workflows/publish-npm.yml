@@ -50,5 +50,14 @@ jobs:
           echo "OIDC claims used for npm trusted publishing:"
           echo "$PAYLOAD" | base64 -d
 
+      - name: Resolve npm dist-tag
+        id: npm_tag
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          TAG="$(node -p "const v=require('./package.json').version; const m=v.match(/-([0-9A-Za-z.-]+)$/); if (!m) { 'latest' } else { m[1].split('.')[0] }")"
+          echo "Version: $VERSION"
+          echo "Using npm tag: $TAG"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
       - name: Publish package
-        run: npm publish --access public --provenance
+        run: npm publish --access public --provenance --tag "${{ steps.npm_tag.outputs.tag }}"
